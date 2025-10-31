@@ -1,0 +1,13 @@
+:root {
+  --color-header-footer: #52796F;
+  --color-main: #EAEDE8;
+  --color-secondary:#CAD2C5;
+  --color-text-main: #2f3e46;
+  --color-text-secondary: #fff;
+}
+
+
+
+*{
+    box-sizing: border-box;
+}
