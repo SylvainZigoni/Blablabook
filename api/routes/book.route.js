@@ -3,6 +3,6 @@ import bookController from "../controllers/book.controller.js";
 
 const bookRouter = Router();
 
-bookRouter.get("/random", bookController.getLatestBooks);
+bookRouter.get("/latest", bookController.getLatestBooks);
 
 export { bookRouter };
