@@ -41,11 +41,14 @@
     }
     .header_title{
         display: flex;
-        align-items: center;  
+        align-items: center;
+        margin-bottom: 1rem;
     }
 
     h1{
+        
         margin-right: 1rem;
+        font-size: 3rem;
     }
     button{
         padding: 0.5rem;
