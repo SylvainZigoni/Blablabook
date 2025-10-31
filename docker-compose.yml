@@ -20,6 +20,7 @@ services:
             - type: bind
               source: ./api
               target: /usr/src/app
+            - /usr/src/app/node_modules
 
         # On indique le nom du containeur
         container_name: blablabook-api
@@ -37,6 +38,8 @@ services:
             - type: bind
               source: ./client
               target: /usr/src/app
+            # Volume anonyme pour éviter que node_modules local écrase celui du conteneur
+            - /usr/src/app/node_modules
         container_name: blablabook-cli
 
     db:

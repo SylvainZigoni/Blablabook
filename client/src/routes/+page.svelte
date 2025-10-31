@@ -2,4 +2,4 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 
-<h2>salut</h2>
+<h2>hello</h2>
