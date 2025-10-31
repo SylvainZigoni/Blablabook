@@ -1,11 +1,11 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
-
-	let { children } = $props();
+    import Header from '$lib/components/layout/Header.svelte';
+	import '../app.css';
+	
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
+<Header/>
+<slot/>
 
-{@render children?.()}
+
