@@ -1,0 +1,65 @@
+# Déclaration de nos différents services
+services:
+    # service/containeur "api"
+    api:
+        # Creation de l'image avec "build"
+        build:
+            # Répertoire à partir du quel le build doit se faire
+            context: ./api
+            # Dockerfile a utiliser
+            dockerfile: Dockerfile.api
+        # On indique le port que l'on va utiliser sur notre machine (gauche) avec le port que le containeur va utiliser (droite)
+        ports:
+            - "3000:3000"
+        # On indique les dependances entre nos containeur pour qu'il créé les containeurs dans le bon ordre
+        depends_on:
+            - db
+
+        volumes:
+            # Bind du dossier ./api avec le dossier défini dans le workdir du dockerfile
+            - type: bind
+              source: ./api
+              target: /usr/src/app
+            - /usr/src/app/node_modules
+
+        # On indique le nom du containeur
+        container_name: blablabook-api
+
+    client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile.cli
+        ports:
+            - "5173:5173"
+        depends_on:
+            - api
+
+        volumes:
+            - type: bind
+              source: ./client
+              target: /usr/src/app
+            # Volume anonyme pour éviter que node_modules local écrase celui du conteneur
+            - /usr/src/app/node_modules
+        container_name: blablabook-cli
+
+    db:
+        image: postgres
+        container_name: blablabook-database
+
+        env_file:
+            - .database.docker.env
+
+        ports:
+            - "5433:5432"
+
+        # Répertoires ou se trouveront les volumes
+        volumes:
+            # pour lancer les scripts d'initialisation (create + populate). Le ":" fait le lien (bind) entre notre dossier api/data et le docker-entrypoint
+            - ./api/data:/docker-entrypoint-initdb.d
+
+            # pour la persistance des données, nom du volume:endroit du volume dans le containeur. L'endroit est donné par la doc de postgres dans dockerhub
+            - pg-blablabook:/var/lib/postgresql
+
+# Creation du volume pg-blablabook
+volumes:
+    pg-blablabook:
