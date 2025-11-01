@@ -10,11 +10,11 @@
 </script>
 
 <header>
-    <div class="header_title">
+    <div  class="header_title">
         <h1>BlaBlaBook</h1>
         <Icon icon="ion:book" height = 50 width= 50 />
     </div>
-    {#if currentPath === '/page-user'}
+    {#if currentPath === '/page-login'}
         <!-- a migrer en composant pour afficher selon la route front 
              il est sur les routes user, search,book, admin
         -->
@@ -25,9 +25,9 @@
             <input type="radio">
         </div>  
     {/if}
-    {#if currentPath === '/'}
-    <button on:click={()=> goto('page-log')}>S'inscrire</button>
-    <button on:click={()=> goto('page-log')}>Se Connecter</button>
+    {#if currentPath === '/' || currentPath === '/mentions'}
+    <button on:click={()=> goto('page-login')}>S'inscrire</button>
+    <button on:click={()=> goto('page-login')}>Se Connecter</button>
     {/if}
 </header>
 
