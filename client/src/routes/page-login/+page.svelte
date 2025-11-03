@@ -1,10 +1,10 @@
 <script>
-
+import Register from "$lib/components/layout/ui/Register.svelte";
 </script>
 
 
 
-<h1>page user log</h1>
+<Register />
 
 
 <style>
