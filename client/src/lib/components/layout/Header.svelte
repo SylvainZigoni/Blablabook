@@ -73,8 +73,26 @@
     .login_register-button {
         display: flex;
         justify-content: space-between;
-        width: 100%;
+        max-width: 100%;
 
+    }
+
+
+    /* Media query pour les écrans < 400px */
+    @media (max-width: 400px) {
+
+        .header{
+            margin: 0 auto;
+        }
+
+        .header_title {
+            justify-content: center; /* Centre les éléments */
+        }
+
+        .login_register-button {
+            justify-content: center;
+            gap: 1rem; /* Ajoute un espace entre les boutons */
+        }
     }
 
 </style>

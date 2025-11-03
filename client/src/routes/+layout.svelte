@@ -30,7 +30,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* empêche le scroll global */
+  overflow: hidden; /*empêche le scroll global */
 }
 
 .layout {
@@ -51,8 +51,8 @@ main {
 }
 
 footer {
-  position: sticky;
-  bottom: 0;
+  /* position: sticky;
+  bottom: 0; */
   z-index: 10;
 }
 

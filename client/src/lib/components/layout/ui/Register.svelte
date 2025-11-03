@@ -1,4 +1,55 @@
 <script>
+    import { env } from "$env/dynamic/public";
+
+    let formData = {
+        username : "",
+        email: "",
+        password : "",
+        confirm : ""
+    };
+
+    let error = ""
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        if (formData.password !== formData.confirm) {
+            error = "Les mots de passe ne correspondent pas";
+            return;
+        }
+    
+    try {
+        const response = await fetch(`${env.VITE_API_BASE_URL}/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                confirm: formData.confirm 
+            })
+        });
+
+        if (!response.ok){
+            const data = await response.json();
+            error = data.error;
+            return
+        }
+
+        window.location.href = "/"
+
+    } catch(error) {
+        console.error("Erreur de connection", error)
+    }
+    
+    
+    
+    }
+
+
+
 
 
 </script>
@@ -10,27 +61,29 @@
     <h2 class="inscription-title">Formulaire d'inscription</h2>
 
 
-    <form action="" method="POST" enctype="????">
-        <p>Message en cas d'erreur</p>
+    <form on:submit={handleSubmit} method="POST">
+        {#if error}
+            <p class ="error">Erreur de connexion</p>
+        {/if}
         <fieldset class= "register-container--fieldset">
             <div class="form-row">
                 <label class="label" for="username">Votre nom d'utilisateur :</label>
-                <input class="input-field" type="text" name="username" id="username" placeholder="Votre nom d'utilisateur" required>
+                <input class="input-field" type="text" name="username" id="username" bind:value={formData.username} placeholder="Votre nom d'utilisateur" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="email">E-mail :</label>
-                <input class="input-field" type='email' name="email" id="email" placeholder="Votre email" required>
+                <input class="input-field" type='email' name="email" id="email" bind:value={formData.email} placeholder="Votre email" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="password">Mot de passe :</label>
-                <input class="input-field" type="password" name="password" id="password" placeholder="Votre mot de passe" required>
+                <input class="input-field" type="password" name="password" id="password" bind:value={formData.password} placeholder="Votre mot de passe" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="confirm_password">Confirmer votre mot de passe :</label>
-                <input class="input-field" type="password" name="confirm_password" id="confirm_password" placeholder="Votre mot de passe" required>
+                <input class="input-field" type="password" name="confirm_password" bind:value={formData.confirm} id="confirm_password" placeholder="Votre mot de passe" required>
             </div>
 
             <div class="buttons-container">
@@ -45,12 +98,20 @@
 
 <style>
 
+.register-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* Empêche le défilement horizontal */
+}
+
 .inscription-title{
     text-align: center;
 }
 
 
 .form-row{
+    max-width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -69,7 +130,8 @@
     background-color: var(--color-secondary);
     text-align: center;
     border-radius: var(--border-radius);
-    padding: 1rem;
+    padding-bottom: 1rem;
+
 
 }
 
@@ -97,7 +159,7 @@ input[type="reset"],
     box-shadow: var(--shadow);
     font-size: 1rem;
     line-height: 1;
-    width: 200px; /* Largeur fixe pour tous les boutons */
+    width: auto; /* Largeur fixe pour tous les boutons */
     height: 40px; /* Hauteur fixe pour tous les boutons */
     display: flex;
     align-items: center;
@@ -114,11 +176,33 @@ input[type="reset"],
 
 label {
     margin-bottom: 1rem;
+    font-weight: 600;
+    color : var(--color-text-main);
+    display: block;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
 }
 
 form {
     padding: 1rem;
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
+}
+
+/* Ajout d'une media query pour ajuster la largeur des labels en mobile */
+@media (max-width: 400px) {
+    .form-row {
+        padding: 0.5rem; /* Réduit le padding en mode mobile */
+    }
+    
+    .register-container--fieldset {
+        padding: 0.25rem; /* Réduit le padding en mode mobile */
+    }
+    
+    form {
+        padding: 0.5rem; /* Réduit le padding en mode mobile */
+    }
 }
 </style>
