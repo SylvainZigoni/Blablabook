@@ -1,10 +1,12 @@
 <script>
-   
+    import Home from "$lib/components/ui/Home.svelte";
+    //cette ligne permet de **recevoir les données** injectées par la fonction `load()` dans `+page.js`.
+    // Dans SvelteKit, `data` contient tout ce que tu retournes depuis `load()`.
+    export let data;
+
 </script>
 
-<h2>Bienvenue sur le site de BlaBlaBook</h2>
-<p>Ce site est fait par des amateurs de livres !</p>
-
+<Home books={data.books}/>
 
 
 <style>
