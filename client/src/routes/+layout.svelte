@@ -4,7 +4,15 @@
 	import '../styles/reset.css';
 	import '../styles/app.css';
   import Footer from '$lib/components/layout/Footer.svelte';
+
 </script>
+
+<svelte:head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</svelte:head>
+
 
 <div class="layout">
 
@@ -18,7 +26,10 @@
   
 </div>
 
+
 <style>
+
+
 html, body {
   margin: 0;
   padding: 0;
