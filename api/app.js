@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import bookRouter from "./routes/book.route.js";
+import authRouter from "./routes/auth.route.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/books", bookRouter);
+app.use("/auth", authRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
