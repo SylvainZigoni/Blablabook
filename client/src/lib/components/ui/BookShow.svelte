@@ -11,8 +11,7 @@
 
 {#each books as book }
     <article>
-        <img src={`${API_BASE_URL}/images/${book.image_url}`} alt= {book.title}>
-        <p> test {`${API_BASE_URL}/images/${book.image_url}`}</p>
+        <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
         <div class="book_infos">
             <h3>titre : {book.title}</h3>
             <strong>auteur : a recuperer avec include {book.author}</strong>

@@ -1,6 +1,7 @@
 // scripts/cleanImagePaths.js
-import { Book } from '../models/index.js'; // adapte le chemin si nécessaire
-import sequelize from '../config/database.js'; // adapte selon ton fichier de config
+import  Book  from '../models/book.model.js'; // adapte le chemin si nécessaire
+import { sequelize } from '../models/sequelize.client.js';
+
 
 async function cleanImagePaths() {
   try {
