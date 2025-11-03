@@ -1,4 +1,4 @@
-import { Book } from "../models/index.js";
+import { Book, Author, Category } from "../models/index.js";
 import { StatusCodes } from 'http-status-codes';
 import { sequelize } from "../models/sequelize.client.js";
 
@@ -24,7 +24,18 @@ const bookController = {
         try {
             const books = await Book.findAll({
                 order: sequelize.random(),
-                limit: 3  
+                limit: 3, 
+                include: [
+                    { 
+                        model: Author, 
+                        attributes: ['name', 'forname']
+                    },
+                    {
+                        model: Category,
+                        attributes: ['name']
+                    }
+                ]
+
             });
             res.status(StatusCodes.OK).json(books);
         }
