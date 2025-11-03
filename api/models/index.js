@@ -18,23 +18,35 @@ Book.belongsToMany(User, {
 
 // Association entre Author et Book
 Author.belongsToMany(Book, {
-	through: "book_author",
+	through: {
+		model: "book_author",
+		timestamps: false
+	},
 	foreignKey: "author_id",
 });
 
 Book.belongsToMany(Author, {
-	through: "book_author",
+	through: {
+		model: "book_author",
+		timestamps: false
+	},
 	foreignKey: "book_id",
 });
 
 // Association entre Category et Book
 Book.belongsToMany(Category, {
-	through: "book_category",
+	through: {
+		model: "book_category",
+		timestamps: false
+	},
 	foreignKey: "book_id",
 });
 
 Category.belongsToMany(Book, {
-	through: "book_category",
+	through: {
+		model: "book_category",
+		timestamps: false
+	},
 	foreignKey: "category_id",
 });
 
