@@ -1,16 +1,15 @@
 <script>
-    import { API_BASE_URL } from '$lib/config';
     // le composant attends qu'on lui passe une variable books depuis l'exterieur
-    // sur la page ou il est utilise on a <BookShow books = {books}/>
-    export let books = [];
+    // sur la page ou il est utilise on a  {#each books as book}
+    export let book;
+
     import { page } from "$app/stores";
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
 </script>
 
-{#each books as book }
-    <article>
+<article>
         <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
         <div class="book_infos">
             <h3>titre : {book.title}</h3>
@@ -19,7 +18,7 @@
             <strong> Genre : a recuperer avec include { book.category }</strong>
         </div>
         <p class="book_summary">Résumé : { book.summary} </p>
-    <!-- Faire un composant pour afficher ailleurs ne pas afficher sur cette page 
+     <!-- Faire un composant pour afficher ailleurs ne pas afficher sur cette page 
         {#if currentPath === '/page-login'}
             <div class="book_status">
             <select name="" id="">
@@ -29,28 +28,27 @@
                 <option value="">Lu</option>
             </select>
         </div>
-        {/if}
-        -->
+        {/if} -->
+    
 </article>
-{/each}
-
 
 <style>
     article {
-        display: flex;
-        gap: 2rem;
-        align-items: stretch;
-        margin: 2rem;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: var(--color-main);
-        height: 20%;
+    display: flex;
+    gap: 2rem;
+    align-items: stretch;
+    margin: 2rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--color-main);
+    height: 15vh; /*  15% de la hauteur de la fenêtre */
+    overflow: hidden; /*  évite les débordements */
     }
 
     img {
-        width: 150px;
-        max-height: 100%;
+        height: 100%; /* ✅ remplit toute la hauteur de l’article */
+        width: auto; /* ✅ conserve les proportions */
         object-fit: cover;
         border: 1px solid var(--color-border-main);
         border-radius: 8px;
@@ -59,6 +57,8 @@
     .book_infos {
         padding: 1rem;
         max-height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .book_summary{
