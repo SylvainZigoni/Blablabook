@@ -30,7 +30,7 @@
         Le site BlaBlaBook est hébergé par :<br />
         <strong>Hébergeur :</strong> [ex. Vercel / Netlify / OVH / Infomaniak]<br />
         <strong>Adresse :</strong> [adresse du siège de l’hébergeur]<br />
-        <strong>Site web :</strong> <a href="#">https://www.xxxxx.com</a>
+        <strong>Site web :</strong> <a href="#">https://www.xxxxxx.com</a>
     </p>
 
     <h3>4. Propriété intellectuelle</h3>
