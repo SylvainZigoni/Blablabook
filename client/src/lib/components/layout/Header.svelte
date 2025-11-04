@@ -10,34 +10,41 @@
 </script>
 
 <header>
-    <div  class="header_title">
-        <h1>BlaBlaBook</h1>
-        <Icon icon="ion:book" height = 50 width= 50 />
-    </div>
-    {#if currentPath === '/page-login'}
-        <!-- a migrer en composant pour afficher selon la route front 
-             il est sur les routes user, search,book, admin
-        -->
-        <div class="header_search">
-            <input type="text">
-            <input id="author" type="radio">
-            <label for="author"></label>
-            <input type="radio">
-        </div>  
+    <div class="header">
+        <div  class="header_title">
+            <h1>BlaBlaBook</h1>
+            <Icon icon="ion:book" height = 50 width= 50 />
+        </div>
+        {#if currentPath === '/page-login'}
+            <!-- a migrer en composant pour afficher selon la route front 
+                il est sur les routes user, search,book, admin
+            -->
+            <div class="header_search">
+                <input type="text">
+                <input id="author" type="radio">
+                <label for="author"></label>
+                <input type="radio">
+            </div>  
+
     {/if}
     {#if currentPath === '/' || currentPath === '/mentions'}
-    <button on:click={()=> goto('page-login')}>S'inscrire</button>
-    <button on:click={()=> goto('page-login')}>Se Connecter</button>
+    <div class="login_register-button">
+        <button on:click={()=> goto('page-login')}>S'inscrire</button>
+        <button on:click={()=> goto('page-login')}>Se connecter</button>
+    </div>
     {/if}
+</div>
 </header>
 
 
 <style>
     header{
-        border: 1px solid black;
+        /* border: 1px solid black; */
         color: #fff;
         background-color: var(--color-header-footer);
         padding: 1rem;
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
     }
     .header_title{
         display: flex;
@@ -50,9 +57,43 @@
         margin-right: 1rem;
         font-size: 3rem;
     }
-    button{
+    /* button{
         padding: 0.5rem;
         background-color: #CAD2C5;
         color: var(--color-text-main);
+    } */
+
+    .header{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-width: 300px;
     }
+
+    .login_register-button {
+        display: flex;
+        justify-content: space-between;
+        max-width: 100%;
+
+    }
+
+
+    /* Media query pour les écrans < 400px */
+    @media (max-width: 400px) {
+
+        .header{
+            margin: 0 auto;
+        }
+
+        .header_title {
+            justify-content: center; /* Centre les éléments */
+        }
+
+        .login_register-button {
+            justify-content: center;
+            gap: 1rem; /* Ajoute un espace entre les boutons */
+        }
+    }
+
 </style>
+
