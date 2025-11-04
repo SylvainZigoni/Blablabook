@@ -9,9 +9,7 @@
 
 <div class="home_container">
 
-
 <h2><strong>BlaBlaBook –</strong>  Partagez vos lectures, vos envies, vos découvertes</h2>
-
 <p>
     Plongez dans l’univers de BlaBlaBook, votre bibliothèque personnelle en ligne.
     <strong>Créez un compte</strong> et accédez à une collection de livres soigneusement sélectionnés par des passionnés de lecture.
@@ -23,6 +21,7 @@
     <BookShow {book}/>
     {/each}
 </section>
+
 </div>
 
 <style>
