@@ -50,6 +50,7 @@
         display: flex;
         align-items: center;
         margin-bottom: 1rem;
+        filter: drop-shadow(1px 1px 2px var(--color-main))
     }
 
     h1{
