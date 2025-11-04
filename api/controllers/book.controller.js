@@ -10,18 +10,19 @@ const bookController = {
             const books = await Book.findAll({
                 order: sequelize.random(),
                 limit: 3, 
-                include: [
-                    { 
-                        model: Author, 
-                        attributes: ['name', 'forname']
+                include : [
+                    {
+                        model: Author,
+                        attributes: ['name', 'forname'],
+                        through: { attributes: [] }
                     },
                     {
                         model: Category,
-                        attributes: ['name']
-                        
+                        attributes: ['name'],
+                        through: { attributes: [] }
                     }
-                ]
 
+                ]
             });
             res.status(StatusCodes.OK).json(books);
         }
