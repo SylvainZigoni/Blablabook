@@ -1,4 +1,4 @@
-export async function load() {
+export async function load( { fetch }) {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}books/random`);
 
         if (!response.ok) {
