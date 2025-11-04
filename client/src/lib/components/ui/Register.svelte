@@ -1,14 +1,14 @@
 <script>
-    import { env } from "$env/dynamic/public";
-
     let formData = {
-        username: "",
+        username : "",
         email: "",
-        password: "",
-        confirm: ""
+        password : "",
+        confirm : ""
     };
 
-    let error = ""
+    let error = "";
+    let username = "";
+    let email = "";
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -17,41 +17,40 @@
             error = "Les mots de passe ne correspondent pas";
             return;
         }
+    
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/auth/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                confirm: formData.confirm 
+            })
+        });
 
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/add`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password,
-                    confirm: formData.confirm
-                })
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                error = data.error;
-                return
-            }
-
-            window.location.href = "/"
-
-        } catch (error) {
-            console.error("Erreur de connection", error)
+        if (!response.ok){
+            const data = await response.json();
+            error = data.error;
+            return
         }
 
+        const data = await response.json();
+        console.log(data);
+        username = data.username;
+        email= data.email;
 
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 5000);
 
+    } catch(error) {
+        console.error("Erreur de connection", error)
     }
-
-
-
-
-
+    }
 </script>
 
 
@@ -65,6 +64,7 @@
         {#if error}
             <p class ="error">Erreur de connexion</p>
         {/if}
+
         <fieldset class= "register-container--fieldset">
             <div class="form-row">
                 <label class="label" for="username">Votre nom d'utilisateur :</label>
@@ -85,6 +85,10 @@
                 <label class="label" for="confirm_password">Confirmer votre mot de passe :</label>
                 <input class="input-field" type="password" name="confirm_password" bind:value={formData.confirm} id="confirm_password" placeholder="Votre mot de passe" required>
             </div>
+
+            {#if username}
+                <p class = "confirmation-message">Le compte {username} avec l'email {email} a bien été créé</p>
+            {/if}
 
             <div class="buttons-container">
                 <button class= "button" type="submit">S'inscrire</button>
@@ -123,6 +127,7 @@
     border-radius: var(--border-radius);
     background-color: var(--color-main);
     padding: 0 1rem;
+    box-shadow: var(--shadow);
 }
 
 .register-container--fieldset{
@@ -131,8 +136,6 @@
     text-align: center;
     border-radius: var(--border-radius);
     padding-bottom: 1rem;
-
-
 }
 
 a {
@@ -189,6 +192,15 @@ form {
     padding: 1rem;
     max-width: 800px;
     margin: auto;
+}
+
+
+.confirmation-message{
+    background-color: var(--color-header-footer);
+    padding: 0.5rem;
+    color : var(--color-main);
+    margin: 0 1rem 0 1rem;
+    border-radius: var(--border-radius);
 }
 
 /* Ajout d'une media query pour ajuster la largeur des labels en mobile */
