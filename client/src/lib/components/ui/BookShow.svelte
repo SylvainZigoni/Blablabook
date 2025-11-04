@@ -13,9 +13,9 @@
         <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
         <div class="book_infos">
             <h3>titre : {book.title}</h3>
-            <strong>auteur : a recuperer avec include {book.author}</strong>
+            <strong>auteur : {book.Authors[0].name} {book.Authors[0].forname}</strong>
             <strong>date de publication : {book.date_parution}</strong>
-            <strong> Genre : a recuperer avec include { book.category }</strong>
+            <strong> Genre : {book.Categories[0].name}</strong>
         </div>
         <p class="book_summary">Résumé : { book.summary} </p>
      <!-- Faire un composant pour afficher ailleurs ne pas afficher sur cette page 
