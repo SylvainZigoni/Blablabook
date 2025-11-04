@@ -5,6 +5,7 @@ import { sequelize } from "../models/sequelize.client.js";
 
 const bookController = {
 
+
      async getRandomBooks(req, res) {
         try {
             const books = await Book.findAll({
