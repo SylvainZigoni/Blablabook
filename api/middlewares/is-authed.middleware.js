@@ -26,10 +26,10 @@ export function isAuthed(req, res, next) {
 
     try {
       const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+     
+      req.userId = decodedToken.userId;  //je ne sais pas si utile
+      req.userRole = decodedToken.isAdmin ? "admin" : "user";  //necessaire pour isAdmin middleware
       
-      req.userId = decodedToken.userId; // Très pratique ! 
-      req.userRole = decodedToken.role; // Pratique pour le middleware `isAdmin` qui vient juste après
-
       next();
 
     } catch (error) {
