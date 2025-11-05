@@ -1,14 +1,10 @@
 <script>
-import Register from '$lib/components/ui/Register.svelte';
-
+    import Register from '$lib/components/ui/Register.svelte';
+    export let form;
 </script>
 
-
-
-<Register />
-
+<Register {form} />
 
 <style>
-
 
 </style>

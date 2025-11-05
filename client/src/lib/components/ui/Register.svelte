@@ -1,93 +1,44 @@
 <script>
-    let formData = {
-        username : "",
-        email: "",
-        password : "",
-        confirm : ""
-    };
-
-    let error = "";
-    let username = "";
-    let email = "";
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-
-        if (formData.password !== formData.confirm) {
-            error = "Les mots de passe ne correspondent pas";
-            return;
-        }
-    
-    try {
-        const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/auth/add`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: formData.username,
-                email: formData.email,
-                password: formData.password,
-                confirm: formData.confirm 
-            })
-        });
-
-        if (!response.ok){
-            const data = await response.json();
-            error = data.error;
-            return
-        }
-
-        const data = await response.json();
-        console.log(data);
-        username = data.username;
-        email= data.email;
-
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 5000);
-
-    } catch(error) {
-        console.error("Erreur de connection", error)
-    }
-    }
+    export let form;
 </script>
-
-
 
 <div class="register-container">
 
     <h2 class="inscription-title">Formulaire d'inscription</h2>
 
-
-    <form on:submit={handleSubmit} method="POST">
-        {#if error}
-            <p class ="error">Erreur de connexion</p>
+    <!-- execute l'action register du fichier +page.Server.js 
+    via export const actions = {les méthodes}; -->
+    <form method="POST" action="?/register">
+        <!-- le ? si form existe, lis form.error, sinon renvoie undefined”
+            form est definis a la validation 
+        -->
+        {#if form?.error}
+            <p class ="error">{form.error}</p>
         {/if}
 
         <fieldset class= "register-container--fieldset">
             <div class="form-row">
                 <label class="label" for="username">Votre nom d'utilisateur :</label>
-                <input class="input-field" type="text" name="username" id="username" bind:value={formData.username} placeholder="Votre nom d'utilisateur" required>
+                <input class="input-field" type="text" name="username" id="username" placeholder="Votre nom d'utilisateur" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="email">E-mail :</label>
-                <input class="input-field" type='email' name="email" id="email" bind:value={formData.email} placeholder="Votre email" required>
+                <input class="input-field" type='email' name="email" id="email" placeholder="Votre email" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="password">Mot de passe :</label>
-                <input class="input-field" type="password" name="password" id="password" bind:value={formData.password} placeholder="Votre mot de passe" required>
+                <input class="input-field" type="password" name="password" id="password" placeholder="Votre mot de passe" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="confirm_password">Confirmer votre mot de passe :</label>
-                <input class="input-field" type="password" name="confirm_password" bind:value={formData.confirm} id="confirm_password" placeholder="Votre mot de passe" required>
+                <input class="input-field" type="password" name="confirm" id="confirm" placeholder="Votre mot de passe" required>
             </div>
 
-            {#if username}
-                <p class = "confirmation-message">Le compte {username} avec l'email {email} a bien été créé</p>
+            {#if form?.success}
+                <p class = "confirmation-message">Le compte {form.success.username} avec l'email {form.success.email} a bien été créé</p>
             {/if}
 
             <div class="buttons-container">
@@ -99,9 +50,7 @@
     </form>
 </div>
 
-
 <style>
-
 .register-container {
     width: 100%;
     max-width: 100%;
