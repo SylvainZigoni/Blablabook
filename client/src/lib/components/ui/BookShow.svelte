@@ -13,9 +13,28 @@
         <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
         <div class="book_infos">
             <h3>titre : {book.title}</h3>
-            <strong>auteur : {book.Authors[0].name} {book.Authors[0].forname}</strong>
+            {#if book.Authors && book.Authors.length > 0}
+                <p><strong>Auteur{book.Authors.length > 1 ? 's' : ''}</strong>:
+                    <!-- {#each tableau as element, index} -->
+                    {#each book.Authors as author, i}
+                        {author.forname} {author.name}{i < book.Authors.length - 1 ? ', ' : ''}
+                    {/each}
+                </p>
+                {:else}
+                <p><strong>Auteur</strong>: Inconnu</p>
+            {/if}
+
             <strong>date de publication : {book.date_parution}</strong>
-            <strong> Genre : {book.Categories[0].name}</strong>
+            {#if book.Categories && book.Categories.length > 0}
+                <p><strong>Genres</strong>: 
+                    <!-- {#each tableau as element, index} -->
+                    {#each book.Categories as category, i}
+                        {category.name}{i < book.Categories.length - 1 ? ', ' : ''}
+                    {/each}
+                </p>
+                {:else}
+                <p><strong>Genres</strong>: Aucun</p>
+            {/if}       
         </div>
         <p class="book_summary">Résumé : { book.summary} </p>
      <!-- Faire un composant pour afficher ailleurs ne pas afficher sur cette page 
@@ -28,22 +47,21 @@
                 <option value="">Lu</option>
             </select>
         </div>
-        {/if} -->
-    
+        {/if} -->    
 </article>
 
 <style>
     article {
-    display: flex;
-    gap: 2rem;
-    align-items: stretch;
-    margin: 2rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: var(--color-main);
-    height: 15vh; /*  15% de la hauteur de la fenêtre */
-    overflow: hidden; /*  évite les débordements */
+        display: flex;
+        gap: 2rem;
+        align-items: stretch;
+        margin: 2rem;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: var(--color-main);
+        height: 15vh; /*  15% de la hauteur de la fenêtre */
+        overflow: hidden; /*  évite les débordements */
     }
 
     img {
@@ -68,10 +86,5 @@
         border-radius: 8px;
         background-color: var(--color-secondary);
         max-height: 100%;
-
-    }
-
-    .book_status{
-        align-self: center;
     }
 </style>

@@ -29,8 +29,8 @@
     {/if}
     {#if currentPath === '/' || currentPath === '/mentions'}
     <div class="login_register-button">
-        <button on:click={()=> goto('page-login')}>S'inscrire</button>
-        <button on:click={()=> goto('page-login')}>Se connecter</button>
+        <button on:click={()=> goto('register')}>S'inscrire</button>
+        <button on:click={()=> goto('register')}>Se connecter</button>
     </div>
     {/if}
 </div>
@@ -50,6 +50,7 @@
         display: flex;
         align-items: center;
         margin-bottom: 1rem;
+        filter: drop-shadow(1px 1px 2px var(--color-main))
     }
 
     h1{
