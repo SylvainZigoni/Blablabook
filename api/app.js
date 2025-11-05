@@ -1,7 +1,6 @@
 import express from "express";
 import "dotenv/config";
-import bookRouter from "./routes/book.route.js";
-import authRouter from "./routes/auth.route.js";
+import apiRouter from "./routes/index.js";
 import cors from "cors";
 import { xss } from "express-xss-sanitizer";
 
@@ -15,15 +14,13 @@ app.use(cors({
 	credentials: true
 }));
 
-
 app.use(xss()); // Middleware de sanitization XSS
 
 app.get("/", (req, res) => {
 	res.send("Ca marche encore et toujours ! Incroyable");
 });
 
-app.use("/books", bookRouter);
-app.use("/auth", authRouter);
+app.use(apiRouter); 
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
