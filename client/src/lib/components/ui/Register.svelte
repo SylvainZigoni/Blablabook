@@ -50,9 +50,7 @@
     </form>
 </div>
 
-
 <style>
-
 .register-container {
     width: 100%;
     max-width: 100%;
