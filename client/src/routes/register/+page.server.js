@@ -39,7 +39,6 @@ export const actions = {
 				});
 			}
 
-			console.log(success);
 			// En cas de succès
 			return { success: { username: data.username, email: data.email } };
 		} catch (error) {
