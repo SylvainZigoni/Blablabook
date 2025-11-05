@@ -12,7 +12,7 @@ export const actions = {
 				{
 					method: "POST",
 					headers: {
-						"Content-Type": "application.json",
+						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({
 						username,
@@ -25,11 +25,13 @@ export const actions = {
 
 			if (!response.ok) {
 				return fail(response.status, {
-					error: data.error || "Erreur lors de l'identififcation",
+					error: data.message || "Erreur lors de l'identififcation",
 				});
 			}
 
-			return { success: { username: data.username } };
+			return {
+				success: { username: data.user.username, token: data.token },
+			};
 		} catch (error) {
 			console.error("Erreur : ", error);
 			return fail(500, { error: "Erreur serveur" });

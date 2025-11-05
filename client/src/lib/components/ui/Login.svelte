@@ -1,45 +1,28 @@
 <script>
-
-import { api } from "../../services/api.service.js"
-// import { setToken, setUser } from "$lib/stores/auth.store.js";
-
-let formData = {
-    username : "",
-    password : "",
-}
-
-async function login (event) {
-    event.preventDefault();
-    console.log("[Login.svelte] formData before submit:", { ...formData });
-
-    try{
-        // const { token, user } = 
-        await api.login(formData);
-        // setToken(token);
-        // setUser(user);
-    } catch (error) {
-        console.error("[Login.svelte] login error:", error);
-    }
-}
+    import { enhance } from '$app/forms';
+    export let form;
 
 </script>
-
 
 <div class="login-container">
 
     <h2 class="connection-title">Connexion</h2>
 
+    <!-- A la place d'un "on:submit ={fonction}" on utilise action="?/login"-->
+    <!-- Ca nous renvoie vers la page.server.js du dossier qui appelle le composant -->
+    <!-- Dedans on y trouve la variable action avec la method login -->
 
-    <form on:submit={login} method="POST">
+    <form method="POST" action="?/login" use:enhance>
         <fieldset class= "login-container--fieldset">
             <div class="form-row">
                 <label class="label" for="username">Votre nom d'utilisateur :</label>
-                <input class="input-field" type="text" name="username" id="username" bind:value={formData.username} placeholder="Votre nom d'utilisateur" required>
+                <!-- On n'utilise pas les "bind:value={formData.username}" par username est déja récupérer via le action -->
+                <input class="input-field" type="text" name="username" id="username" placeholder="Votre nom d'utilisateur" required>
             </div>
 
             <div class="form-row">
                 <label class="label" for="password">Mot de passe :</label>
-                <input class="input-field" type="password" name="password" id="password" bind:value={formData.password} placeholder="Votre mot de passe" required>
+                <input class="input-field" type="password" name="password" id="password" placeholder="Votre mot de passe" required>
             </div>
 
 
@@ -50,8 +33,9 @@ async function login (event) {
         </fieldset>
     </form>
 
-    <p class="error">Erreur</p>
-
+    {#if form?.error}
+        <p class="error">{form.error}</p>
+    {/if}
 </div>
 
 
