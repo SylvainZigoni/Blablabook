@@ -11,8 +11,8 @@
 
 
     $: if (form?.success){
-        localStorage.setItem("username", form.success.username)
-                // localStorage.setItem("username", test?.username)
+        localStorage.setItem("username", form.success.username);
+        localStorage.setItem("token_blablabook", form.success.token);
         setTimeout(()=> goto("/"), 2000)}
 
 
@@ -24,7 +24,7 @@
 <Login {form} />
 
 {#if form?.success}
-    <p> {form.success.username}</p>
+    <p> Bienvenue {form.success.username}</p>
 {/if}
 
 {#if form?.error}
