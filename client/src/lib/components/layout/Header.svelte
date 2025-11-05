@@ -2,6 +2,7 @@
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
     import Icon  from '@iconify/svelte';
+    import Search from "../ui/Search.svelte";
 
     let currentPath;
     // Réactivité automatique avec $:
@@ -27,16 +28,7 @@
         {#if currentPath === '/user'}
         <div class="header_user">
             <Icon icon="oui:user" height = 50 width= 50 />
-            <!-- a migrer en composant pour afficher selon la route front il est sur les routes user, search,book, admin-->
-            <div class="header_search">
-                <input type="text" placeholder="Recherche..." />
-                <div>
-                    <input id="author" type="radio" name="filter" />
-                    <label for="author">Auteur</label>
-                    <input id="title" type="radio" name="filter" />
-                    <label for="title">Titre</label>
-                </div>
-            </div>
+            <Search/>
         </div>
         {/if}
 
@@ -95,31 +87,6 @@
         display: flex;
         border: 1px solid black;
     }
-
-    input[type="radio"] {
-	appearance: auto; /* Restaure l’apparence native */
-	-webkit-appearance: radio;
-	-moz-appearance: radio;
-	width: 16px;
-	height: 16px;
-	margin-right: 0.5rem;
-	cursor: pointer;
-}
-
-input[type="text"] {
-	appearance: auto;
-	-webkit-appearance: textfield;
-	-moz-appearance: textfield;
-	
-	/* Restaure un minimum de styles de base */
-	background-color: white;
-	border: 1px solid #ccc;
-	padding: 0.5rem;
-	border-radius: 4px;
-	color: #000;
-	box-sizing: border-box;
-}
-
 
     /* Media query pour les écrans < 400px */
     @media (max-width: 400px) {
