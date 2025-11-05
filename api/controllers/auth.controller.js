@@ -42,6 +42,39 @@ const authController = {
       created_at: newUser.created_at,
       updated_at: newUser.updated_at
     });
+  },
+
+  async loginUser(req,res) {
+
+    const loginUserSchema = Joi.object({
+      username: Joi.string().required(),
+      password: Joi.string().required() 
+    });
+    const { username, password } = Joi.attempt(req.body, loginUserSchema);
+    const user = await User.findOne({ where: { username }}); // { id, username, password, created_at, updated_at }
+    if (!user) {
+      return res.status(StatusCodes.UNAUTHORIZED).json("Le pseudo et le mot de passe ne correspondent pas");
+    }
+
+    const isMatching = await argon2.verify(user.password, password);
+    if (! isMatching) {
+      return res.status(StatusCodes.UNAUTHORIZED).json("Le pseudo et le mot de passe ne correspondent pas");
+    }
+   
+    const token = jwt.sign(
+      { userId: user.id, username: user.username, isAdmin: user.is_admin }, // Payload = charge utile
+      process.env.JWT_SECRET, // Signature
+      { expiresIn: "1h" }
+    );
+
+    return res.status(StatusCodes.OK).json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        is_admin: user.is_admin
+      }
+    });
   }
 };
 
