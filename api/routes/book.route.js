@@ -5,6 +5,4 @@ const bookRouter = Router();
 
 bookRouter.get("/random", bookController.getRandomBooks);
 
-
-
 export default bookRouter;
