@@ -41,6 +41,9 @@ services:
             # Volume anonyme pour éviter que node_modules local écrase celui du conteneur
             - /usr/src/app/node_modules
         container_name: blablabook-cli
+        # Docker va injecter toutes les variables du .env dans le conteneur frontend.
+        env_file:
+            - ./client/.env
 
     db:
         image: postgres
