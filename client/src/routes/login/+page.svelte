@@ -5,18 +5,10 @@
     export let form;
 
 
-
-
-
-
-
     $: if (form?.success){
         localStorage.setItem("username", form.success.username);
         localStorage.setItem("token_blablabook", form.success.token);
-        setTimeout(()=> goto("/"), 2000)}
-
-
-
+        setTimeout(()=> goto("/user"), 2000)}
 
 
 </script>
