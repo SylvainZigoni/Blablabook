@@ -1,4 +1,5 @@
 <script>
+    import { enhance } from '$app/forms';
     export let form;
 </script>
 
@@ -8,7 +9,7 @@
 
     <!-- execute l'action register du fichier +page.Server.js 
     via export const actions = {les méthodes}; -->
-    <form method="POST" action="?/register">
+    <form method="POST" action="?/register" use:enhance>
         <!-- le ? si form existe, lis form.error, sinon renvoie undefined”
             form est definis a la validation 
         -->
@@ -38,7 +39,7 @@
             </div>
 
             {#if form?.success}
-                <p class = "confirmation-message">Le compte {form.success.username} avec l'email {form.success.email} a bien été créé</p>
+                <p class = "confirmation-message">Le compte {form.success.username} avec l'email {form.success.email} a bien été créé</p> 
             {/if}
 
             <div class="buttons-container">

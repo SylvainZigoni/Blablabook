@@ -2,6 +2,7 @@
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
     import Icon  from '@iconify/svelte';
+    import Search from "../ui/Search.svelte";
 
     let currentPath;
     // Réactivité automatique avec $:
@@ -11,28 +12,27 @@
 
 <header>
     <div class="header">
-        <div  class="header_title">
-            <h1>BlaBlaBook</h1>
-            <Icon icon="ion:book" height = 50 width= 50 />
+        <div class="header_home">
+            <div  class="header_title">
+                <h1>BlaBlaBook</h1>
+                <Icon icon="ion:book" height = 50 width= 50 />
+            </div>
+            {#if currentPath === '/' || currentPath === '/mentions'}
+                <div class="login_register-button">
+                    <button on:click={()=> goto('register')}>S'inscrire</button>
+                    <button on:click={()=> goto('register')}>Se connecter</button>
+                </div>
+            {/if}
         </div>
-        {#if currentPath === '/page-login'}
-            <!-- a migrer en composant pour afficher selon la route front 
-                il est sur les routes user, search,book, admin
-            -->
-            <div class="header_search">
-                <input type="text">
-                <input id="author" type="radio">
-                <label for="author"></label>
-                <input type="radio">
-            </div>  
+        
+        {#if currentPath === '/user'}
+        <div class="header_user">
+            <Icon icon="oui:user" height = 50 width= 50 />
+            <Search/>
+        </div>
+        {/if}
 
-    {/if}
-    {#if currentPath === '/' || currentPath === '/mentions'}
-    <div class="login_register-button">
-        <button on:click={()=> goto('register')}>S'inscrire</button>
-        <button on:click={()=> goto('login')}>Se connecter</button>
-    </div>
-    {/if}
+    
 </div>
 </header>
 
@@ -45,6 +45,11 @@
         padding: 1rem;
         border-bottom-left-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
+    }
+
+    .header_home{
+        display: flex;
+        flex-direction: column;
     }
     .header_title{
         display: flex;
@@ -78,6 +83,10 @@
 
     }
 
+    .header_user{
+        display: flex;
+        border: 1px solid black;
+    }
 
     /* Media query pour les écrans < 400px */
     @media (max-width: 400px) {

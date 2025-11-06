@@ -33,11 +33,9 @@ export const actions = {
 
 			const data = await response.json();
 
-			if (!response.ok) {
-				return fail(response.status, {
-					error: data.error || "Erreur de création du compte",
-				});
-			}
+        if (!response.ok) {
+                return fail(response.status, { error: data.message || 'Erreur de création du compte' });
+            }
 
 			// En cas de succès
 			return { success: { username: data.username, email: data.email } };
