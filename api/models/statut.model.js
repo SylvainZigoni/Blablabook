@@ -7,7 +7,14 @@ Statut.init(
 	{
 		statut: {
 			type: DataTypes.STRING,
-			unique: true,
+			allowNull: true,
+		},
+		user_id: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
+		book_id: {
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 	},
