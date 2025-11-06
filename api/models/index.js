@@ -50,4 +50,4 @@ Category.belongsToMany(Book, {
 	foreignKey: "category_id",
 });
 
-export { User, Book, Author, Category, sequelize };
+export { User, Book, Author, Category, Statut, sequelize };
