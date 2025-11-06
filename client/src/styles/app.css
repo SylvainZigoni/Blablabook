@@ -4,6 +4,7 @@
 	--color-secondary: #cad2c5;
 	--color-text-main: #2f3e46;
 	--color-text-secondary: #fff;
+	--color-error: #eed2d7;
 	--border-radius: 10px;
 	--shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.2);
 	font-family: "Roboto", sans-serif;
@@ -90,4 +91,17 @@ button,
 	box-shadow: var(--shadow);
 	font-size: 1rem;
 	line-height: 1;
+}
+
+.error {
+	background-color: var(--color-error);
+	padding: 1rem 0.5rem;
+	border-radius: var(--border-radius);
+	margin: 0.5rem 0;
+}
+
+em {
+	font-style: italic;
+	font-size: 0.7rem;
+	font-weight: 300;
 }
