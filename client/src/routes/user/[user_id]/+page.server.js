@@ -1,4 +1,5 @@
 export async function load( { fetch }) {
+
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/books/random`);
 
         if (!response.ok) {
@@ -8,3 +9,10 @@ export async function load( { fetch }) {
         const books = await response.json();
         return { books };
 }
+
+// export async function load( { fetch, params}) {
+//   const user_id = params.user_id;
+//   const response = await fetch(`${import.meta.env.VITE_BASE_URL}/books/${user_id}`);
+//   const userBooks = await response.json();
+//   return { userBooks};
+// }

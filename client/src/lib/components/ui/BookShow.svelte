@@ -2,7 +2,7 @@
     // le composant attends qu'on lui passe une variable books depuis l'exterieur
     // sur la page ou il est utilise on a  {#each books as book}
     export let book;
-
+    import StatusButton from "./StatusButton.svelte";
     import { page } from "$app/stores";
     let currentPath;
     // Réactivité automatique avec $:
@@ -37,17 +37,9 @@
             {/if}       
         </div>
         <p class="book_summary">Résumé : { book.summary} </p>
-     <!-- Faire un composant pour afficher ailleurs ne pas afficher sur cette page 
-        {#if currentPath === '/page-login'}
-            <div class="book_status">
-            <select name="" id="">
-                <option value="" disabled selected>Choisir le status de Lecture</option>
-                <option value="">Lecture en cours</option>
-                <option value="">A lire</option>
-                <option value="">Lu</option>
-            </select>
-        </div>
-        {/if} -->    
+        {#if currentPath.startsWith('/user/')}
+            <StatusButton />
+        {/if}
 </article>
 
 <style>

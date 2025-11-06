@@ -25,17 +25,14 @@
             {/if}
         </div>
         
-        {#if currentPath === '/user'}
+        {#if currentPath.startsWith('/user/')}
         <div class="header_user">
             <Icon icon="oui:user" height = 50 width= 50 />
             <Search/>
         </div>
         {/if}
-
-    
-</div>
+    </div>
 </header>
-
 
 <style>
     header{
