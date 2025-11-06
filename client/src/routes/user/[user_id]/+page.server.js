@@ -1,18 +1,18 @@
-export async function load( { fetch }) {
+export async function load( { fetch, params, cookies}) {
+    const user_id = params.user_id;
+    const token = cookies.get('token');
 
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/books/random`);
+    if(!token){
+        return { userBooks : [], error: "Utilisateur non Authentifié"}
+    }
 
-        if (!response.ok) {
-            console.error(`Erreur API: ${response.status} ${response.statusText}`);
-            return { books: [], error: `Impossible de charger les livres (${response.status})` };
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/books/${user_id}`, {
+        headers : {
+            Authorization: `Bearer ${cookies.get("token")}`,
         }
-        const books = await response.json();
-        return { books };
-}
+    });
 
-// export async function load( { fetch, params}) {
-//   const user_id = params.user_id;
-//   const response = await fetch(`${import.meta.env.VITE_BASE_URL}/books/${user_id}`);
-//   const userBooks = await response.json();
-//   return { userBooks};
-// }
+    const userBooks = await response.json();
+    console.log(userBooks);
+    return { userBooks };
+}

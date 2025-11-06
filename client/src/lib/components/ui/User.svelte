@@ -1,6 +1,6 @@
 <script>
     import BookShow from "./BookShow.svelte";
-    export let books=[]; 
+    export let userBooks=[]; 
 </script>
 
 <div class="user_container">
@@ -13,7 +13,7 @@
             <li><a href="">Livres Lus (xxx)</a></li>
         </ul>
     <div class="books_container">
-        {#each books as book }
+        {#each userBooks as book }
             <BookShow {book}/>
         {/each}
     </div>

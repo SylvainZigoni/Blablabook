@@ -4,7 +4,7 @@
 </script>
 
 
-<User books={data.books}/>
+<User userBooks={data.userBooks}/>
 <!-- <User userBooks ={data.userBooks}/> -->
 
 
