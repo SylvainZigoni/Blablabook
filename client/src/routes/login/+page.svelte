@@ -4,21 +4,9 @@
     // export let data; // Permet de récupérer les données fetchées coté serveur
     export let form;
 
-
-
-
-
-
-
-    $: if (form?.success){
-        localStorage.setItem("username", form.success.username);
-        localStorage.setItem("token_blablabook", form.success.token);
-        setTimeout(()=> goto("/"), 2000)}
-
-
-
-
-
+     $: if (form?.success){
+         setTimeout(()=> goto(`/user/${form.success.id}`), 2000)
+        }
 </script>
 
 <Login {form} />
