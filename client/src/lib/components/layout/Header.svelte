@@ -20,22 +20,19 @@
             {#if currentPath === '/' || currentPath === '/mentions'}
                 <div class="login_register-button">
                     <button on:click={()=> goto('register')}>S'inscrire</button>
-                    <button on:click={()=> goto('register')}>Se connecter</button>
+                    <button on:click={()=> goto('login')}>Se connecter</button>
                 </div>
             {/if}
         </div>
         
-        {#if currentPath === '/user'}
+        {#if currentPath.startsWith('/user/')}
         <div class="header_user">
             <Icon icon="oui:user" height = 50 width= 50 />
             <Search/>
         </div>
         {/if}
-
-    
-</div>
+    </div>
 </header>
-
 
 <style>
     header{

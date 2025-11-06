@@ -1,7 +1,8 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 
 export const actions = {
-	login: async ({ request, fetch }) => {
+	// ajout des cookies dans login
+	login: async ({ request, fetch, cookies }) => {
 		const formData = await request.formData();
 		const username = formData.get("username");
 		const password = formData.get("password");
@@ -29,8 +30,33 @@ export const actions = {
 				});
 			}
 
+			// modification pour utilise les cookies pour stocker le sinfo et non le localStorage
+			cookies.set('token', data.token, {
+				path:"/",
+				httpOnly:true,
+				sameSite: "lax",
+				secure:true,
+				maxAge: 60*60
+			});
+
+			cookies.set('user_id', String(data.user.id), {
+				path:"/",
+				httpOnly:true,
+				sameSite: "lax",
+				secure:true,
+				maxAge: 60*60
+			});
+
+			cookies.set('user_name', String(data.user.username), {
+				path:"/",
+				httpOnly:true,
+				sameSite: "lax",
+				secure:true,
+				maxAge: 60*60
+			});
+						
 			return {
-				success: { username: data.user.username, token: data.token },
+				success: { username: data.user.username, token: data.token, id: data.user.id},
 			};
 		} catch (error) {
 			console.error("Erreur : ", error);
