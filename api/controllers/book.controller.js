@@ -67,6 +67,162 @@ const bookController = {
             console.error("Impossible de récupérer les livres de l'utilisateur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
         }
+    },
+
+    async getBooksByTitle(req, res) {
+        try {
+            const { titleSearched } = req.params;
+            const userId = req.user.id; // Récupéré depuis le middleware d'authentification
+            
+            // Rechercher les livres avec associations
+            const books = await Book.findAll({
+                where: {
+                    title: {
+                        [Op.ilike]: `%${titleSearched}%` // Recherche partielle
+                    }
+                },
+                include: [
+                    // Ce que ça fait : Récupère les auteurs de chaque livre via la table de liaison (many-to-many). 
+                    // Le through: { attributes: [] } signifie "ne ramène pas les colonnes de la table intermédiaire".
+                    {
+                        model: Author,
+                        as: 'authors', 
+                        through: { attributes: [] } // Ne pas inclure la table de liaison
+                    },
+                    {
+                        model: Category,
+                        as: 'categories',
+                        through: { attributes: [] }
+                    },
+                    {
+                        model: User,
+                        as: 'users',
+                        through: { 
+                            attributes: ['statutId'], // Récupérer le statut
+                            as: 'userBook' 
+                        },
+                        where: { id: userId },
+                        required: false // LEFT JOIN pour avoir tous les livres même sans statut
+
+                        // Vérifie si l'utilisateur connecté (userId) possède ce livre dans sa bibliothèque
+                        // Si oui, ramène le statutId (lu, à lire, en cours...)
+                        // required: false = même si l'utilisateur ne possède PAS le livre, 
+                        // on ramène quand même le livre (avec users vide)
+                    }
+                ]
+            });
+
+            // Formatter la réponse
+            const formattedBooks = books.map(book => {
+                const bookData = book.toJSON();
+                
+                // Extraire le statut de l'utilisateur
+                let userStatus = 'absent';  // Par défaut = l'utilisateur ne possède pas le livre
+                if (bookData.users && bookData.users.length > 0) {
+                    // Si users n'est pas vide = l'utilisateur possède le livre
+                    const userBook = bookData.users[0].userBook;
+                    if (userBook && userBook.statutId) {
+                        userStatus = userBook.statutId; // ou le nom du statut si vous le joignez
+                    }
+                }
+                
+                // Restructurer l'objet
+                return {
+                    id: bookData.id,
+                    title: bookData.title,
+                    isbn: bookData.isbn,
+                    summary: bookData.summary,
+                    image: bookData.image,
+                    authors: bookData.authors,
+                    categories: bookData.categories,
+                    userStatus: userStatus  // ← Le statut simplifié !
+                    // On ne retourne PAS users
+                };
+                
+            });
+
+            // Envoyer la réponse
+            res.status(StatusCodes.OK).json(formattedBooks);
+
+        } catch (error) {
+            console.error("Erreur lors de la recherche de livres :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
+        }
+    },
+
+    async getBookByAuthor (req, res) {
+        try {
+            const { authorSearched } = req.params;
+            const userId = req.user.id;
+            
+            const books = await Book.findAll({
+                include: [
+                    {
+                        model: Author,
+                        as: 'authors',
+                        where: {
+                            [Op.or]: [
+                                { name: { [Op.ilike]: `%${authorSearched}%` } },
+                                { forname: { [Op.ilike]: `%${authorSearched}%` } }
+                            ]
+                        },
+                        through: { attributes: [] }
+                    },
+                    {
+                        model: Category,
+                        as: 'categories',
+                        through: { attributes: [] }
+                    },
+                    {
+                        model: User,
+                        as: 'users',
+                        through: { 
+                            attributes: ['statutId'],
+                            as: 'userBook' 
+                        },
+                        where: { id: userId },
+                        required: false
+                    }
+                ]
+            });
+
+            const formattedBooks = books.map(book => {
+                // 1. Convertir le livre Sequelize en objet JavaScript simple
+                const bookData = book.toJSON();
+                
+                // 2. Déterminer le statut de l'utilisateur pour ce livre
+                let userStatus = 'absent'; // Par défaut, l'utilisateur ne possède pas le livre
+                
+                // Vérifier si l'utilisateur possède ce livre
+                if (bookData.users && bookData.users.length > 0) {
+                    // L'utilisateur possède le livre, récupérer son statut
+                    const userBookRelation = bookData.users[0].userBook;
+                    if (userBookRelation && userBookRelation.statutId) {
+                        userStatus = userBookRelation.statutId;
+                    }
+                }
+                
+                // 3. Construire l'objet de réponse simplifié
+                return {
+                    id: bookData.id,
+                    title: bookData.title,
+                    isbn: bookData.isbn,
+                    summary: bookData.summary,
+                    image: bookData.image,
+                    authors: bookData.authors,
+                    categories: bookData.categories,
+                    userStatus: userStatus  // Le statut simplifié (absent, 1, 2, 3...)
+                };
+            });
+
+            res.status(StatusCodes.OK).json(formattedBooks);
+
+        } catch (error) {
+            console.error("Erreur lors de la recherche de livres par auteur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
+                error: "Erreur interne du serveur" 
+            });
+        }
     }
 };
 
