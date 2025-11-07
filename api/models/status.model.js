@@ -1,11 +1,11 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "./sequelize.client.js";
 
-class Statut extends Model {}
+class Status extends Model {}
 
-Statut.init(
+Status.init(
 	{
-		statut: {
+		status: {
 			type: DataTypes.STRING,
 			allowNull: true,
 		},
@@ -24,4 +24,4 @@ Statut.init(
 	}
 );
 
-export default Statut;
+export default Status;

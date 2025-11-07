@@ -57,7 +57,7 @@ CREATE TABLE book (
 -- ========================================
 CREATE TABLE user_book (
     id SERIAL PRIMARY KEY,
-    statut TEXT,
+    status TEXT,
     user_id INT NOT NULL,
     book_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
