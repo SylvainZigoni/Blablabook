@@ -5,7 +5,11 @@ import { isAuthed } from "../middlewares/is-authed.middleware.js";
 const bookRouter = Router();
 
 bookRouter.get("/random", bookController.getRandomBooks);
-// bookRouter.get("/:userId", isAuthed, bookController.getAllUserBooks);
-bookRouter.get("/:userId", bookController.getAllUserBooks);
+bookRouter.get("/title/:titleSearched",isAuthed, bookController.getBooksByTitle);
+bookRouter.get("/author/:authorSearched",isAuthed, bookController.getBooksByAuthor);
+bookRouter.delete("/:userId/:bookId",isAuthed, bookController.deleteUserBook);
+bookRouter.post("/:userId/:bookId",isAuthed, bookController.addUserBook);
+bookRouter.get("/:userId",isAuthed, bookController.getAllUserBooks);
+
 
 export default bookRouter;
