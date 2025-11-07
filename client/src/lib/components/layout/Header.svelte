@@ -25,7 +25,7 @@
             {/if}
         </div>
         
-        {#if currentPath.startsWith('/user/')}
+        {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
         <div class="header_user">
             <Icon icon="oui:user" height = 50 width= 50 />
             <Search/>
