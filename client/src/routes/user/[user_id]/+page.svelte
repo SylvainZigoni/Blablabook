@@ -3,10 +3,8 @@
     export let data
 </script>
 
-
-<User books={data.books}/>
-<!-- <User userBooks ={data.userBooks}/> -->
-
+<!-- <p>Statut reçu : {data.statut}</p> -->
+<User userBooks={data.userBooks} status={data.status}/>
 
 <style>
 
