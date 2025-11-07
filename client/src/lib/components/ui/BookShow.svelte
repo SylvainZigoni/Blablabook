@@ -37,7 +37,7 @@
             {/if}       
         </div>
         <p class="book_summary">Résumé : { book.summary} </p>
-        {#if currentPath.startsWith('/user/')}
+        {#if currentPath !== '/'}
             <StatusButton />
         {/if}
 </article>
