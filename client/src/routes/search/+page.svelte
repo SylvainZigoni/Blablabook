@@ -1,6 +1,8 @@
 <script>
+	import BookShow from '$lib/components/ui/BookShow.svelte';
+
     export let data;
-    let { results = [], query = "", by = "title", error } = data;
+    let { books = [], query = "", by = "title", error } = data;
 </script>
 
 <section>
@@ -8,12 +10,12 @@
 
     {#if error}
         <p class="error"> Erreur : {error}</p>
-    {:else if results.length === 0}
+    {:else if books.length === 0}
         <p>Aucun résultat</p>
     {:else}
         <u>
-            {#each results as result}
-                <li>{result.title}</li>
+            {#each books as book}
+                <BookShow {book} />
             {/each}
         </u>
     {/if}

@@ -1,12 +1,16 @@
 // Import de l'utilitaire json pour ne pas avoir a renvoyer une reponse http, mais seulement un objet
 import { json } from "@sveltejs/kit";
 
-export async function GET({ url, fetch }) {
+export async function GET({ url, fetch, cookies }) {
 	// On récupère les paramètres d'url
 	const q = url.searchParams.get("q");
 	const by = url.searchParams.get("by");
 
 	console.log(q, by);
+
+	// TODO : Récupérer les cookies pour envoyer le token
+	console.log(cookies.get("user_name"));
+
 	// TODO : Mise en place du try catch
 
 	try {

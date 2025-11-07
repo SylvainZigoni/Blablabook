@@ -16,7 +16,7 @@ export async function load({ url, fetch }) {
 		return { results: [], error: error, query: q, by: by };
 	}
 
-	const results = await response.json();
+	const books = await response.json();
 
-	return { results, query: q, by: by };
+	return { books, query: q, by: by };
 }
