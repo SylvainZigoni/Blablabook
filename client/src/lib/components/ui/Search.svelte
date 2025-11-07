@@ -1,4 +1,5 @@
 <script>
+    import { goto } from "$app/navigation"
 
     let query = '';
     let searchBy = 'title';
@@ -12,31 +13,36 @@
             by: searchBy
         });
 
+        console.log(params);
 
-        error = '';
+        await goto(`/search?${params.toString()}`)
+        // error = '';
 
-        try {
-            // On définie la route Svelte ou le fetch va etre executer et on lui fourni les paramètre query et by
-            const response = await fetch(`/api/search?${params.toString()}`);
+        // try {
+        //     // On définie la route Svelte ou le fetch va etre executer et on lui fourni les paramètre query et by
+        //     const response = await fetch(`/api/search?${params.toString()}`);
 
-            // Si on arrive pas a connecter avec le fichier api/search/+server.js alors: 
-            if (!response.ok) throw new Error (await response.text() || response.statusText);
+        //     // Si on arrive pas a connecter avec le fichier api/search/+server.js alors: 
+        //     if (!response.ok) throw new Error (await response.text() || response.statusText);
             
-            // On enregistre nos résultats
-            results = await response.json();
-            console.log(results)
+        //     // On enregistre nos résultats
+        //     results = await response.json();
+        //     console.log(results)
 
-            // On modifie l'url de notre navigateur à partir de la ou on est.
-            // url.search permet d'ajouter "?q=<texte cherché>&by=<author ou title>"
-            const url = new URL(window.location.href);
-            url.search = params.toString();
+        //     // On modifie l'url de notre navigateur à partir de la ou on est.
+        //     // url.search permet d'ajouter "?q=<texte cherché>&by=<author ou title>"
+        //     const url = new URL(window.location.href);
+        //     url.search = params.toString();
         
         
-        } catch (error) {
-            console.error("Erreur :", error); 
-            results = [];
+        // } catch (error) {
+        //     console.error("Erreur :", error); 
+        //     results = [];
 
-        }
+        // }
+
+        
+
     }
 </script>
 
