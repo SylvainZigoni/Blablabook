@@ -2,17 +2,17 @@ import Author from "./author.model.js";
 import Book from "./book.model.js";
 import Category from "./category.model.js";
 import User from "./user.model.js";
-import Statut from "./statut.model.js";
+import Status from "./status.model.js";
 import { sequelize } from "./sequelize.client.js";
 
 // Association entre User et Book
 User.belongsToMany(Book, {
-	through: Statut,
+	through: Status,
 	foreignKey: "user_id",
 });
 
 Book.belongsToMany(User, {
-	through: Statut,
+	through: Status,
 	foreignKey: "book_id",
 });
 
@@ -50,4 +50,4 @@ Category.belongsToMany(Book, {
 	foreignKey: "category_id",
 });
 
-export { User, Book, Author, Category, Statut, sequelize };
+export { User, Book, Author, Category, Status, sequelize };

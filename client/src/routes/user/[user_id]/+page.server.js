@@ -1,4 +1,4 @@
-export async function load( { fetch, params, cookies}) {
+export async function load( { fetch, params, cookies, url}) {
     const user_id = params.user_id;
     const token = cookies.get('token');
 
@@ -13,6 +13,9 @@ export async function load( { fetch, params, cookies}) {
     });
 
     const userBooks = await response.json();
-    console.log(userBooks);
-    return { userBooks };
+
+    // lire le paramètre "statut" dans l'URL, sinon par défaut "en cours"
+    const status = url.searchParams.get("status") || "en cours";
+   
+    return { userBooks, status };
 }

@@ -146,7 +146,7 @@ INSERT INTO book_category (book_id, category_id) VALUES
 -- ========================================
 -- Insertion des statuts de lecture des utilisateurs
 -- ========================================
-INSERT INTO user_book (user_id, book_id, statut) VALUES
+INSERT INTO user_book (user_id, book_id, status) VALUES
     -- John Doe
     (2, 1, 'lu'),
     (2, 2, 'en cours'),

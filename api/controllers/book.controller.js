@@ -25,6 +25,7 @@ const bookController = {
 
                 ]
             });
+
             res.status(StatusCodes.OK).json(books);
         }
         catch (error) {
@@ -56,11 +57,13 @@ const bookController = {
                         where: { id: userId },
                         attributes: ['id', 'username'],
                         through: {
-                            attributes: ['statut']
+                            attributes: ['status'],
+                            as: 'Status'
                         }
                     }
                 ]
             });
+
             res.status(StatusCodes.OK).json(userBooks); 
         }
         catch (error) {

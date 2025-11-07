@@ -4,7 +4,7 @@
 
 <div class="status_container">
     <select name="status" id="status">
-        <option value="" disabled selected>Modifier le status de lecture</option>
+        <option value="" disabled selected>Modifier le statut de lecture</option>
         <option value="">Lecture en cours</option>
         <option value="">Livres à lire</option>
         <option value="">Livres lus</option>

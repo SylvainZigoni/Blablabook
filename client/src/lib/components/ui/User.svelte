@@ -1,19 +1,30 @@
 <script>
     import BookShow from "./BookShow.svelte";
-    export let userBooks=[]; 
+    export let userBooks = [];
+    export let status;
+
+    // plus besoin de tester plusieurs cas
+    // grâce à la normalisation côté API, c’est simple :
+    const getStatus = (book) => book.Users[0]?.Status?.status ?? "";
+
+    $: filteredBooks = userBooks.filter(book => getStatus(book) === status);
+
+    //$: console.log("statut", statut);
 </script>
 
 <div class="user_container">
     <div class="user_container_title">
         <h2 class="inscription-title">Ma Bibliothèque</h2>
-    </div>    
-        <ul class="status_filter">
-            <li><a href="">Lecture en cours (xxx)</a></li>
-            <li><a href="">Livres à lire (xxx)</a></li>
-            <li><a href="">Livres Lus (xxx)</a></li>
-        </ul>
-    <div class="books_container">
-        {#each userBooks as book }
+    </div>
+
+    <ul class="status_filter">
+        <li><a href="?status=en%20cours">Lecture en cours (xxx)</a></li>
+        <li><a href="?status=%C3%A0%20lire">Livres à lire (xxx)</a></li>
+        <li><a href="?status=lu">Livres Lus (xxx)</a></li>
+    </ul>
+
+    <div class="books_container">   
+        {#each filteredBooks as book }
             <BookShow {book}/>
         {/each}
     </div>
@@ -47,7 +58,7 @@
         margin: 1rem;
     }
 
-    li{
+     li{
         margin-right: 2rem;
     }
 
