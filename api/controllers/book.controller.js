@@ -1,10 +1,10 @@
 import { Book, Author, Category, User, Status } from "../models/index.js";
 import { StatusCodes } from 'http-status-codes';
 import { sequelize } from "../models/sequelize.client.js";
+import { Op } from "sequelize";
 
 
 const bookController = {
-
 
      async getRandomBooks(req, res) {
         try {
@@ -110,13 +110,13 @@ const bookController = {
     async getBooksByTitle(req, res) {
         try {
             const { titleSearched } = req.params;
-            const userId = req.user.id; // Récupéré depuis le middleware d'authentification
+            const userId = req.userId; // Récupéré depuis le middleware d'authentification
             
             // Rechercher les livres avec associations
             const books = await Book.findAll({
                 where: {
                     title: {
-                        [Op.ilike]: `%${titleSearched}%` // Recherche partielle
+                        [Op.iLike]: `%${titleSearched}%` // Recherche partielle
                     }
                 },
                 include: [
@@ -124,26 +124,23 @@ const bookController = {
                     // Le through: { attributes: [] } signifie "ne ramène pas les colonnes de la table intermédiaire".
                     {
                         model: Author,
-                        as: 'authors', 
+                        attributes: ['name', 'forname'],    
                         through: { attributes: [] } // Ne pas inclure la table de liaison
                     },
                     {
                         model: Category,
-                        as: 'categories',
+                        attributes: ['name'],
                         through: { attributes: [] }
                     },
                     {
                         model: User,
-                        as: 'users',
                         through: { 
-                            attributes: ['statutId'], // Récupérer le statut
-                            as: 'userBook' 
+                            attributes: ['status']
                         },
                         where: { id: userId },
                         required: false // LEFT JOIN pour avoir tous les livres même sans statut
-
                         // Vérifie si l'utilisateur connecté (userId) possède ce livre dans sa bibliothèque
-                        // Si oui, ramène le statutId (lu, à lire, en cours...)
+                        // Si oui, ramène le statut (lu, à lire, en cours...)
                         // required: false = même si l'utilisateur ne possède PAS le livre, 
                         // on ramène quand même le livre (avec users vide)
                     }
@@ -156,11 +153,11 @@ const bookController = {
                 
                 // Extraire le statut de l'utilisateur
                 let userStatus = 'absent';  // Par défaut = l'utilisateur ne possède pas le livre
-                if (bookData.users && bookData.users.length > 0) {
-                    // Si users n'est pas vide = l'utilisateur possède le livre
-                    const userBook = bookData.users[0].userBook;
-                    if (userBook && userBook.statutId) {
-                        userStatus = userBook.statutId; // ou le nom du statut si vous le joignez
+                if (bookData.Users && bookData.Users.length > 0) {
+                    // Si Users n'est pas vide = l'utilisateur possède le livre
+                    const userBookRelation = bookData.Users[0].book_user;
+                    if (userBookRelation && userBookRelation.status) {
+                        userStatus = userBookRelation.status; // ou le nom du statut si vous le joignez
                     }
                 }
                 
@@ -171,12 +168,11 @@ const bookController = {
                     isbn: bookData.isbn,
                     summary: bookData.summary,
                     image: bookData.image,
-                    authors: bookData.authors,
-                    categories: bookData.categories,
+                    authors: bookData.Authors,    
+                    categories: bookData.Categories, 
                     userStatus: userStatus  // ← Le statut simplifié !
                     // On ne retourne PAS users
                 };
-                
             });
 
             // Envoyer la réponse
@@ -188,35 +184,33 @@ const bookController = {
         }
     },
 
-    async getBookByAuthor (req, res) {
+    async getBooksByAuthor (req, res) {
         try {
             const { authorSearched } = req.params;
-            const userId = req.user.id;
+            const userId = req.userId;
             
             const books = await Book.findAll({
                 include: [
                     {
                         model: Author,
-                        as: 'authors',
                         where: {
                             [Op.or]: [
                                 { name: { [Op.ilike]: `%${authorSearched}%` } },
                                 { forname: { [Op.ilike]: `%${authorSearched}%` } }
                             ]
                         },
+                        attributes: ['name', 'forname'],    
                         through: { attributes: [] }
                     },
                     {
                         model: Category,
-                        as: 'categories',
+                        attributes: ['name'],   
                         through: { attributes: [] }
                     },
                     {
                         model: User,
-                        as: 'users',
                         through: { 
-                            attributes: ['statutId'],
-                            as: 'userBook' 
+                            attributes: ['status']
                         },
                         where: { id: userId },
                         required: false
@@ -232,11 +226,11 @@ const bookController = {
                 let userStatus = 'absent'; // Par défaut, l'utilisateur ne possède pas le livre
                 
                 // Vérifier si l'utilisateur possède ce livre
-                if (bookData.users && bookData.users.length > 0) {
+                if (bookData.Users && bookData.Users.length > 0) {
                     // L'utilisateur possède le livre, récupérer son statut
-                    const userBookRelation = bookData.users[0].userBook;
-                    if (userBookRelation && userBookRelation.statutId) {
-                        userStatus = userBookRelation.statutId;
+                    const userBookRelation = bookData.Users[0].book_user;
+                    if (userBookRelation && userBookRelation.status) {
+                        userStatus = userBookRelation.status;
                     }
                 }
                 
@@ -247,8 +241,8 @@ const bookController = {
                     isbn: bookData.isbn,
                     summary: bookData.summary,
                     image: bookData.image,
-                    authors: bookData.authors,
-                    categories: bookData.categories,
+                    authors: bookData.Authors,    
+                    categories: bookData.Categories, 
                     userStatus: userStatus  // Le statut simplifié (absent, 1, 2, 3...)
                 };
             });
@@ -262,7 +256,6 @@ const bookController = {
             });
         }
     },
-
 
 };
 
