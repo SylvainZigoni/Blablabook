@@ -1,4 +1,4 @@
-import { Book, Author, Category, User } from "../models/index.js";
+import { Book, Author, Category, User, Status } from "../models/index.js";
 import { StatusCodes } from 'http-status-codes';
 import { sequelize } from "../models/sequelize.client.js";
 
@@ -65,6 +65,44 @@ const bookController = {
         }
         catch (error) {
             console.error("Impossible de récupérer les livres de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
+        }
+    },
+
+    async deleteUserBook (req, res) {
+        try {
+            const { userId, bookId } = req.params;
+
+            await Status.destroy({
+                where: {
+                    user_id: userId,
+                    book_id: bookId
+                }
+            });
+
+            res.status(StatusCodes.OK).json({ message: "Livre supprimé de la bibliothèque de l'utilisateur." });
+        }
+        catch (error) {
+            console.error("Impossible de supprimer le livre de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
+        }
+
+    },
+
+    async addUserBook (req, res) {
+        try {
+            const { userId, bookId } = req.params;
+            
+            await Status.create({
+                user_id: userId,
+                book_id: bookId,
+                status: 'à lire' // Statut par défaut
+            });
+
+            res.status(StatusCodes.CREATED).json({ message: "Livre ajouté à la bibliothèque de l'utilisateur." });
+        }
+        catch (error) {
+            console.error("Impossible d'ajouter le livre à la bibliothèque de l'utilisateur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
         }
     },
@@ -223,7 +261,9 @@ const bookController = {
                 error: "Erreur interne du serveur" 
             });
         }
-    }
+    },
+
+
 };
 
 export default bookController;
