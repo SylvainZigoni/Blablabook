@@ -56,7 +56,7 @@ const bookController = {
                         where: { id: userId },
                         attributes: ['id', 'username'],
                         through: {
-                            attributes: ['statut']
+                            attributes: ['status']
                         }
                     }
                 ]
