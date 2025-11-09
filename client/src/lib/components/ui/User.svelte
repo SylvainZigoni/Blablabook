@@ -1,8 +1,11 @@
 <script>
     import BookShow from "./BookShow.svelte";
+    import { page } from '$app/stores';
+
     export let userBooks = [];
     export let status;
-
+    export let user_id;
+    export let token;
     // plus besoin de tester plusieurs cas
     // grâce à la normalisation côté API, c’est simple :
     const getStatus = (book) => book.Users[0]?.Status?.status ?? "";
@@ -10,6 +13,37 @@
     $: filteredBooks = userBooks.filter(book => getStatus(book) === status);
 
     //$: console.log("statut", statut);
+
+    // pour delete le livre via clique sur le bouton
+    async function deleteBook (book_id) {
+
+        console.log("deleteBook appelé avec", book_id);
+
+        console.log("userId :", user_id);
+        console.log("token :", token);
+        console.log(`url de fetch ${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book_id}`);
+
+        const res = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book_id}`,
+        {
+            method : 'DELETE',
+            headers :{
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            } 
+        });
+
+        console.log("requête DELETE envoyée :", res);
+
+        const result = await res.json();
+
+        console.log("réponse du serveur :", result);
+
+        if(res.ok){
+           userBooks = userBooks.filter(b => b.id !== book_id);
+           console.log("userBooks mis à jour :", userBooks);
+        }
+    }
+
 </script>
 
 <div class="user_container">
@@ -25,7 +59,7 @@
 
     <div class="books_container">   
         {#each filteredBooks as book }
-            <BookShow {book}/>
+            <BookShow {book} onDelete={deleteBook}/>
         {/each}
     </div>
 </div>

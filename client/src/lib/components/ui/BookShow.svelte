@@ -2,7 +2,10 @@
     // le composant attends qu'on lui passe une variable books depuis l'exterieur
     // sur la page ou il est utilise on a  {#each books as book}
     export let book;
+    export let onDelete;
+
     import StatusButton from "./StatusButton.svelte";
+    import DeleteBookButton from "./DeleteBookButton.svelte";
     import { page } from "$app/stores";
     let currentPath;
     // Réactivité automatique avec $:
@@ -10,6 +13,7 @@
 </script>
 
 <article>
+    <p> {book.id}</p>
         <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
         <div class="book_infos">
             <h3>titre : {book.title}</h3>
@@ -39,6 +43,12 @@
         <p class="book_summary">Résumé : { book.summary} </p>
         {#if currentPath !== '/'}
             <StatusButton />
+        {/if}
+        {#if currentPath.startsWith('/user/')}
+            <DeleteBookButton onDelete={() => {
+                console.log("BookShow transmet l’ID :", book.id);
+                onDelete(book.id);
+            }} />
         {/if}
 </article>
 

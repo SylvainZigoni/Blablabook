@@ -84,7 +84,7 @@ const bookController = {
             });
 
             res.status(StatusCodes.OK).json({ message: "Livre supprimé de la bibliothèque de l'utilisateur." });
-        }
+        } 
         catch (error) {
             console.error("Impossible de supprimer le livre de l'utilisateur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
