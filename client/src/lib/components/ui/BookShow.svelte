@@ -15,7 +15,7 @@
 <article>
     <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
     <div class="book_infos">
-        <h3>titre : {book.title}</h3>
+        <h3>Titre : {book.title}</h3>
         {#if book.Authors && book.Authors.length > 0}
             <p><strong>Auteur{book.Authors.length > 1 ? 's' : ''}</strong>:
                 <!-- {#each tableau as element, index} -->
@@ -26,65 +26,128 @@
         {:else}
             <p><strong>Auteur</strong>: Inconnu</p>
         {/if}
-        <strong>date de publication : {book.date_parution}</strong>
+        <p class="book_date"><strong>Date de publication </strong>: {book.date_parution}</p> 
         {#if book.Categories && book.Categories.length > 0}
-            <p><strong>Genres</strong>: 
+            <p class="book_category"><strong>Genres</strong>: 
                 <!-- {#each tableau as element, index} -->
                 {#each book.Categories as category, i}
                     {category.name}{i < book.Categories.length - 1 ? ', ' : ''}
                 {/each}
             </p>
         {:else}
-            <p><strong>Genres</strong>: Aucun</p>
+            <p class="book_category"><strong>Genres</strong>: Aucun</p>
         {/if}       
     </div>
-    <p class="book_summary">Résumé : { book.summary} </p>
-    {#if currentPath !== '/'}
-        <StatusButton />
-    {/if}
-    {#if currentPath.startsWith('/user/')}
-        <DeleteBookButton onDelete={() => {
-            console.log("BookShow transmet l’ID :", book.id);
-            onDelete(book.id);
-        }} />
-    {/if}
+    <p class="book_summary"><strong>Résumé</strong> : { book.summary} Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, nulla alias ipsum, aperiam id, quibusdam maxime nihil similique repellat nam nemo sequi eum. Suscipit molestiae sit blanditiis aliquam ea? Consectetur! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda. </p>
+    <div class="button_container">
+        {#if currentPath !== '/'}
+            <StatusButton />
+        {/if}
+        {#if currentPath.startsWith('/user/')}
+            <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
+        {/if}
+    </div>
+    
 </article>
 
 <style>
-    article {
-        display: flex;
-        gap: 2rem;
-        align-items: stretch;
-        margin: 2rem;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+    article{
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
         background-color: var(--color-main);
-        height: 15vh;
-        overflow: hidden;
-    }
-
-    img {
-        height: 100%;
+        display: flex;
+        height: 150px;
         width: auto;
-        object-fit: cover;
-        border: 1px solid var(--color-border-main);
-        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem;
+        gap: 0.5rem;
     }
 
-    .book_infos {
-        padding: 1rem;
+    img{
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
         max-height: 100%;
+        object-fit: cover;
+
+    }
+
+    .book_infos{   
+        max-height: 100%;
+        min-width: 0;
+        overflow: hidden;
+        flex: 1;
+        padding: 0.5rem;
         display: flex;
         flex-direction: column;
+        align-items: start;
+        justify-content: space-around;
+        overflow: hidden;       /* coupe le texte qui dépasse */
+        text-overflow: ellipsis; /* ajoute "..." si c’est trop long */
     }
 
     .book_summary{
-        border: 1px solid aqua;
-        padding: 1rem;
-        border: 1px solid var(--color-border-main);
-        border-radius: 8px;
-        background-color: var(--color-secondary);
         max-height: 100%;
+        min-width: 0;
+        border: 1px solid var(--border-color);   
+        border-radius: var(--border-radius);
+        background-color: var(--color-secondary);
+        border: 1px solid black;
+        flex: 2;
+        padding: 0.5rem;
+        overflow: hidden;       /* coupe le texte qui dépasse */
+        text-overflow: ellipsis; /* ajoute "..." si c’est trop long */    
+    }
+
+    /* Boutons */
+    .button_container {
+        display: flex;
+        align-self: center;
+        gap: 0.5rem;
+    }
+
+    @media (max-width: 1240px) {
+    
+        .book_date {
+            display: none;
+        }
+
+        .book_category {
+            display: none;
+        }
+    }
+
+    @media (max-width: 875px) {
+        article{
+            flex-direction: column;
+            align-items: center;
+            height: auto;
+        }
+        
+        img{
+            width: 50%;
+            max-height: 200px;
+            object-fit: contain;
+            border: none;
+            border-radius: var(--border-radius);
+
+        }
+
+        .button_container{
+            width: 90%;
+        }
+    }
+
+    @media (max-width: 475px) {
+        article{
+            flex-direction: column;
+            height: 80%;
+        }
+        .button_container{
+            display: flex;
+            flex-direction: column;
+        }
     }
 </style>
+
+
+
