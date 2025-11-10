@@ -5,6 +5,12 @@ export async function GET({ url, fetch, cookies }) {
 	// On récupère les paramètres d'url
 	const q = url.searchParams.get("q");
 	const by = url.searchParams.get("by");
+	const user_id = cookies.get("user_id");
+	const token = cookies.get("token");
+
+	if (!token) {
+		return json({ results: [], error: "Utilisateur non A" });
+	}
 
 	console.log(q, by);
 
@@ -18,9 +24,19 @@ export async function GET({ url, fetch, cookies }) {
 		console.log(params);
 
 		// On réalise notre fetch
+
+		console.log(
+			"Route de fetch back : ",
+			`${import.meta.env.VITE_API_BASE_URL}/books/${by}/${q}`
+		);
 		// TODO : Ajouter le bearer + token avec la route définie coté back
 		const response = await fetch(
-			`${import.meta.env.VITE_API_BASE_URL}/books/random`
+			`${import.meta.env.VITE_API_BASE_URL}/books/${by}/${q}`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
 		);
 
 		const data = await response.json();

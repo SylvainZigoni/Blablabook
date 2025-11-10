@@ -1,8 +1,8 @@
 <script>
 	import BookShow from '$lib/components/ui/BookShow.svelte';
-
     export let data;
-    let { books = [], query = "", by = "title", error } = data;
+    // On met '$' pour rendre l'ensemble des variables destructurées dynamiques
+    $: ({ books = [], query = "", by = "title", error } = data);
 </script>
 
 <section>
