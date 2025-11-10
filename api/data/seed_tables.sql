@@ -8,8 +8,8 @@
 -- Note: Les mots de passe doivent être hashés dans une vraie application
 -- Ici, ce sont des exemples pour le développement
 INSERT INTO "user" (username, email, password, is_admin) VALUES
-    ('admin', 'admin@bookstore.com', '$2b$10$examplehash1', TRUE),
-    ('john_doe', 'john.doe@email.com', '$2b$10$examplehash2', FALSE),
+    ('admin', 'admin@bookstore.com', '$argon2id$v=19$m=65536,t=3,p=4$ZTk68lJB+NpoahoZsjXkYQ$I+9rSlKy++ew85XhHSIqMf6oCKNcJxepcRS+sH3DR/I', TRUE),
+    ('john_doe', 'john.doe@email.com', '$argon2id$v=19$m=65536,t=3,p=4$ZTk68lJB+NpoahoZsjXkYQ$I+9rSlKy++ew85XhHSIqMf6oCKNcJxepcRS+sH3DR/I', FALSE),
     ('jane_smith', 'jane.smith@email.com', '$2b$10$examplehash3', FALSE),
     ('book_lover', 'booklover@email.com', '$2b$10$examplehash4', FALSE),
     ('marie_durand', 'marie.durand@email.com', '$2b$10$examplehash5', FALSE);

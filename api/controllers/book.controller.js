@@ -140,15 +140,19 @@ const bookController = {
 				include: [
 					// Ce que ça fait : Récupère les auteurs de chaque livre via la table de liaison (many-to-many).
 					// Le through: { attributes: [] } signifie "ne ramène pas les colonnes de la table intermédiaire".
+
+					// AJOUT SYLVAIN : "as Authors"
 					{
 						model: Author,
 						attributes: ["name", "forname"],
-						through: { attributes: [] }, // Ne pas inclure la table de liaison
+						through: { attributes: [], as: "Authors" }, // Ne pas inclure la table de liaison
 					},
+
+					// AJOUT SYLVAIN : "as Categories"
 					{
 						model: Category,
 						attributes: ["name"],
-						through: { attributes: [] },
+						through: { attributes: [], as: "Categories" },
 					},
 					{
 						model: User,
@@ -164,6 +168,9 @@ const bookController = {
 					},
 				],
 			});
+
+			// AJOUT SYLVAIN
+			console.log("TEST SYLVAIN           ", books);
 
 			// Formatter la réponse
 			const formattedBooks = books.map((book) => {
@@ -184,10 +191,15 @@ const bookController = {
 					id: bookData.id,
 					title: bookData.title,
 					isbn: bookData.isbn,
+					// AJOUT SYLVAIN
+					image_url: bookData.image_url,
 					summary: bookData.summary,
 					image: bookData.image,
-					authors: bookData.Authors,
-					categories: bookData.Categories,
+					// AJOUT SYLVAIN : date_parution
+					date_parution: bookData.date_parution,
+					// AJOUT SYLVAIN : Retrait du "s" a authors
+					Authors: bookData.Authors,
+					Categories: bookData.Categories,
 					userStatus: userStatus, // ← Le statut simplifié !
 					// On ne retourne PAS users
 				};
@@ -262,11 +274,17 @@ const bookController = {
 					id: bookData.id,
 					title: bookData.title,
 					isbn: bookData.isbn,
+					// AJOUT SYLVAIN
+					image_url: bookData.image_url,
 					summary: bookData.summary,
 					image: bookData.image,
-					authors: bookData.Authors,
-					categories: bookData.Categories,
-					userStatus: userStatus, // Le statut simplifié (absent, 1, 2, 3...)
+					// AJOUT SYLVAIN : date_parution
+					date_parution: bookData.date_parution,
+					// AJOUT SYLVAIN : Retrait du "s" a authors
+					Authors: bookData.Authors,
+					Categories: bookData.Categories,
+					userStatus: userStatus, // ← Le statut simplifié !
+					// On ne retourne PAS users
 				};
 			});
 

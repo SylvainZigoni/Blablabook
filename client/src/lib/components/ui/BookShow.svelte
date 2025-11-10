@@ -10,6 +10,9 @@
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
+
+    // AJOUT SYLVAIN
+    console.log(book)
 </script>
 
 <article>
