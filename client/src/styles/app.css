@@ -100,8 +100,23 @@ button,
 	margin: 0.5rem 0;
 }
 
+.confirmation-message{
+    background-color: var(--color-header-footer);
+    padding: 0.5rem;
+    color : var(--color-main);
+    margin: 0 1rem 0 1rem;
+    border-radius: var(--border-radius);
+}
+
 em {
 	font-style: italic;
 	font-size: 0.7rem;
 	font-weight: 300;
 }
+
+a{
+	text-decoration: none;
+	text-transform: none;
+	color: var(--color-text-main);
+}
+

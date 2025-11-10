@@ -1,7 +1,6 @@
 <script>
     import Login from "$lib/components/ui/Login.svelte";
     import { goto } from "$app/navigation";
-    // export let data; // Permet de récupérer les données fetchées coté serveur
     export let form;
 
      $: if (form?.success){
