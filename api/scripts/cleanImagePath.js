@@ -22,13 +22,13 @@ async function cleanImagePaths() {
         // on ne garde que le nom du fichier
         const newPath = currentPath.replace('api/public/images/', '');
         await book.update({ image_url: newPath });
-        console.log(`🔄 ${book.title} → ${newPath}`);
+        console.log(`${book.title} → ${newPath}`);
       }
     }
 
-    console.log('✅ Tous les chemins ont été nettoyés');
+    console.log('Tous les chemins ont été nettoyés');
   } catch (error) {
-    console.error('❌ Erreur :', error);
+    console.error('Erreur :', error);
   } finally {
     await sequelize.close();
   }

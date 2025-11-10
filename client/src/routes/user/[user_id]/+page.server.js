@@ -1,5 +1,5 @@
-export async function load( { fetch, params, cookies, url}) {
-    const user_id = params.user_id;
+export async function load( { fetch, cookies, url}) {
+    const user_id = cookies.get('user_id');
     const token = cookies.get('token');
 
     if(!token){
@@ -16,6 +16,6 @@ export async function load( { fetch, params, cookies, url}) {
 
     // lire le paramètre "statut" dans l'URL, sinon par défaut "en cours"
     const status = url.searchParams.get("status") || "en cours";
-   
-    return { userBooks, status };
+    
+    return { userBooks, status, user_id, token };
 }
