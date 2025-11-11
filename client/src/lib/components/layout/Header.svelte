@@ -13,10 +13,17 @@
 <header>
     <div class="header">
         <div class="header_home">
-            <div  class="header_title">
-                <h1>BlaBlaBook</h1>
-                <Icon icon="ion:book" height = 50 width= 50 />
+            <div class="header_title_user">
+                <div  class="header_title">
+                    <h1>BlaBlaBook</h1>
+                    <Icon icon="ion:book" height = 50 width= 50 />
+                </div>
+                {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
+                    <Icon class="user_icon" icon="oui:user" height = 40 width= 40 />
+                {/if}
             </div>
+
+
             {#if currentPath === '/' || currentPath === '/mentions'}
                 <div class="login_register-button">
                     <button on:click={()=> goto('register')}>S'inscrire</button>
@@ -26,8 +33,8 @@
         </div>
         
         {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
-        <div class="header_user">
-            <Icon icon="oui:user" height = 50 width= 50 />
+
+        <div class="header_search">
             <Search/>
         </div>
         {/if}
@@ -40,19 +47,27 @@
         color: #fff;
         background-color: var(--color-header-footer);
         padding: 1rem;
-        border-bottom-left-radius: var(--border-radius);
-        border-bottom-right-radius: var(--border-radius);
+        /* border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius); */
     }
 
     .header_home{
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        gap : 10px
+
     }
     .header_title{
         display: flex;
         align-items: center;
         margin-bottom: 1rem;
         filter: drop-shadow(1px 1px 2px var(--color-main))
+    }
+
+    .header_title_user{
+        display: flex;
+        justify-content: space-between;
     }
 
     h1{
@@ -70,19 +85,26 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        max-width: 300px;
+        /* max-width: 300px; */
     }
 
     .login_register-button {
-        display: flex;
+        /* display: flex;
         justify-content: space-between;
-        max-width: 100%;
+        max-width: 100%; */
 
     }
 
-    .header_user{
-        display: flex;
-        border: 1px solid black;
+    .header_search{
+        /* display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; */
+
+    }
+
+    .user_icon{
+        border-radius: 100%;
+        border: solid white 1px
     }
 
     /* Media query pour les écrans < 400px */
@@ -90,6 +112,10 @@
 
         .header{
             margin: 0 auto;
+        }
+
+        h1{
+            font-size: 2.5rem;
         }
 
         .header_title {
@@ -100,6 +126,11 @@
             justify-content: center;
             gap: 1rem; /* Ajoute un espace entre les boutons */
         }
+
+        /* .header_home {
+            display: flex;
+
+        } */
     }
 
 </style>
