@@ -13,10 +13,10 @@
     {:else if books.length === 0}
         <p>Aucun résultat</p>
     {:else}
-        <u>
+
             {#each books as book}
                 <BookShow {book} />
             {/each}
-        </u>
+
     {/if}
 </section>

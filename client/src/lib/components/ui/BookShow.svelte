@@ -149,6 +149,15 @@
             display: flex;
             flex-direction: column;
         }
+
+        .book_summary {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
     }
 </style>
 
