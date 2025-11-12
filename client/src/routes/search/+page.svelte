@@ -11,8 +11,6 @@
 
     async function addBook (book_id) {
 
-        console.log("test");
-
         const response = await fetch (`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book_id}`,
             {
                 method : 'POST',
@@ -30,6 +28,27 @@
         }
     }
 
+
+    async function deleteBook (book_id) {
+
+        const response = await fetch (`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book_id}`,
+            {
+                method : 'DELETE',
+                headers: {
+                    'Content-Type' : 'application/json',
+                    Authorization : `Bearer ${token}`
+                }
+            }
+        );
+
+        const result = await response.json();
+        if (response.ok) {
+            data.books = books.map(book => book.id === book_id ? { ...book, userStatus: 'absent'} : book);
+        }
+    }
+
+
+
 </script>
 
 <section>
@@ -42,7 +61,7 @@
     {:else}
 
             {#each books as book}
-                <BookShow {book} onAdd={addBook} />
+                <BookShow {book} onAdd={addBook} onDelete={deleteBook} />
             {/each}
 
     {/if}

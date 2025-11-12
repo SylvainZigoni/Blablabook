@@ -54,7 +54,7 @@
         {#if book.userStatus === 'absent'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
-        {#if currentPath.startsWith('/user/')}
+        {#if currentPath.startsWith('/user/') || book.userStatus !== 'absent'}
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>
