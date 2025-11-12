@@ -1,4 +1,4 @@
-export async function load({ url, fetch }) {
+export async function load({ url, fetch, cookies }) {
 	const q = url.searchParams.get("q");
 	const by = url.searchParams.get("by");
 
@@ -17,6 +17,8 @@ export async function load({ url, fetch }) {
 	}
 
 	const books = await response.json();
+	const user_id = cookies.get("user_id");
+	const token = cookies.get("token");
 
-	return { books, query: q, by: by };
+	return { books, query: q, by: by, user_id, token };
 }

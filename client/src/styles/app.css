@@ -6,7 +6,7 @@
 	--color-text-secondary: #fff;
 	--color-error: #eed2d7;
 	--border-radius: 10px;
-	--border-color : #84a98c;
+	--border-color: #84a98c;
 	--shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.2);
 	font-family: "Roboto", sans-serif;
 	font-optical-sizing: auto;
@@ -19,8 +19,12 @@
 
 h2 {
 	font-size: 2rem;
-	color: var(--color-text-main);
-	font-weight: 600;
+	color: var(--color-main);
+	font-weight: 400;
+	background-color: #354f52;
+	padding: 0.8rem;
+	width: 100%;
+	border-radius: var(--border-radius);
 }
 
 h3 {
@@ -101,12 +105,12 @@ button,
 	margin: 0.5rem 0;
 }
 
-.confirmation-message{
-    background-color: var(--color-header-footer);
-    padding: 0.5rem;
-    color : var(--color-main);
-    margin: 0 1rem 0 1rem;
-    border-radius: var(--border-radius);
+.confirmation-message {
+	background-color: var(--color-header-footer);
+	padding: 0.5rem;
+	color: var(--color-main);
+	margin: 0 1rem 0 1rem;
+	border-radius: var(--border-radius);
 }
 
 em {
@@ -115,9 +119,8 @@ em {
 	font-weight: 300;
 }
 
-a{
+a {
 	text-decoration: none;
 	text-transform: none;
 	color: var(--color-text-main);
 }
-

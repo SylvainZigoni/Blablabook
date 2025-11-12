@@ -202,17 +202,15 @@ const bookController = {
 			const formattedBooks = books.map((book) => {
 				const bookData = book.toJSON();
 
-				// Extraire le statut de l'utilisateur
-				let userStatus = "absent"; // Par défaut = l'utilisateur ne possède pas le livre
-				if (bookData.Users && bookData.Users.length > 0) {
-					// Si Users n'est pas vide = l'utilisateur possède le livre
-					const userBookRelation = bookData.Users[0].book_user;
-					if (userBookRelation && userBookRelation.status) {
-						userStatus = userBookRelation.status; // ou le nom du statut si vous le joignez
-					}
+			// Extraire le statut de l'utilisateur
+			let userStatus = "absent"; // Par défaut = l'utilisateur ne possède pas le livre
+			if (bookData.Users && bookData.Users.length > 0) {
+				// Si Users n'est pas vide = l'utilisateur possède le livre
+				const userBookRelation = bookData.Users[0].Status;
+				if (userBookRelation && userBookRelation.status) {
+					userStatus = userBookRelation.status; // ou le nom du statut si vous le joignez
 				}
-
-				// Restructurer l'objet
+			}				// Restructurer l'objet
 				return {
 					id: bookData.id,
 					title: bookData.title,
@@ -289,7 +287,7 @@ const bookController = {
 				// Vérifier si l'utilisateur possède ce livre
 				if (bookData.Users && bookData.Users.length > 0) {
 					// L'utilisateur possède le livre, récupérer son statut
-					const userBookRelation = bookData.Users[0].book_user;
+					const userBookRelation = bookData.Users[0].Status;
 					if (userBookRelation && userBookRelation.status) {
 						userStatus = userBookRelation.status;
 					}

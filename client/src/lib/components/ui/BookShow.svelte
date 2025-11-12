@@ -17,6 +17,11 @@
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
 
+    // AJOUT SYLVAIN
+    console.log(book)
+    console.log(book.userStatus)
+
+
 </script>
 
 <article>
@@ -52,7 +57,10 @@
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
             />
         {/if}
-        {#if currentPath.startsWith('/user/')}
+        {#if book.userStatus === 'absent'}
+            <AddBookButton onAdd={() => {onAdd(book.id);}}/>
+        {/if}
+        {#if currentPath.startsWith('/user/') || book.userStatus !== 'absent'}
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>    
@@ -156,6 +164,15 @@
         .button_container{
             display: flex;
             flex-direction: column;
+        }
+
+        .book_summary {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
         }
     }
 </style>
