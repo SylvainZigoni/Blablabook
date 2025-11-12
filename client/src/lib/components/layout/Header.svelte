@@ -19,7 +19,7 @@
                     <Icon icon="ion:book" height = 50 width= 50 />
                 </div>
                 {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
-                    <Icon class="user_icon" icon="oui:user" height = 40 width= 40 />
+                    <button class='user-menu'><Icon icon="oui:user" height = 20 width= 20 /></button>
                 {/if}
             </div>
 
@@ -102,9 +102,18 @@
 
     }
 
-    .user_icon{
+    .user-menu{
+        padding: 0;
+        height: 40px;
+        width: 40px;
         border-radius: 100%;
-        border: solid white 1px
+        box-shadow: var(--shadow);
+    }
+
+    .user-menu:hover{
+    background-color: var(--color-main);
+    color : var(--color-text-main);
+        transform: scale(1.03);
     }
 
     /* Media query pour les écrans < 400px */
