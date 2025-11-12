@@ -3,16 +3,21 @@
     // sur la page ou il est utilise on a  {#each books as book}
     export let book;
     export let onDelete;
+    export let onAdd;
 
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
     import { page } from "$app/stores";
+	import AddBookButton from "./AddBookButton.svelte";
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
 
     // AJOUT SYLVAIN
     console.log(book)
+    console.log(book.userStatus)
+
+
 </script>
 
 <article>
@@ -45,6 +50,9 @@
     <div class="button_container">
         {#if currentPath !== '/'}
             <StatusButton />
+        {/if}
+        {#if book.userStatus === 'absent'}
+            <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
         {#if currentPath.startsWith('/user/')}
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
