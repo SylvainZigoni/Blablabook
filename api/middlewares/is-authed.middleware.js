@@ -4,9 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 export function isAuthed(req, res, next) {
  
   const authorizationHeader = req.headers.authorization;
+  console.log("Authorization Header:", authorizationHeader);  // Debug log
 
     if (!authorizationHeader) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Vous devez être connecté pour accéder à cette ressource' });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Vous devez être connecté pour accéder à cette ressource' });
     }  // version okanban
 
     // if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
