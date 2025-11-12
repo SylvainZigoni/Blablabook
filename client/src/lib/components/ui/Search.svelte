@@ -26,7 +26,7 @@
     <form class="search_form" on:submit|preventDefault={handleSearch}>
         <div class="search_form-text">
             <input class ="search_form-text--text_aera" type="text" placeholder="Recherche..." name="content" bind:value={query}/>
-            <button class="search_form-button" type="submit" ><Icon icon="lucide:search" width="20" height="20" /></button>
+            <button aria-label="Rechercher" class="search_form-button" type="submit" ><Icon icon="lucide:search" width="20" height="20" /></button>
         </div>
         <div class="search_form-radio">
             <div class="search_form-radio--choice">
@@ -92,6 +92,11 @@ input[type="text"] {
     padding: 2px;
     height: 40px;
     width: 40px;
+}
+
+.search_form-button:hover {
+    background-color: var(--color-main);
+    color : var(--color-text-main);
 }
 
 .search_form-radio{
