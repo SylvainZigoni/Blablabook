@@ -90,7 +90,6 @@
 
     .user_container_title{
         background-color:#354F52;
-        padding: 1rem;
         width: 100%;
         border-radius: var(--border-radius);
     }
