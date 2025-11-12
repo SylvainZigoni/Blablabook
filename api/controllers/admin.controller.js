@@ -40,14 +40,10 @@ const adminController = {
     },
 
     async deleteCategory(req, res) {
-        const { name } = req.body;
-
-        if (!name || name.trim() === "") {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Le nom de la catégorie est requis." });
-        }
-
+        const { id } = req.params;
+        
         try {
-            const category = await Category.findOne({ where: { name: { [Op.iLike]: name.trim() } } });
+            const category = await Category.findOne({ where: { id } });
             if (!category) {
                 return res.status(StatusCodes.NOT_FOUND).json({ message: "Catégorie non trouvée." });
             }
@@ -62,32 +58,40 @@ const adminController = {
     },
 
     async updateCategory(req, res) {
-        const { oldName, newName } = req.body;
+    const { id } = req.params;
+    const { oldName, newName } = req.body;
 
-        if (!oldName || oldName.trim() === "" || !newName || newName.trim() === "") {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Les noms de catégorie sont requis." });
+    if (!oldName || oldName.trim() === "" || !newName || newName.trim() === "") {
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: "Les noms de catégorie sont requis." });
+    }
+
+    try {
+        const category = await Category.findOne({ where: { id } });
+        if (!category) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "Catégorie non trouvée." });
         }
 
-        try {
-            const category = await Category.findOne({ where: { name: { [Op.iLike]: oldName.trim() } } });
-            if (!category) {
-                return res.status(StatusCodes.NOT_FOUND).json({ message: "Catégorie non trouvée." });
-            }
+        // Vérifier si une autre catégorie avec le nouveau nom existe déjà
+        const existingCategory = await Category.findOne({ 
+            where: { 
+                name: newName.trim() 
+            } 
+        });
 
-            const existingCategory = await Category.findOne({ where: { name: { [Op.iLike]: newName.trim() } } });
-            if (existingCategory) {
-                return res.status(StatusCodes.CONFLICT).json({ message: "Une catégorie avec ce nom existe déjà." });
-            }
-
-            category.name = newName.trim();
-            await category.save();
-
-            res.status(StatusCodes.OK).json({ category });
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour de la catégorie :", error);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Erreur serveur" });
+        // Vérifier que ce n'est pas la même catégorie
+        if (existingCategory && existingCategory.id !== parseInt(id)) {
+            return res.status(StatusCodes.CONFLICT).json({ message: "Une catégorie avec ce nom existe déjà." });
         }
-    },
+
+        category.name = newName.trim();
+        await category.save();
+
+        res.status(StatusCodes.OK).json({ category });
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour de la catégorie :", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Erreur serveur" });
+    }
+},
 
     async getAllAuthors(req, res) {
         try {
