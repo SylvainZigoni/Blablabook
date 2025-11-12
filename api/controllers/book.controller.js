@@ -125,6 +125,32 @@ const bookController = {
 		}
 	},
 
+    async updateUserBook (req, res) {
+        try {
+            // Lorsque l'utilisateur va séléctionner le statut d'un livre je veux récupérer l'id du l'utilisateur, l'id du livre et le statut qu'il a choisit
+            const { userId, bookId } = req.params;
+            const { status } = req.body; // Nouveau statut envoyé dans le corps de la requête
+
+            
+            await Status.update(
+                { status: status }, 
+                {
+                    where: {
+                        user_id: userId,
+                        book_id: bookId
+                    }
+                }
+            );
+
+            res.status(StatusCodes.OK).json({ message: "Statut du livre de l'utilisateur mis à jour." });
+        }
+
+    catch (error) {
+            console.error("Impossible de mettre à jour le statut du livre de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
+        }
+    },
+
 	async getBooksByTitle(req, res) {
 		try {
 			const { titleSearched } = req.params;
