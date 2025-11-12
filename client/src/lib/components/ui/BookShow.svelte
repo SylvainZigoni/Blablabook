@@ -1,18 +1,22 @@
 <script>
-    // le composant attends qu'on lui passe une variable books depuis l'exterieur
-    // sur la page ou il est utilise on a  {#each books as book}
-    export let book;
-    export let onDelete;
-
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
     import { page } from "$app/stores";
+    import { createEventDispatcher } from "svelte";
+
+    export let onDelete;
+    
+    // export passés a StatusButton
+    export let book;
+    export let user_id;
+    export let token;
+
+    const dispatch = createEventDispatcher();
+
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
 
-    // AJOUT SYLVAIN
-    console.log(book)
 </script>
 
 <article>
@@ -32,7 +36,6 @@
         <p class="book_date"><strong>Date de publication </strong>: {book.date_parution}</p> 
         {#if book.Categories && book.Categories.length > 0}
             <p class="book_category"><strong>Genres</strong>: 
-                <!-- {#each tableau as element, index} -->
                 {#each book.Categories as category, i}
                     {category.name}{i < book.Categories.length - 1 ? ', ' : ''}
                 {/each}
@@ -44,13 +47,15 @@
     <p class="book_summary"><strong>Résumé</strong> : { book.summary} Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, nulla alias ipsum, aperiam id, quibusdam maxime nihil similique repellat nam nemo sequi eum. Suscipit molestiae sit blanditiis aliquam ea? Consectetur! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda. </p>
     <div class="button_container">
         {#if currentPath !== '/'}
-            <StatusButton />
+            <StatusButton 
+                book ={book} user_id={user_id} token={token}
+                on:statusChange={(event)=> dispatch("statusChange", event.detail)}
+            />
         {/if}
         {#if currentPath.startsWith('/user/')}
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
-    </div>
-    
+    </div>    
 </article>
 
 <style>
@@ -136,7 +141,10 @@
         }
 
         .button_container{
-            width: 90%;
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
         }
     }
 
