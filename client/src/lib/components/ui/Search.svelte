@@ -84,14 +84,14 @@ input[type="text"] {
 }
 
 .search_form-text--text_aera{
- width: 100%;
- box-shadow: var(--shadow);
+    width: 100%;
+    box-shadow: var(--shadow);
 }
 
 .search_form-button{
     padding: 2px;
-height: 40px;
-width: 40px;
+    height: 40px;
+    width: 40px;
 }
 
 .search_form-radio{
