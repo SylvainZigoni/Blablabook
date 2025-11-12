@@ -5,20 +5,22 @@
     export let userBooks = [];
     export let status;
     export let user_id;
-    export let token;
+    export let token;  
     
+    // Crée une copie locale réactive
+    let localBooks = [...userBooks];
     let message ="";
 
     // renvoie le statut du livre pour l’utilisateur, ou une chaîne vide si rien n’est défini.
     const getStatus = (book) => book.Users[0]?.Status?.status ?? "";
     
     // la liste des livres filtrés selon le statut actif (celui passé en prop status)
-    $: filteredBooks = userBooks.filter(book => getStatus(book) === status);
+    $: filteredBooks = localBooks.filter(book => getStatus(book) === status);
 
     // Comptages par statut
-    $: enCoursCount = userBooks.filter(b => getStatus(b) === "en cours").length;
-    $: aLireCount   = userBooks.filter(b => getStatus(b) === "à lire").length;
-    $: luCount      = userBooks.filter(b => getStatus(b) === "lu").length;
+    $: enCoursCount = localBooks.filter(b => getStatus(b) === "en cours").length;
+    $: aLireCount   = localBooks.filter(b => getStatus(b) === "à lire").length;
+    $: luCount      = localBooks.filter(b => getStatus(b) === "lu").length;
 
     // pour delete le livre via clique sur le bouton
     async function deleteBook (book_id) {
@@ -34,10 +36,10 @@
         const result = await res.json();
 
         if(res.ok){
-            userBooks = userBooks.filter(b => b.id !== book_id);
+            localBooks = localBooks.filter(b => b.id !== book_id);
 
-            // userBooks.some(b => getStatus(b) === status) → renvoie true si au moins un livre a encore ce statut.
-            if (!userBooks.some(b => getStatus(b) === status)) {
+            // localBooks.some(b => getStatus(b) === status) → renvoie true si au moins un livre a encore ce statut.
+            if (!localBooks.some(b => getStatus(b) === status)) {
                 message = `Aucun livre dans ${status}`;
                  setTimeout(() => {
                  message = "";
@@ -52,26 +54,49 @@
         }
     }
 
+    // Changer le statut d’un livre
+    function handleStatusChange(event) {
+        const { book_id, newStatus } = event.detail;
+
+        // Crée de nouvelles références pour la réactivité
+        localBooks = localBooks.map((b) =>
+        b.id === book_id
+            ? {
+                ...b,
+                Users: b.Users.map((u) => ({
+                ...u,
+                Status: { ...u.Status, status: newStatus }
+                }))
+            }
+            : { ...b }
+        );
+    }
 </script>
 
 <div class="user_container">
     <div class="user_container_title">
-        <h2 class="inscription-title">Ma Bibliothèque ({userBooks.length})</h2>
+        <h2 class="inscription-title">Ma Bibliothèque ({localBooks.length})</h2>
     </div>
 
     <ul class="status_filter">
         <!-- En svelte class:nomDeClasse={condition} -->
-        <li><a href="?status=en%20cours" class:active={status === 'en cours'}>Lecture en cours ({enCoursCount})</a></li>
-        <li><a href="?status=%C3%A0%20lire" class:active={status === 'à lire'}>Livres à lire ({aLireCount})</a></li>
-        <li><a href="?status=lu" class:active={status === 'lu'}>Livres Lus ({luCount})</a></li>
+        <li><a href="?status=en%20cours" class:active={status === 'en cours'}> En cours ({enCoursCount})</a></li>
+        <li><a href="?status=%C3%A0%20lire" class:active={status === 'à lire'}>A lire ({aLireCount})</a></li>
+        <li><a href="?status=lu" class:active={status === 'lu'}>Lus ({luCount})</a></li>
     </ul>
 
     {#if message}
         <p class="confirmation-message"> {message}</p>
     {/if}
     <div class="books_container">   
-        {#each filteredBooks as book }
-            <BookShow {book} onDelete={deleteBook}/>
+        {#each filteredBooks as book (book.id) }
+            <BookShow 
+                book={book}
+                user_id={user_id}
+                token={token} 
+                onDelete={deleteBook}
+                on:statusChange={ handleStatusChange }
+            />
         {/each}
     </div>
 </div>
@@ -109,7 +134,7 @@
 
     .active{
         text-decoration: underline;
-        font-size: x-large;
+        font-size: large;
     }
 
     .books_container{
@@ -123,5 +148,4 @@
         padding: 1rem;
 
     }
-
 </style>
