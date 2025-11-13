@@ -1,10 +1,12 @@
 <script>
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
+    import AddBookButton from "./AddBookButton.svelte";
     import { page } from "$app/stores";
     import { createEventDispatcher } from "svelte";
 
     export let onDelete;
+    export let onAdd;
     
     // export passés a StatusButton
     export let book;
