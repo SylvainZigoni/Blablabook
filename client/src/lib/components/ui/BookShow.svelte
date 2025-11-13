@@ -1,4 +1,5 @@
 <script>
+    import AddBookButton from "./AddBookButton.svelte";
 
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
@@ -67,6 +68,7 @@
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
             />
         {/if}
+
         {#if book.userStatus === 'absent'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}

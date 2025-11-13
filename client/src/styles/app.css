@@ -5,6 +5,8 @@
 	--color-text-main: #2f3e46;
 	--color-text-secondary: #fff;
 	--color-error: #eed2d7;
+	--color-delete: rgb(179, 113, 113);
+	--color-delete-hover: rgb(128, 45, 45);
 	--border-radius: 10px;
 	--border-color: #84a98c;
 	--shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.2);
@@ -125,14 +127,14 @@ a {
 	color: var(--color-text-main);
 }
 
-.link_filter{
-        width: 100%;
-        display: flex;
-        justify-content: space-evenly;
-        padding: 1rem;
+.link_filter {
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	padding: 1rem;
 }
 
-.active{
+.active {
 	text-decoration: underline;
-    font-size: large;
+	font-size: large;
 }

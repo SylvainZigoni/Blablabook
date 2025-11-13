@@ -10,7 +10,8 @@
 
 <style>
     .book-delete{
-        background-color: var(--color-header-footer);
+        background-color: var(--color-delete);
+        color : var(--color-main);
         padding: 2px;
         padding-top: 3px;
         width: 40px;
@@ -20,7 +21,7 @@
     }
 
     .book-delete:hover, .book-delete:focus {
-        background-color: var(--color-text-main);
+        background-color: var(--color-delete-hover);
         transform: scale(1.03);
         box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
