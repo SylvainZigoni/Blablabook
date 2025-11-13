@@ -11,7 +11,7 @@ Book.init(
 			allowNull: false,
 		},
 		date_parution: {
-			type: DataTypes.DATE,
+			type: DataTypes.DATEONLY,
 			unique: false,
 			allowNull: true,
 		},
@@ -21,7 +21,7 @@ Book.init(
 			allowNull: true,
 		},
 		summary: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			unique: false,
 			allowNull: true,
 		},

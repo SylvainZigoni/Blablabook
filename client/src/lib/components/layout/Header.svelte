@@ -3,10 +3,13 @@
     import { page } from "$app/stores";
     import Icon  from '@iconify/svelte';
     import Search from "../ui/Search.svelte";
+	// import { onDestroy, onMount } from "svelte";
+	import UserButton from "../ui/UserButton.svelte";
 
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
+
 
 </script>
 
@@ -19,7 +22,7 @@
                     <Icon icon="ion:book" height = 50 width= 50 />
                 </div>
                 {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
-                    <Icon class="user_icon" icon="oui:user" height = 40 width= 40 />
+                    <UserButton />
                 {/if}
             </div>
 
@@ -102,10 +105,7 @@
 
     }
 
-    .user_icon{
-        border-radius: 100%;
-        border: solid white 1px
-    }
+
 
     /* Media query pour les écrans < 400px */
     @media (max-width: 400px) {

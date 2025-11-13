@@ -1,9 +1,11 @@
 import { Book, Author, Category, User, Status } from "../models/index.js";
 import { StatusCodes } from "http-status-codes";
 import { Op } from "sequelize";
+import Joi from "joi";
 
 const adminController = {
 
+// Administration des catégories 
     async getAllCategories(req, res) {
         try {
 
@@ -93,6 +95,7 @@ const adminController = {
     }
 },
 
+// Administration des auteurs
     async getAllAuthors(req, res) {
         try {
             const authors = await Author.findAll(
@@ -100,9 +103,9 @@ const adminController = {
             );
             res.status(StatusCodes.OK).json(authors);
         } catch (error) {
-            console.error("Error fetching authors:", error);
+            console.error("Erreur lors de la récupération des auteurs :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
     },
@@ -111,7 +114,7 @@ const adminController = {
         try {
             const { name, forname } = req.body;
             if (!name || typeof name !== 'string' || name.trim() === '') {
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Le champ "name" est requis.' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Le champ "name" est requis.' });
         }
 
             const newAuthor = await Author.create({
@@ -122,9 +125,9 @@ const adminController = {
             res.status(StatusCodes.CREATED).json(newAuthor);
 
         } catch (error) {
-            console.error("Error adding author:", error);
+            console.error("Erreur lors de l'ajout de l'auteur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
     },
@@ -137,15 +140,15 @@ const adminController = {
             });
 
             if (deletedAuthor === 0) {
-                return res.status(StatusCodes.NOT_FOUND).json({ error: 'Author not found.' });
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Auteur non trouvé.' });
             }
 
             res.status(StatusCodes.NO_CONTENT).send();
 
         } catch (error) {
-            console.error("Error deleting author:", error);
+            console.error("Erreur lors de la suppression de l'auteur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
     },
@@ -157,7 +160,7 @@ const adminController = {
 
             const author = await Author.findByPk(authorId);
             if (!author) {
-                return res.status(StatusCodes.NOT_FOUND).json({ error: 'Author not found.' });
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Auteur non trouvé.' });
             }
 
             if (name && typeof name === 'string' && name.trim() !== '') {
@@ -172,12 +175,248 @@ const adminController = {
             res.status(StatusCodes.OK).json(author);
 
         } catch (error) {
-            console.error("Error updating author:", error);
+            console.error("Erreur lors de la mise à jour de l'auteur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
+    },
+
+     async getAllUsers(req, res) {
+        try {
+            const users = await User.findAll({
+                attributes: ['id', 'username', 'email', 'is_admin']
+            });
+            res.status(StatusCodes.OK).json(users);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des utilisateurs :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },
+
+    async deleteUser(req, res) {
+        try {
+            const userId = req.params.id;
+            const deletedUser = await User.destroy({
+                where: { id: userId }
+            });
+
+            if (deletedUser === 0) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+            }
+
+            res.status(StatusCodes.NO_CONTENT).json({ message: 'Utilisateur supprimé avec succès.' });
+
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },      
+
+    async updateUser(req, res) {
+        try {
+            const userId = req.params.id;
+            const { username, email, is_admin } = req.body;
+
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+            }
+
+            if (username && typeof username === 'string' && username.trim() !== '') {
+                user.username = username.trim();
+            }
+            if (email && typeof email === 'string' && email.trim() !== '') {
+                user.email = email.trim();
+            }
+            if (typeof is_admin === 'boolean') {
+                user.is_admin = is_admin;
+            }
+
+            await user.save();
+
+            res.status(StatusCodes.OK).json(user);
+
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },
+    
+    async getUserById(req, res) {           
+        const userId = req.params.id;   
+        try {
+            const user =  await User.findByPk(userId, {
+                attributes: ['id', 'username', 'email', 'is_admin']
+            });
+            if (!user) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+            }
+            res.status(StatusCodes.OK).json(user);
+        } catch (error) {
+            console.error("Erreur lors de la récupération de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },
+
+// Administration des livres 
+
+    async getAllBooks(req, res) {
+        try {
+            const books = await Book.findAll({
+                include: [
+                    { model: Author, attributes: ['name', 'forname'] },
+                    { model: Category, attributes: ['name'] }
+                ]
+            });
+
+            res.status(StatusCodes.OK).json(books);
+        } catch (error) {
+            console.error("Erreur lors de la récupérations des livres", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                error: "Erreur serveur",
+            });
+        }
+    },
+
+    async getBookById(req, res) {
+        try {
+            const bookId = req.params.id;
+            const book = await Book.findByPk(bookId, {
+                include: [
+                    { model: Author, attributes: ['name', 'forname'] },
+                    { model: Category, attributes: ['name'] }
+                ]
+            });
+
+            if (!book) {
+                return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé" });
+            }
+
+            res.status(StatusCodes.OK).json(book);
+        } catch (error) {
+            console.error("Erreur lors de la récupération du livre :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                error: "Erreur serveur",
+            });
+        }
+    },
+
+    async deleteBook(req, res) {
+    try {
+        const bookId = req.params.id;
+        const deletedBook = await Book.destroy({ where: { id: bookId } });
+        
+        if (!deletedBook) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: 'Livre non trouvé.' });
+        }
+
+        res.status(StatusCodes.OK).json({ message: 'Livre supprimé avec succès.' });
+
+    } catch (error) {
+        console.error("Erreur lors de la suppression du livre :", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
     }
-}
+    },
+
+    async updateBook(req, res) {
+
+    // L'admin se trouve sur la page de modification d'un livre.
+    // Il peut modifier le titre, le résumé, la date de publication et l'image de couverture
+    // Il ne peut pas modifier les auteurs et les catégories dans un soucis de cohérence. Si besoin, il peut supprimer le livre et le recréer.
+
+    // Schéma de validation Joi
+
+        const updateBookSchema = Joi.object({
+            title: Joi.string().trim().min(1).max(255)
+                .messages({
+                    'string.empty': 'Le titre ne peut pas être vide.',
+                    'string.min': 'Le titre ne peut pas être vide.',
+                    'string.max': 'Le titre ne peut pas dépasser 255 caractères.'
+                }),
+            summary: Joi.string().trim().allow('', null),
+            date_parution: Joi.date().max('now')
+                .messages({
+                    'date.max': 'La date de parution ne peut pas être dans le futur.'
+                }),
+            image_url: Joi.string().trim().allow('', null)
+        });
+
+        // Logique de mise à jour du livre
+
+        try {
+            // Récupérer l'ID du livre à partir des paramètres de la requête
+            const bookId = req.params.id;
+
+            // Validation des données avec Joi
+            const { error, value } = updateBookSchema.validate(req.body, {
+                abortEarly: false,
+                stripUnknown: true
+            });
+
+            // Gérer les erreurs de validation - Renvoye un objet propre avec les messages d'erreur
+
+            if (error) {
+                return res.status(StatusCodes.BAD_REQUEST).json({
+                    error: error.details.map(detail => detail.message)
+                });
+            }
+
+            // Vérifier que le livre existe
+            const book = await Book.findByPk(bookId);
+            if (!book) {
+                return res.status(StatusCodes.NOT_FOUND).json({ error: 'Livre non trouvé.' });
+            }
+
+            // Mise à jour des champs validés
+            if (value.title !== undefined) {
+                book.title = value.title;
+            }
+            if (value.summary !== undefined) {
+                book.summary = value.summary || null;
+            }
+            if (value.date_parution !== undefined) {
+                book.date_parution = value.date_parution;
+            }
+            if (value.image_url !== undefined) {
+                book.image_url = value.image_url || null;
+            }
+
+            // Sauvegarde des modifications
+            await book.save();
+
+            // Retourne le livre modifié
+            res.status(StatusCodes.OK).json(book);
+
+            // Gestion d'erreurs assez complète pour identifier les potentiels problèmes lors des tests.
+        } catch (error) {
+            if (error.name === 'SequelizeValidationError') {
+                return res.status(StatusCodes.BAD_REQUEST).json({
+                    error: error.errors.map(e => e.message)
+                });
+            }
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                return res.status(StatusCodes.CONFLICT).json({
+                    error: 'Un livre avec ces informations existe déjà.'
+                });
+            }
+            if (error.name === 'SequelizeDatabaseError') {
+                return res.status(StatusCodes.BAD_REQUEST).json({
+                    error: 'Données invalides.'
+                });
+            }
+            console.error("Erreur lors de la mise à jour du livre :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+        }
+    },
+};
 
 export default adminController;
