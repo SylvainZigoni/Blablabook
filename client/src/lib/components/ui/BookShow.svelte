@@ -2,7 +2,6 @@
     import AddBookButton from "./AddBookButton.svelte";
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
-    import AddBookButton from "./AddBookButton.svelte";
     import { page } from "$app/stores";
     import { createEventDispatcher } from "svelte";
     

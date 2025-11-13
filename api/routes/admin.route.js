@@ -9,15 +9,10 @@ adminRouter.get('/categories', isAuthed, isAdmin, adminController.getAllCategori
 adminRouter.post('/categories', isAuthed, isAdmin, adminController.createCategory);
 adminRouter.delete('/categories/:id', isAuthed, isAdmin, adminController.deleteCategory);
 adminRouter.patch('/categories/:id', isAuthed, isAdmin, adminController.updateCategory);
-
-adminRouter.get("/authors", isAuthed, isAdmin, adminController.getAllAuthors);
+    
 adminRouter.post("/authors", isAuthed, isAdmin, adminController.addAuthor);
+adminRouter.get("/authors", isAuthed, isAdmin, adminController.getAllAuthors);
 adminRouter.delete("/authors/:id", isAuthed, isAdmin, adminController.deleteAuthor);
 adminRouter.patch("/authors/:id", isAuthed, isAdmin, adminController.updateAuthor);
-
-adminRouter.get("/users", isAuthed, isAdmin, adminController.getAllUsers);
-adminRouter.get("/users/:id", isAuthed, isAdmin, adminController.getUserById);
-adminRouter.patch("/users/:id", isAuthed, isAdmin, adminController.updateUser);
-adminRouter.delete("/users/:id", isAuthed, isAdmin, adminController.deleteUser);
 
 export default adminRouter;
