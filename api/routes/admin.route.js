@@ -7,12 +7,17 @@ const adminRouter = Router();
 
 adminRouter.get('/categories', isAuthed, isAdmin, adminController.getAllCategories);
 adminRouter.post('/categories', isAuthed, isAdmin, adminController.createCategory);
-adminRouter.delete('/categories', isAuthed, isAdmin, adminController.deleteCategory);
-adminRouter.patch('/categories', isAuthed, isAdmin, adminController.updateCategory);
+adminRouter.delete('/categories/:id', isAuthed, isAdmin, adminController.deleteCategory);
+adminRouter.patch('/categories/:id', isAuthed, isAdmin, adminController.updateCategory);
 
-adminRouter.post("/authors", isAuthed, isAdmin, adminController.addAuthor);
 adminRouter.get("/authors", isAuthed, isAdmin, adminController.getAllAuthors);
+adminRouter.post("/authors", isAuthed, isAdmin, adminController.addAuthor);
 adminRouter.delete("/authors/:id", isAuthed, isAdmin, adminController.deleteAuthor);
 adminRouter.patch("/authors/:id", isAuthed, isAdmin, adminController.updateAuthor);
+
+adminRouter.get("/users", isAuthed, adminController.getAllUsers);
+adminRouter.get("/users/:id", isAuthed, adminController.getUserById);
+adminRouter.patch("/users/:id", isAuthed, adminController.updateUser);
+adminRouter.delete("/users/:id", isAuthed, adminController.deleteUser);
 
 export default adminRouter;
