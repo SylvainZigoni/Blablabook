@@ -182,6 +182,7 @@ const adminController = {
         }
     },
 
+// Administration des utilisateurs
      async getAllUsers(req, res) {
         try {
             const users = await User.findAll({
@@ -268,7 +269,6 @@ const adminController = {
     },
 
 // Administration des livres 
-
     async getAllBooks(req, res) {
         try {
             const books = await Book.findAll({
@@ -415,6 +415,106 @@ const adminController = {
             }
             console.error("Erreur lors de la mise à jour du livre :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur serveur" });
+        }
+    },
+
+    async createBook(req, res) {
+
+        // L'admin peut créer un nouveau livre en fournissant le titre, le résumé, la date de publication, l'image de couverture, l'auteur et la catégorie.
+        // Un livre doit obligatoirement avoir un titre
+        // Les autres informations peuvent être rajoutées par la suite via la modification du livre.
+
+        // Schéma de validation Joi
+        const createBookSchema = Joi.object({
+            title: Joi.string().trim().min(1).max(255).required()
+                .messages({
+                    'string.empty': 'Le champ "title" est requis.',
+                    'string.min': 'Le titre ne peut pas être vide.',
+                    'string.max': 'Le titre ne peut pas dépasser 255 caractères.',
+                    'any.required': 'Le champ "title" est requis.'
+                }),
+            summary: Joi.string().trim().allow('', null),
+            date_parution: Joi.date().max('now').allow(null)
+                .messages({
+                    'date.max': 'La date de parution ne peut pas être dans le futur.'
+                }),
+            image_url: Joi.string().trim().uri().allow('', null)
+                .messages({
+                    'string.uri': `L'URL de l'image doit être valide.`
+                }),
+            authorId: Joi.number().integer().positive().allow(null)
+                .messages({
+                    'number.base': `L'ID de l'auteur doit être un nombre.`,
+                    'number.integer': `L'ID de l'auteur doit être un entier.`,
+                    'number.positive': `L'ID de l'auteur doit être positif.`
+                }),
+            categoryId: Joi.number().integer().positive().allow(null)
+                .messages({
+                    'number.base': `L'ID de la catégorie doit être un nombre.`,
+                    'number.integer': `L'ID de la catégorie doit être un entier.`,
+                    'number.positive': `L'ID de la catégorie doit être positif.`
+                })
+        });
+
+        try {
+            // Validation des données avec Joi
+            const { error, value } = createBookSchema.validate(req.body, {
+                abortEarly: false,
+                stripUnknown: true
+            });
+
+            // Gérer les erreurs de validation
+            if (error) {
+                return res.status(StatusCodes.BAD_REQUEST).json({
+                    error: error.details.map(detail => detail.message)
+                });
+            }
+
+            // Créer le livre avec les champs de base uniquement
+            const newBook = await Book.create({
+                title: value.title,
+                summary: value.summary || null,
+                date_parution: value.date_parution || null,
+                image_url: value.image_url || null
+            });
+
+            // Ajouter l'association avec l'auteur si fourni
+            if (value.authorId) {
+                const author = await Author.findByPk(value.authorId);
+                if (!author) {
+                    return res.status(StatusCodes.NOT_FOUND).json({
+                        error: `L'auteur avec l'ID ${value.authorId} n'existe pas.`
+                    });
+                }
+                await newBook.addAuthor(author);
+            }
+
+            // Ajouter l'association avec la catégorie si fournie
+            if (value.categoryId) {
+                const category = await Category.findByPk(value.categoryId);
+                if (!category) {
+                    return res.status(StatusCodes.NOT_FOUND).json({
+                        error: `La catégorie avec l'ID ${value.categoryId} n'existe pas.`
+                    });
+                }
+                await newBook.addCategory(category);
+            }
+
+            // Recharger le livre avec ses associations pour le retourner
+            const bookWithAssociations = await Book.findByPk(newBook.id, {
+                include: [
+                    { model: Author, through: { attributes: [] } },
+                    { model: Category, through: { attributes: [] } }
+                ]
+            });
+
+            res.status(StatusCodes.CREATED).json(bookWithAssociations);
+
+        } catch (error) {
+            console.error("Erreur lors de la création du livre :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
         }
     },
 };
