@@ -15,9 +15,9 @@ adminRouter.post("/authors", isAuthed, isAdmin, adminController.addAuthor);
 adminRouter.delete("/authors/:id", isAuthed, isAdmin, adminController.deleteAuthor);
 adminRouter.patch("/authors/:id", isAuthed, isAdmin, adminController.updateAuthor);
 
-adminRouter.get("/users", isAuthed, adminController.getAllUsers);
-adminRouter.get("/users/:id", isAuthed, adminController.getUserById);
-adminRouter.patch("/users/:id", isAuthed, adminController.updateUser);
-adminRouter.delete("/users/:id", isAuthed, adminController.deleteUser);
+adminRouter.get("/users", isAuthed, isAdmin, adminController.getAllUsers);
+adminRouter.get("/users/:id", isAuthed, isAdmin, adminController.getUserById);
+adminRouter.patch("/users/:id", isAuthed, isAdmin, adminController.updateUser);
+adminRouter.delete("/users/:id", isAuthed, isAdmin, adminController.deleteUser);
 
 export default adminRouter;
