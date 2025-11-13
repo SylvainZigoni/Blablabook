@@ -1,11 +1,12 @@
 <script>
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
+    import AddBookButton from "./AddBookButton.svelte";
     import { page } from "$app/stores";
     import { createEventDispatcher } from "svelte";
 
     export let onDelete;
-    
+    export let onAdd;
     // export passés a StatusButton
     export let book;
     export let user_id;
@@ -49,7 +50,14 @@
             <p class="book_category"><strong>Genres</strong>: Aucun</p>
         {/if}       
     </div>
-    <p class="book_summary"><strong>Résumé</strong> : { book.summary} Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, nulla alias ipsum, aperiam id, quibusdam maxime nihil similique repellat nam nemo sequi eum. Suscipit molestiae sit blanditiis aliquam ea? Consectetur! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda. </p>
+    <p class="book_summary"><strong>Résumé</strong> : { book.summary} Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Quos, nulla alias ipsum, aperiam id, 
+        quibusdam maxime nihil similique repellat nam nemo sequi eum. 
+        Suscipit molestiae sit blanditiis aliquam ea? Consectetur! 
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, 
+        similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
+    </p>
     <div class="button_container">
         {#if currentPath !== '/'}
             <StatusButton 
