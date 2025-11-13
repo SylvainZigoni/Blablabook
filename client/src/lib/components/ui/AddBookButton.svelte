@@ -3,7 +3,7 @@
     export let onAdd;
 </script>
 
-<button class="book-add" aria-label="Ajouter à la bibliothèque" on:click={() => {onAdd();}}>
+<button class="book-add" aria-label="Ajouter à la bibliothèque" on:click={() => {onAdd();}} {...$$restProps}>
     <Icon icon="bxs:book-add" width="20" height="20" />
 </button>
 
@@ -14,7 +14,8 @@
         padding-top: 3px;
         width: 40px;
         height : 40px;
-        align-self: center;
+        align-self:start;
+        align-items: start;
         margin: auto;
     }
 
@@ -28,4 +29,7 @@
         transform: translateY(0) scale(0.99);
         box-shadow: none;
     }
+
+
+
 </style>

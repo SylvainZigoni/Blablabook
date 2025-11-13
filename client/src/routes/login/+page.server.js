@@ -23,6 +23,7 @@ export const actions = {
 			);
 
 			const data = await response.json();
+			console.log(data);
 
 			if (!response.ok) {
 				return fail(response.status, {
@@ -31,32 +32,46 @@ export const actions = {
 			}
 
 			// modification pour utilise les cookies pour stocker le sinfo et non le localStorage
-			cookies.set('token', data.token, {
-				path:"/",
-				httpOnly:true,
+			cookies.set("token", data.token, {
+				path: "/",
+				httpOnly: true,
 				sameSite: "lax",
-				secure:true,
-				maxAge: 60*60
+				secure: true,
+				maxAge: 60 * 60,
 			});
 
-			cookies.set('user_id', String(data.user.id), {
-				path:"/",
-				httpOnly:true,
+			cookies.set("user_id", String(data.user.id), {
+				path: "/",
+				httpOnly: true,
 				sameSite: "lax",
-				secure:true,
-				maxAge: 60*60
+				secure: true,
+				maxAge: 60 * 60,
 			});
 
-			cookies.set('user_name', String(data.user.username), {
-				path:"/",
-				httpOnly:true,
+			cookies.set("user_name", String(data.user.username), {
+				path: "/",
+				httpOnly: true,
 				sameSite: "lax",
-				secure:true,
-				maxAge: 60*60
+				secure: true,
+				maxAge: 60 * 60,
 			});
-						
+
+			if (data.user.is_admin) {
+				cookies.set("is_admin", String(data.user.is_admin), {
+					path: "/",
+					httpOnly: true,
+					sameSite: "lax",
+					secure: true,
+					maxAge: 60 * 60,
+				});
+			}
 			return {
-				success: { username: data.user.username, token: data.token, id: data.user.id},
+				success: {
+					username: data.user.username,
+					token: data.token,
+					id: data.user.id,
+					admin: data.user.is_admin,
+				},
 			};
 		} catch (error) {
 			console.error("Erreur : ", error);
