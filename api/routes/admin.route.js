@@ -16,12 +16,12 @@ adminRouter.delete("/authors/:id", isAuthed, isAdmin, adminController.deleteAuth
 adminRouter.patch("/authors/:id", isAuthed, isAdmin, adminController.updateAuthor);
 
 adminRouter.get("/users", isAuthed, isAdmin, adminController.getAllUsers);
-adminRouter.get("/users/:id", isAuthed, isAdmin, adminController.getUserById);
+adminRouter.get("/users/:id", isAuthed, isAdmin, adminController.getUserById); 
 adminRouter.delete("/users/:id", isAuthed, isAdmin, adminController.deleteUser);
 adminRouter.patch("/users/:id", isAuthed, isAdmin, adminController.updateUser);
 
 adminRouter.get('/books', isAuthed, isAdmin, adminController.getAllBooks);
-adminRouter.post('/books', isAuthed, isAdmin, adminController.addBook);
+adminRouter.post('/books', isAuthed, isAdmin, adminController.createBook);
 adminRouter.delete('/books/:id', isAuthed, isAdmin, adminController.deleteBook);
 adminRouter.patch('/books/:id', isAuthed, isAdmin, adminController.updateBook); 
 
