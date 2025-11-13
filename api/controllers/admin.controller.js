@@ -103,9 +103,9 @@ const adminController = {
             );
             res.status(StatusCodes.OK).json(authors);
         } catch (error) {
-            console.error("Error fetching authors:", error);
+            console.error("Erreur lors de la récupération des auteurs :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
     },
@@ -114,7 +114,7 @@ const adminController = {
         try {
             const { name, forname } = req.body;
             if (!name || typeof name !== 'string' || name.trim() === '') {
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Le champ "name" est requis.' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Le champ "name" est requis.' });
         }
 
             const newAuthor = await Author.create({
@@ -125,9 +125,9 @@ const adminController = {
             res.status(StatusCodes.CREATED).json(newAuthor);
 
         } catch (error) {
-            console.error("Error adding author:", error);
+            console.error("Erreur lors de l'ajout de l'auteur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
     },
@@ -140,15 +140,15 @@ const adminController = {
             });
 
             if (deletedAuthor === 0) {
-                return res.status(StatusCodes.NOT_FOUND).json({ error: 'Author not found.' });
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Auteur non trouvé.' });
             }
 
             res.status(StatusCodes.NO_CONTENT).send();
 
         } catch (error) {
-            console.error("Error deleting author:", error);
+            console.error("Erreur lors de la suppression de l'auteur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
             });
         }
     },
@@ -160,7 +160,7 @@ const adminController = {
 
             const author = await Author.findByPk(authorId);
             if (!author) {
-                return res.status(StatusCodes.NOT_FOUND).json({ error: 'Author not found.' });
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Auteur non trouvé.' });
             }
 
             if (name && typeof name === 'string' && name.trim() !== '') {
@@ -175,9 +175,94 @@ const adminController = {
             res.status(StatusCodes.OK).json(author);
 
         } catch (error) {
-            console.error("Error updating author:", error);
+            console.error("Erreur lors de la mise à jour de l'auteur :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Internal server error",
+                message: "Erreur serveur",
+            });
+        }
+    },
+
+     async getAllUsers(req, res) {
+        try {
+            const users = await User.findAll({
+                attributes: ['id', 'username', 'email', 'is_admin']
+            });
+            res.status(StatusCodes.OK).json(users);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des utilisateurs :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },
+
+    async deleteUser(req, res) {
+        try {
+            const userId = req.params.id;
+            const deletedUser = await User.destroy({
+                where: { id: userId }
+            });
+
+            if (deletedUser === 0) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+            }
+
+            res.status(StatusCodes.NO_CONTENT).json({ message: 'Utilisateur supprimé avec succès.' });
+
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },      
+
+    async updateUser(req, res) {
+        try {
+            const userId = req.params.id;
+            const { username, email, is_admin } = req.body;
+
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+            }
+
+            if (username && typeof username === 'string' && username.trim() !== '') {
+                user.username = username.trim();
+            }
+            if (email && typeof email === 'string' && email.trim() !== '') {
+                user.email = email.trim();
+            }
+            if (typeof is_admin === 'boolean') {
+                user.is_admin = is_admin;
+            }
+
+            await user.save();
+
+            res.status(StatusCodes.OK).json(user);
+
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
+            });
+        }
+    },
+    
+    async getUserById(req, res) {           
+        const userId = req.params.id;   
+        try {
+            const user =  await User.findByPk(userId, {
+                attributes: ['id', 'username', 'email', 'is_admin']
+            });
+            if (!user) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+            }
+            res.status(StatusCodes.OK).json(user);
+        } catch (error) {
+            console.error("Erreur lors de la récupération de l'utilisateur :", error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                message: "Erreur serveur",
             });
         }
     },
