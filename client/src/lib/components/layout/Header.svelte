@@ -3,7 +3,7 @@
     import { page } from "$app/stores";
     import Icon  from '@iconify/svelte';
     import Search from "../ui/Search.svelte";
-	import { onDestroy, onMount } from "svelte";
+	// import { onDestroy, onMount } from "svelte";
 	import UserButton from "../ui/UserButton.svelte";
 
     let cookies = "";
@@ -11,15 +11,6 @@
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
-
-    onMount(()=> {
-        cookies = document.cookie
-        console.log(cookies);
-    })
-
-    // Gestion du menu utilisateur
-
-
 
 
 </script>

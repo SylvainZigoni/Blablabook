@@ -7,7 +7,7 @@
     let isDropdownOpen = false;
 
     async function handleLogout() {
-        // TODO : coder la fonction pour supprimer le token
+        // Appel vers le backend de svelte pour supprimer les cookies (accessibles seulement coté back)
         await fetch('/api/logout', {method: 'POST'})
         isDropdownOpen = false;
         goto('/');
