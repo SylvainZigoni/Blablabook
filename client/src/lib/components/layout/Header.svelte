@@ -6,8 +6,6 @@
 	// import { onDestroy, onMount } from "svelte";
 	import UserButton from "../ui/UserButton.svelte";
 
-    let cookies = "";
-
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
