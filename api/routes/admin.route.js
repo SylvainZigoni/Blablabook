@@ -20,4 +20,9 @@ adminRouter.get("/users/:id", isAuthed, isAdmin, adminController.getUserById);
 adminRouter.patch("/users/:id", isAuthed, isAdmin, adminController.updateUser);
 adminRouter.delete("/users/:id", isAuthed, isAdmin, adminController.deleteUser);
 
+adminRouter.get('/books', isAuthed, isAdmin, adminController.getAllBooks);
+adminRouter.post('/books', isAuthed, isAdmin, adminController.addBook);
+adminRouter.delete('/books/:id', isAuthed, isAdmin, adminController.deleteBook);
+adminRouter.patch('/books/:id', isAuthed, isAdmin, adminController.updateBook); 
+
 export default adminRouter;
