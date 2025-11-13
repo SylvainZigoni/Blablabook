@@ -5,6 +5,7 @@
 	import { goto } from "$app/navigation";
 
     let isDropdownOpen = false;
+    let isAdmin = false;
 
     async function handleLogout() {
         // Appel vers le backend de svelte pour supprimer les cookies (accessibles seulement coté back)
@@ -12,7 +13,6 @@
         isDropdownOpen = false;
         goto('/');
     }
-
 
     function handleClickOutside(event) {
         const dropdown = document.querySelector('.dropdown');
@@ -22,7 +22,33 @@
         if (!dropdown?.contains(event.target) && !button?.contains(event.target)) {
             isDropdownOpen = false;
         }
+
+        // Ferme la popup si clic sur un lien <a> ou un bouton
+            if (dropdown?.contains(event.target) && (event.target.closest('a') || event.target.closest('button'))) {
+            isDropdownOpen = false;
+            return;
+        }
     }
+
+    async function toggleDropdown(){
+        if(!isDropdownOpen) {
+            try {
+                const res = await fetch('/api/getCookies');
+                if (res.ok) {
+                    const data = await res.json();
+                    console.log(data)
+                    isAdmin = data.is_admin === true || data.is_admin === 'true';
+                } else {
+                    isAdmin = false
+                }
+            } catch(error) {
+                console.error('Erreur récupération cookies', error);
+                isAdmin = false;
+            }
+        }
+        isDropdownOpen = !isDropdownOpen;
+    }
+
 
     onMount(()=>{
         // Mise en place d'un ecouteur d'evenement clic sur l'ensemble de la page qui execute handleClickOutside a chaque clic
@@ -31,11 +57,11 @@
 
 </script>
 
-<button class="user-button" on:click={()=> isDropdownOpen = !isDropdownOpen}>
+<button class="user-button" on:click={toggleDropdown}>
     <Icon icon="oui:user" height = 20 width= 20 />
 </button>
 
-<UserDropdown isOpen={isDropdownOpen} onLogout={handleLogout} />
+<UserDropdown isOpen={isDropdownOpen} onLogout={handleLogout} isAdmin={isAdmin} />
 
 <style>
     .user-button{
@@ -49,6 +75,6 @@
     .user-button:hover{
         background-color: var(--color-main);
         color : var(--color-text-main);
-            transform: scale(1.03);
+        transform: scale(1.03);
     }
 </style>

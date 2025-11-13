@@ -2,11 +2,18 @@
     import Icon from "@iconify/svelte";
     export let isOpen = false;
     export let onLogout;
+    export let isAdmin = false
 </script>
+
+
+
 
 <!-- class:open={isOpen} permet d'ajouter ".open" a notre class quand la variable isOpen = true  -->
 <div class="dropdown" class:open={isOpen}>
     <div class="dropdown-container">
+        {#if isAdmin}
+            <a href="/administrator" class="dropdown-item"><Icon icon="dashicons:admin-network" width="16" height="16" /> Admin</a>
+        {/if}
         <a href="/user/1" class="dropdown-item"><Icon icon="ion:library" width="16" height="16" /> Ma bibliothèque</a>
         <button on:click={onLogout} class="dropdown-item" aria-label="Se deconnecter"><Icon icon="fluent:plug-disconnected-16-filled" width="16" height="16" /> Se deconnecter</button>
     </div>
