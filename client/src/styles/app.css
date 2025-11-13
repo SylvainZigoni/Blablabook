@@ -124,3 +124,15 @@ a {
 	text-transform: none;
 	color: var(--color-text-main);
 }
+
+.link_filter{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        padding: 1rem;
+}
+
+.active{
+	text-decoration: underline;
+    font-size: large;
+}
