@@ -3,10 +3,24 @@
     import { page } from "$app/stores";
     import Icon  from '@iconify/svelte';
     import Search from "../ui/Search.svelte";
+	import { onDestroy, onMount } from "svelte";
+	import UserButton from "../ui/UserButton.svelte";
+
+    let cookies = "";
 
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
+
+    onMount(()=> {
+        cookies = document.cookie
+        console.log(cookies);
+    })
+
+    // Gestion du menu utilisateur
+
+
+
 
 </script>
 
@@ -19,7 +33,7 @@
                     <Icon icon="ion:book" height = 50 width= 50 />
                 </div>
                 {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
-                    <button class='user-menu'><Icon icon="oui:user" height = 20 width= 20 /></button>
+                    <UserButton />
                 {/if}
             </div>
 
@@ -102,19 +116,7 @@
 
     }
 
-    .user-menu{
-        padding: 0;
-        height: 40px;
-        width: 40px;
-        border-radius: 100%;
-        box-shadow: var(--shadow);
-    }
 
-    .user-menu:hover{
-    background-color: var(--color-main);
-    color : var(--color-text-main);
-        transform: scale(1.03);
-    }
 
     /* Media query pour les écrans < 400px */
     @media (max-width: 400px) {
