@@ -62,7 +62,7 @@
     {:else}
 
             {#each books as book}
-                <BookShow {book} onAdd={addBook} onDelete={deleteBook} />
+                <BookShow {book} onAdd={addBook} onDelete={deleteBook} user_id={user_id} token={token} />
             {/each}
 
     {/if}

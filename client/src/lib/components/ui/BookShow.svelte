@@ -1,5 +1,5 @@
 <script>
-    import AddBookButton from "./AddBookButton.svelte";
+
     import StatusButton from "./StatusButton.svelte";
     import DeleteBookButton from "./DeleteBookButton.svelte";
     import { page } from "$app/stores";
@@ -22,6 +22,7 @@
     // AJOUT SYLVAIN
     console.log(book)
     console.log(book.userStatus)
+    
 
 
 </script>

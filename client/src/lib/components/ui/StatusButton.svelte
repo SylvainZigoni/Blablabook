@@ -15,6 +15,9 @@
         const newStatus = event.target.value;
         console.log('newStatus', newStatus);
 
+        console.log("token", token);
+        console.log("user_id", user_id);
+
         try {
             const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book.id}`, {
                 method : "PATCH",
