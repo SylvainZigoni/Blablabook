@@ -5,9 +5,7 @@
     import Search from "../ui/Search.svelte";
 	// import { onDestroy, onMount } from "svelte";
 	import UserButton from "../ui/UserButton.svelte";
-	import { getContext } from "svelte";
 
-console.log(getContext("cookies"));
 
     let currentPath;
     // Réactivité automatique avec $:
