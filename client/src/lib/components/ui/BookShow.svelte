@@ -5,6 +5,8 @@
     import DeleteBookButton from "./DeleteBookButton.svelte";
     import { page } from "$app/stores";
     import { createEventDispatcher } from "svelte";
+	import { preventDefault } from "svelte/legacy";
+	import { goto } from "$app/navigation";
     
 
     export let onDelete;
@@ -22,13 +24,20 @@
 
     // AJOUT SYLVAIN
     console.log(book)
-    console.log(book.userStatus)
-    
 
+    function handleClick(event){
+        const target = event?.target;
+        if(target && (target.closest("button"))) {
+            return
+        }
+        goto(`/book/${book.id}`)
+    }
+
+    console.log(book)
 
 </script>
 
-<article>
+<article on:click={handleClick}>
     <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
     <div class="book_infos">
         <h3>Titre : {book.title}</h3>
