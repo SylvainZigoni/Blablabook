@@ -36,19 +36,20 @@ console.log(statutBook)
         </div>
         <div class="book-container--elements-info">
             <ul>
-            <li><Icon icon="material-symbols:person" width="16" height="16" /> Auteur
-                {#if book.Authors.length>1}s{/if} :
+            <li><Icon icon="material-symbols:person" width="16" height="16" /> <strong>Auteur
+                {#if book.Authors.length>1}s{/if} :</strong>
                 {#each book.Authors as author}
                     {author.forname} {author.name}
                 {/each}
             </li>
-            <li><Icon icon="streamline-flex:search-category-remix" width="16" height="16" /> Genre
-                {#if book.Categories.length>1}s{/if} :
+            <li><Icon icon="streamline-flex:search-category-remix" width="16" height="16" /> <strong>Genre
+                <!-- {#if book.Categories.length>1}s {/if} -->
+                  :</strong>
                 {#each book.Categories as category, i }
                     {category.name}{i < book.Categories.length - 1 ? ', ': ''}
                 {/each}
             </li>
-            <li><Icon icon="material-symbols:date-range" width="16" height="16" /> Date de parution :
+            <li><Icon icon="material-symbols:date-range" width="16" height="16" /> <strong>Date de parution :</strong>
                 {book.date_parution}
             </li>
             </ul>
@@ -105,7 +106,7 @@ console.log(statutBook)
 }
 
 .book-container--elements-info{
-    margin-top: 10px;
+    margin-top: 20px;
     border-top: 1px var(--color-header-footer) solid;
     padding-top: 10px;
 }
@@ -123,6 +124,9 @@ img{
     margin-top: 10px;
     border-top: 1px var(--color-header-footer) solid;
     padding-top: 10px;
+    strong {
+        font-size: 1.2rem;
+    }
 }
 
 .summary-container--text {
