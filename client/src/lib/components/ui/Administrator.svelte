@@ -2,10 +2,10 @@
     import {page} from '$app/stores';
     import { DeleteCategory, getAllCategories } from '$lib/api/categories/categories';
     import CategoryShow from './CategoryShow.svelte';
-    import UpdateForm from './UpdateForm.svelte';
+    import CategoryForm from './CategoryForm.svelte';
 
     export let token;
-    console.log('token',token);
+    // console.log('token',token);
     // $: console.log("categories dans composant", categories);
 
     $: filter = $page.url.searchParams.get("filter");
@@ -28,7 +28,6 @@
     async function handleDeleteCategory(category_id){
         try {
             const result = await DeleteCategory(category_id, token);
-            // console.log('delete ok', result);
         } catch (error) {
             console.error("Erreur de delete :", error);
         }
@@ -39,16 +38,25 @@
     }
 
     let showModal = false;
+    let modalMode = null    // pour afficher le bon form en fonctoin create ou update
     let selectedCategory = null;
 
-    // NEW: ouvrir le modal avec la catégorie
+    // ouvrir le modal du update
     function handleUpdate(category) {
         selectedCategory = category;
+        modalMode = "update";
         showModal = true;
-        console.log('selectedCategory', selectedCategory);
+        // console.log('selectedCategory', selectedCategory);
     }
 
-    // NEW: fermer le modal
+    // ouvrir le modal du create
+    function handleCreate() {
+        selectedCategory = null;
+        modalMode = "create";
+        showModal = true;
+    }
+
+    // fermer le modal
     function closeModal() {
         showModal = false;
         selectedCategory = null;
@@ -67,18 +75,22 @@
             <li><a href="?filter=categories" class:active={filter === 'categories'}>Gestion des Genres</a></li>
         </ul>
     </div>
-    <button class="admin_button">Ajouter</button>
+    
     <section class="filter_container">
         {#if filter === "users"  }
             <p>Users</p>
         {/if}
+
         {#if filter === "books"  }
             <p>Books</p>
         {/if}
+
         {#if filter === "authors"  }
             <p>Authors</p>
         {/if}
+        
         {#if filter === "categories"  }
+            <button class="admin_button" on:click={handleCreate}>Ajouter une Catégorie</button>
             <ul>
                 {#each categories as category }
                     <CategoryShow
@@ -94,8 +106,9 @@
     {#if showModal} <!-- NEW -->
         <div class="modal-backdrop" on:click={closeModal}></div>
         <div class="modal">
-            <UpdateForm
+            <CategoryForm
             category={selectedCategory}
+            mode={modalMode}
             token={token}
             onClose={closeModal}
             onSubmitted={async () => { //callback après PATCH réussi
@@ -112,16 +125,22 @@
         display: flex;
         flex-direction: column;
     }
-    .admin_button{
-        width: 50%;
-        align-self: center;
-    }
-
+    
     .active{
         text-decoration: underline;
         font-size: large;
     }
-
+    
+    .filter_container{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .admin_button{
+        width: 30%;
+        align-self: center;
+    }
+    
     /* Modal CSS */
     .modal-backdrop {
         position: fixed;
