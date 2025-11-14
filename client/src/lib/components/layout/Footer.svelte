@@ -21,6 +21,7 @@
             background-color: var(--color-header-footer);
             padding: 1rem;
             font-size: 0.7rem;
+            box-shadow: var(--shadow);
     }
 
     a{
