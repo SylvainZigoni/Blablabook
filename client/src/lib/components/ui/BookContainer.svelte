@@ -115,9 +115,10 @@ console.log(statutBook)
     align-self: flex-end;
 }
 
-img{
+img {
+    display: block;
     max-width: 100%;
-    max-height: 70%;
+    margin: auto;
 }
 
 .summary-container {
@@ -131,5 +132,32 @@ img{
 
 .summary-container--text {
     margin-top: 10px;
+}
+
+
+@media (min-width: 650px) {
+    .book-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .book-container--elements-imgBtn {
+        width: 45%;
+    }
+
+    .book-container--elements-info{
+        width: 50%;
+    }
+
+    .book-container--elements{
+        display: flex;
+        max-height: 70vh;
+        gap : 24px;
+        align-items: stretch;
+
+
+        flex-direction: row;
+    }
 }
 </style>
