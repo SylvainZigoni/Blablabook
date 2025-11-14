@@ -4,6 +4,7 @@
 
     export let category;
     export let onDelete;
+    export let onUpdate;
 </script>
 
 <article>
@@ -14,7 +15,9 @@
     </div>
     <div class="button_container">
         <DeleteBookButton onDelete={() => {onDelete(category.id);}}/>
-        <UpdateButton/>
+        <UpdateButton
+            category = { category};
+            onClick ={()=> onUpdate(category)}/>
     </div>
 </article>
 
