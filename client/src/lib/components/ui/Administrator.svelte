@@ -5,7 +5,7 @@
     import UpdateForm from './UpdateForm.svelte';
 
     export let token;
-    // console.log(token);
+    console.log('token',token);
     // $: console.log("categories dans composant", categories);
 
     $: filter = $page.url.searchParams.get("filter");
@@ -16,7 +16,7 @@
 
     async function loadCategories() {
         try {
-            const data = await getAllCategories();
+            const data = await getAllCategories(token);
             // console.log("Résultat API", data);
             categories = data;
         } catch (err) {

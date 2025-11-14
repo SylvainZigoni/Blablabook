@@ -1,5 +1,12 @@
-export async function getAllCategories() {
-    const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/admin/categories`);
+export async function getAllCategories(token) {
+    const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/admin/categories`,
+        {
+            headers : {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
     if (!response.ok) {
 		console.error(`Erreur API: ${response.status} ${response.statusText}`);
 		return {
