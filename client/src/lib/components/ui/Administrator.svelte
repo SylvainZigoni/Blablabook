@@ -2,24 +2,22 @@
     import {page} from '$app/stores';
     import { DeleteCategory, getAllCategories } from '$lib/api/categories/categories';
     import CategoryShow from './CategoryShow.svelte';
+    import UpdateForm from './UpdateForm.svelte';
 
     export let token;
-    export let onDelete;
-
-    $: console.log("categories dans composant", categories);
+    // console.log(token);
+    // $: console.log("categories dans composant", categories);
 
     $: filter = $page.url.searchParams.get("filter");
 
-    function filterChange(type){
-        console.log("filter", type);
-    }
+   
 
     let categories = [];
 
     async function loadCategories() {
         try {
             const data = await getAllCategories();
-            console.log("Résultat API", data);
+            // console.log("Résultat API", data);
             categories = data;
         } catch (err) {
             console.error("Erreur fetch :", err);
@@ -27,19 +25,35 @@
         }
     }
 
-    async function HandleDeleteCategory(category_id){
+    async function handleDeleteCategory(category_id){
         try {
             const result = await DeleteCategory(category_id, token);
-            console.log('delete ok', result);
+            // console.log('delete ok', result);
         } catch (error) {
             console.error("Erreur de delete :", error);
         }
     }
 
     $: if(filter === "categories"){
-        filterChange(filter);
         loadCategories();
     }
+
+    let showModal = false;
+    let selectedCategory = null;
+
+    // NEW: ouvrir le modal avec la catégorie
+    function handleUpdate(category) {
+        selectedCategory = category;
+        showModal = true;
+        console.log('selectedCategory', selectedCategory);
+    }
+
+    // NEW: fermer le modal
+    function closeModal() {
+        showModal = false;
+        selectedCategory = null;
+    }
+
 
 </script>
 
@@ -67,15 +81,30 @@
         {#if filter === "categories"  }
             <ul>
                 {#each categories as category }
-                    <!-- <li> {category.id} - {category.name}</li> -->
-                    <CategoryShow 
+                    <CategoryShow
                     category = {category}
-                    onDelete = {HandleDeleteCategory}
-                    />
+                    onDelete = {handleDeleteCategory}
+                    onUpdate = {handleUpdate}
+                    />                    
                 {/each}
             </ul>
         {/if}
     </section>
+
+    {#if showModal} <!-- NEW -->
+        <div class="modal-backdrop" on:click={closeModal}></div>
+        <div class="modal">
+            <UpdateForm
+            category={selectedCategory}
+            token={token}
+            onClose={closeModal}
+            onSubmitted={async () => { //callback après PATCH réussi
+                    await loadCategories();
+                    closeModal();
+            }}
+            />
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -91,5 +120,23 @@
     .active{
         text-decoration: underline;
         font-size: large;
+    }
+
+    /* Modal CSS */
+    .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+    }
+
+    .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        z-index: 10;
     }
 </style>
