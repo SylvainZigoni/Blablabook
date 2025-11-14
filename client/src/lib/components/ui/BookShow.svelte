@@ -84,7 +84,7 @@
 
 <style>
     article{
-        border: 1px solid var(--border-color);
+
         border-radius: var(--border-radius);
         background-color: var(--color-main);
         display: flex;
@@ -93,13 +93,15 @@
         padding: 1rem;
         margin: 1rem;
         gap: 0.5rem;
+        box-shadow: var(--shadow);
     }
 
     img{
-        border: 1px solid var(--border-color);
+
         border-radius: var(--border-radius);
         max-height: 100%;
         object-fit: cover;
+        box-shadow: var(--shadow);
 
     }
 
@@ -118,16 +120,21 @@
     }
 
     .book_summary{
-        max-height: 100%;
+        box-sizing: border-box;
+        /* max-height: 100%; */
         min-width: 0;
-        border: 1px solid var(--border-color);   
+        font-size: 0.9rem;
         border-radius: var(--border-radius);
         background-color: var(--color-secondary);
-        border: 1px solid black;
         flex: 2;
         padding: 0.5rem;
-        overflow: hidden;       /* coupe le texte qui dépasse */
-        text-overflow: ellipsis; /* ajoute "..." si c’est trop long */    
+         overflow: hidden;
+               /* coupe le texte qui dépasse */
+        text-overflow: ellipsis;
+        /* ajoute "..." si c’est trop long */
+        strong {
+            font-size: 1rem;
+        }
     }
 
     /* Boutons */

@@ -4,6 +4,7 @@
     // Dans SvelteKit, `data` contient tout ce que tu retournes depuis `load()`.
     export let data;
 
+
 </script>
 
 <Home books={data.books}/>

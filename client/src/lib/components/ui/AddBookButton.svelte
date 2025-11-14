@@ -3,7 +3,7 @@
     export let onAdd;
 </script>
 
-<button class="book-add" aria-label="Ajouter à la bibliothèque" on:click={() => {onAdd();}} {...$$restProps}>
+<button class="book-add" aria-label="Ajouter à la bibliothèque" on:click={() => {onAdd();}}>
     <Icon icon="bxs:book-add" width="20" height="20" />
 </button>
 

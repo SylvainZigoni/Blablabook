@@ -2,7 +2,9 @@
     import UserDropdown from "./UserDropdown.svelte";
     import { onMount } from "svelte";
     import Icon from "@iconify/svelte";
+    import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
+	import { redirect } from "@sveltejs/kit";
 
     let isDropdownOpen = false;
     let isAdmin = false;
@@ -11,7 +13,9 @@
         // Appel vers le backend de svelte pour supprimer les cookies (accessibles seulement coté back)
         await fetch('/api/logout', {method: 'POST'})
         isDropdownOpen = false;
-        goto('/');
+    
+        // Windows location permet de recharger la page et donc de raffraichir les données obtenues via le load
+        window.location.href='/';
     }
 
     function handleClickOutside(event) {
@@ -57,14 +61,32 @@
 
 </script>
 
-<button class="user-button" on:click={toggleDropdown}>
-    <Icon icon="oui:user" height = 20 width= 20 />
-</button>
+<div class="user-menu">
+    <button class="user-button" on:click={toggleDropdown}>
+        <Icon icon="oui:user" height = 20 width= 20 />
+    </button>
+    <p class="username">{$page.data.user_name}</p>
+</div>
 
 <UserDropdown isOpen={isDropdownOpen} onLogout={handleLogout} isAdmin={isAdmin} />
 
 <style>
+
+    .user-menu{
+        margin-top: -20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .username{
+        font-size: 0.6rem;
+        justify-self: center;
+    }
+
     .user-button{
+ 
         padding: 0;
         height: 40px;
         width: 40px;

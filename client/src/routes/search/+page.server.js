@@ -1,6 +1,16 @@
-export async function load({ url, fetch, cookies }) {
+import { redirect } from "@sveltejs/kit";
+
+// Plus besoin de load cookies car ces derniers sont récupérés par parent
+export async function load({ url, fetch, parent }) {
 	const q = url.searchParams.get("q");
 	const by = url.searchParams.get("by");
+	let byFrench = "";
+
+	const { user_id, token } = await parent();
+
+	if (!token) {
+		throw redirect(302, "/");
+	}
 
 	console.log("Console.log fichier +page.server", q, by);
 
@@ -17,8 +27,16 @@ export async function load({ url, fetch, cookies }) {
 	}
 
 	const books = await response.json();
-	const user_id = cookies.get("user_id");
-	const token = cookies.get("token");
 
-	return { books, query: q, by: by, user_id, token };
+	// const user_id = cookies.get("user_id");
+	// const token = cookies.get("token");
+	if (by === "author") {
+		byFrench = "Auteur";
+	}
+
+	if (by === "title") {
+		byFrench = "Titre";
+	}
+
+	return { books, query: q, by: byFrench, user_id, token };
 }

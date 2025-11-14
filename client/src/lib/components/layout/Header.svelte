@@ -6,9 +6,11 @@
 	// import { onDestroy, onMount } from "svelte";
 	import UserButton from "../ui/UserButton.svelte";
 
+
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
+
 
 
 </script>
@@ -21,27 +23,26 @@
                     <h1>BlaBlaBook</h1>
                     <Icon icon="ion:book" height = 50 width= 50 />
                 </div>
-                {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
+                {#if $page.data.token}
                     <UserButton />
                 {/if}
             </div>
 
 
-            {#if currentPath === '/' || currentPath === '/mentions'}
+            {#if !$page.data.token}
                 <div class="login_register-button">
                     <button on:click={()=> goto('register')}>S'inscrire</button>
                     <button on:click={()=> goto('login')}>Se connecter</button>
                 </div>
             {/if}
         </div>
-        
-        {#if currentPath !== '/' && currentPath !== "/login" && currentPath !== '/mentions' && currentPath !== '/register'}
-
-        <div class="header_search">
-            <Search/>
-        </div>
+        {#if $page.data.token}
+            <div class="header_search">
+                <Search/>
+            </div>
         {/if}
     </div>
+
 </header>
 
 <style>
@@ -52,6 +53,7 @@
         padding: 1rem;
         /* border-bottom-left-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius); */
+        box-shadow: var(--shadow);
     }
 
     .header_home{
