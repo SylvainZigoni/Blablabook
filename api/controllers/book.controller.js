@@ -35,6 +35,52 @@ const bookController = {
 		}
 	},
 
+	async getBookById(req, res) {
+		try {
+			const { bookId, userId } = req.params;
+
+			const book = await Book.findOne({
+				where: { id: bookId },
+				include: [
+					{
+						model: Author,
+						attributes: ["name", "forname"],
+						through: { attributes: [] },
+					},
+					{
+						model: Category,
+						attributes: ["name"],
+						through: { attributes: [] },
+					},
+					{
+						model: User,
+						// Je veux renvoyer uniquement le statut du livre pour cet utilisateur
+						where: { id: userId },
+						attributes: ["id", "username"],
+						through: {
+							attributes: ["status"],
+							as: "Status",
+						},
+						required: false, // Pour inclure le livre même si l'utilisateur ne l'a pas
+					},
+				],
+			});
+
+			if (!book) {
+				return res.status(StatusCodes.NOT_FOUND).json({
+					error: "Livre non trouvé",
+				});
+			}
+
+			res.status(StatusCodes.OK).json(book);
+		} catch (error) {
+			console.error("Impossible de récupérer le livre :", error);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+				error: "Erreur interne du serveur",
+			});
+		}
+	},
+
 	async getAllUserBooks(req, res) {
 		try {
 			const userId = req.params.userId;
