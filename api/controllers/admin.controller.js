@@ -5,12 +5,12 @@ import Joi from "joi";
 
 const adminController = {
 
-// Administration des catégories 
+// Administration des catégories
     async getAllCategories(req, res) {
         try {
 
             const categories = await Category.findAll();
-           
+
             res.status(StatusCodes.OK).json({ categories });
         }
         catch (error) {
@@ -43,7 +43,7 @@ const adminController = {
 
     async deleteCategory(req, res) {
         const { id } = req.params;
-        
+
         try {
             const category = await Category.findOne({ where: { id } });
             if (!category) {
@@ -74,10 +74,10 @@ const adminController = {
         }
 
         // Vérifier si une autre catégorie avec le nouveau nom existe déjà
-        const existingCategory = await Category.findOne({ 
-            where: { 
-                name: newName.trim() 
-            } 
+        const existingCategory = await Category.findOne({
+            where: {
+                name: newName.trim()
+            }
         });
 
         // Vérifier que ce n'est pas la même catégorie
@@ -119,7 +119,7 @@ const adminController = {
 
             const newAuthor = await Author.create({
                 name: name.trim(),
-                forname: forname ? forname.trim() : null            
+                forname: forname ? forname.trim() : null
             });
 
             res.status(StatusCodes.CREATED).json(newAuthor);
@@ -188,7 +188,7 @@ const adminController = {
             const users = await User.findAll({
                 attributes: ['id', 'username', 'email', 'is_admin']
             });
-            res.status(StatusCodes.OK).json(users);
+            res.status(StatusCodes.OK).json({users});
         } catch (error) {
             console.error("Erreur lors de la récupération des utilisateurs :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -208,7 +208,7 @@ const adminController = {
                 return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
             }
 
-            res.status(StatusCodes.NO_CONTENT).json({ message: 'Utilisateur supprimé avec succès.' });
+            res.status(StatusCodes.OK).json({ message: 'Utilisateur supprimé avec succès.' });
 
         } catch (error) {
             console.error("Erreur lors de la suppression de l'utilisateur :", error);
@@ -216,7 +216,7 @@ const adminController = {
                 message: "Erreur serveur",
             });
         }
-    },      
+    },
 
     async updateUser(req, res) {
         try {
@@ -240,7 +240,7 @@ const adminController = {
 
             await user.save();
 
-            res.status(StatusCodes.OK).json(user);
+            res.status(StatusCodes.OK).json({user});
 
         } catch (error) {
             console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
@@ -249,9 +249,9 @@ const adminController = {
             });
         }
     },
-    
-    async getUserById(req, res) {           
-        const userId = req.params.id;   
+
+    async getUserById(req, res) {
+        const userId = req.params.id;
         try {
             const user =  await User.findByPk(userId, {
                 attributes: ['id', 'username', 'email', 'is_admin']
@@ -268,7 +268,7 @@ const adminController = {
         }
     },
 
-// Administration des livres 
+// Administration des livres
     async getAllBooks(req, res) {
         try {
             const books = await Book.findAll({
@@ -314,7 +314,7 @@ const adminController = {
     try {
         const bookId = req.params.id;
         const deletedBook = await Book.destroy({ where: { id: bookId } });
-        
+
         if (!deletedBook) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: 'Livre non trouvé.' });
         }
