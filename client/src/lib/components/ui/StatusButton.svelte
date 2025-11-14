@@ -58,6 +58,9 @@
     }
     
     select{
+        border: 1px solid transparent;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
         background-color:#354F52;
         color: var(--color-text-secondary);
         padding: 0.5rem;
