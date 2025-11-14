@@ -10,7 +10,7 @@ import { sequelize } from '../models/sequelize.client.js';
 async function cleanImagePaths() {
   try {
     await sequelize.authenticate();
-    console.log('✅ Connexion à la base réussie');
+    console.log('Connexion à la base réussie');
 
     const books = await Book.findAll();
 

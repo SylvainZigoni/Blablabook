@@ -156,13 +156,14 @@ const bookController = {
 			const { titleSearched } = req.params;
 			const userId = req.userId; // Récupéré depuis le middleware d'authentification
 
-			// Rechercher les livres avec associations
+			// Rechercher les livres avec associations (insensible aux accents grâce à unaccent)
 			const books = await Book.findAll({
-				where: {
-					title: {
-						[Op.iLike]: `%${titleSearched}%`, // Recherche partielle
-					},
-				},
+				where: sequelize.where(
+					sequelize.fn('unaccent', sequelize.col('title')),
+					{
+						[Op.iLike]: sequelize.fn('unaccent', `%${titleSearched}%`)
+					}
+				),
 				include: [
 					// Ce que ça fait : Récupère les auteurs de chaque livre via la table de liaison (many-to-many).
 					// Le through: { attributes: [] } signifie "ne ramène pas les colonnes de la table intermédiaire".
@@ -250,12 +251,18 @@ const bookController = {
 						model: Author,
 						where: {
 							[Op.or]: [
-								{ name: { [Op.iLike]: `%${authorSearched}%` } },
-								{
-									forname: {
-										[Op.iLike]: `%${authorSearched}%`,
-									},
-								},
+								sequelize.where(
+									sequelize.fn('unaccent', sequelize.col('name')),
+									{
+										[Op.iLike]: sequelize.fn('unaccent', `%${authorSearched}%`)
+									}
+								),
+								sequelize.where(
+									sequelize.fn('unaccent', sequelize.col('forname')),
+									{
+										[Op.iLike]: sequelize.fn('unaccent', `%${authorSearched}%`)
+									}
+								),
 							],
 						},
 						attributes: ["name", "forname"],
