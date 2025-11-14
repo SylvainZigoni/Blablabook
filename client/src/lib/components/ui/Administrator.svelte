@@ -1,19 +1,42 @@
 <script>
     import {page} from '$app/stores';
     import { DeleteCategory, getAllCategories } from '$lib/api/categories/categories';
+    import { DeleteUser, getAllUsers } from '$lib/api/users/users';
     import CategoryShow from './CategoryShow.svelte';
     import CategoryForm from './CategoryForm.svelte';
+    import UserShow from './UserShow.svelte';
+    import UserForm from './UserForm.svelte';
 
     export let token;
-    // console.log('token',token);
+    //console.log('token',token);
     // $: console.log("categories dans composant", categories);
 
     $: filter = $page.url.searchParams.get("filter");
+    
+    $: if(filter === "categories"){
+        loadCategories();
+    }
 
-   
+    $: if(filter === "users"){
+        loadUsers();
+    }
 
+    
+    let showModal = false;
+    let modalMode = null    // pour afficher le bon form en fonctoin create ou update
+    
+    // fermer le modal
+    function closeModal() {
+        showModal = false;
+        selectedCategory = null;
+        selectedUser = null;
+    }
+    
+    
+    // Gestion des Categories
     let categories = [];
-
+    let selectedCategory = null;
+    
     async function loadCategories() {
         try {
             const data = await getAllCategories(token);
@@ -28,21 +51,14 @@
     async function handleDeleteCategory(category_id){
         try {
             const result = await DeleteCategory(category_id, token);
+            await loadCategories();
         } catch (error) {
             console.error("Erreur de delete :", error);
         }
     }
 
-    $: if(filter === "categories"){
-        loadCategories();
-    }
-
-    let showModal = false;
-    let modalMode = null    // pour afficher le bon form en fonctoin create ou update
-    let selectedCategory = null;
-
     // ouvrir le modal du update
-    function handleUpdate(category) {
+    function handleUpdateCategory(category) {
         selectedCategory = category;
         modalMode = "update";
         showModal = true;
@@ -50,18 +66,44 @@
     }
 
     // ouvrir le modal du create
-    function handleCreate() {
+    function handleCreateCategory() {
         selectedCategory = null;
         modalMode = "create";
         showModal = true;
     }
+// Fin de gestion des Categories
 
-    // fermer le modal
-    function closeModal() {
-        showModal = false;
-        selectedCategory = null;
+// Début gestion des Users
+    let users = [];
+    let selectedUser = null;
+
+    async function loadUsers() {
+        try {
+            const data = await getAllUsers(token);
+            // console.log("Résultat API", data);
+            users = data;
+        } catch (err) {
+            console.error("Erreur fetch :", err);
+            users =[];
+        }
     }
 
+    async function handleDeleteUser(user_id){
+        try {
+            const result = await DeleteUser(user_id, token);
+            await loadUsers();
+        } catch (error) {
+            console.error("Erreur de delete :", error);
+        }
+    }
+
+    function handleUpdateUser(user) {
+        selectedUser = user;
+        modalMode = "update";
+        showModal = true;
+        console.log('selectedUser', selectedUser);
+    }
+// Fin gestion des Users
 
 </script>
 
@@ -78,7 +120,14 @@
     
     <section class="filter_container">
         {#if filter === "users"  }
-            <p>Users</p>
+            <!-- <button class="admin_button" on:click={handleCreateUser}>Ajouter un Utilisateurs</button> -->
+            {#each users as user }
+                <UserShow
+                    user = {user}
+                    onDelete = {handleDeleteUser}
+                    onUpdate = {handleUpdateUser}
+                    />                    
+            {/each}
         {/if}
 
         {#if filter === "books"  }
@@ -90,32 +139,46 @@
         {/if}
         
         {#if filter === "categories"  }
-            <button class="admin_button" on:click={handleCreate}>Ajouter une Catégorie</button>
+            <button class="admin_button" on:click={handleCreateCategory}>Ajouter une Catégorie</button>
             <ul>
                 {#each categories as category }
                     <CategoryShow
                     category = {category}
                     onDelete = {handleDeleteCategory}
-                    onUpdate = {handleUpdate}
+                    onUpdate = {handleUpdateCategory}
                     />                    
                 {/each}
             </ul>
         {/if}
     </section>
 
-    {#if showModal} <!-- NEW -->
+    {#if showModal}
         <div class="modal-backdrop" on:click={closeModal}></div>
         <div class="modal">
-            <CategoryForm
-            category={selectedCategory}
-            mode={modalMode}
-            token={token}
-            onClose={closeModal}
-            onSubmitted={async () => { //callback après PATCH réussi
-                    await loadCategories();
-                    closeModal();
-            }}
-            />
+            {#if filter ==="categories"}
+                <CategoryForm
+                category={selectedCategory}
+                mode={modalMode}
+                token={token}
+                onClose={closeModal}
+                onSubmitted={async () => { //callback après PATCH réussi
+                        await loadCategories();
+                        closeModal();
+                }}
+                />
+            {/if}            
+            {#if filter ==="users"}
+                <UserForm
+                user={selectedUser}
+                mode={modalMode}
+                token={token}
+                onClose={closeModal}
+                onSubmitted={async () => { //callback après PATCH réussi
+                        await loadUsers();
+                        closeModal();
+                }}
+                />
+            {/if}
         </div>
     {/if}
 </div>

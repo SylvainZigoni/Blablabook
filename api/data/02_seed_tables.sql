@@ -57,19 +57,19 @@ INSERT INTO category (name) VALUES
 -- Insertion des livres
 -- ========================================
 INSERT INTO book (title, summary, date_parution, image_url) VALUES
-    ('Harry Potter and the Philosopher''s Stone', 'Un jeune sorcier découvre son destin magique.', '1997-06-26', 'image_2.png'),
+    ('Harry Potter and the Philosopher''s Stone', 'Un jeune sorcier découvre son destin magique.', '1997-06-26', 'image_1.png'),
     ('The Lord of the Rings', 'Une quête épique pour détruire un anneau maléfique.', '1954-07-29', 'image_2.png'),
-    ('A Game of Thrones', 'Intrigues politiques dans un monde médiéval fantastique.', '1996-08-06', 'image_2.png'),
-    ('1984', 'Une vision dystopique d''un futur totalitaire.', '1949-06-08', 'image_2.png'),
+    ('A Game of Thrones', 'Intrigues politiques dans un monde médiéval fantastique.', '1996-08-06', 'image_3.png'),
+    ('1984', 'Une vision dystopique d''un futur totalitaire.', '1949-06-08', 'image_1.png'),
     ('Pride and Prejudice', 'Romance et société dans l''Angleterre du 19ème siècle.', '1813-01-28', 'image_2.png'),
-    ('The Old Man and the Sea', 'Un vieux pêcheur affronte un marlin géant.', '1952-09-01', 'image_2.png'),
-    ('One Hundred Years of Solitude', 'L''histoire de la famille Buendía sur plusieurs générations.', '1967-05-30', 'image_2.png'),
+    ('The Old Man and the Sea', 'Un vieux pêcheur affronte un marlin géant.', '1952-09-01', 'image_3.png'),
+    ('One Hundred Years of Solitude', 'L''histoire de la famille Buendía sur plusieurs générations.', '1967-05-30', 'image_1.png'),
     ('Norwegian Wood', 'Une histoire d''amour et de perte dans le Japon des années 60.', '1987-09-04', 'image_2.png'),
-    ('The Handmaid''s Tale', 'Une dystopie féministe sur une théocratie totalitaire.', '1985-08-17', 'image_2.png'),
-    ('Les Misérables', 'L''histoire de Jean Valjean et de la rédemption.', '1862-04-03', 'image_2.png'),
+    ('The Handmaid''s Tale', 'Une dystopie féministe sur une théocratie totalitaire.', '1985-08-17', 'image_3.png'),
+    ('Les Misérables', 'L''histoire de Jean Valjean et de la rédemption.', '1862-04-03', 'image_1.png'),
     ('The Three Musketeers', 'Aventures de d''Artagnan et ses compagnons mousquetaires.', '1844-07-01', 'image_2.png'),
-    ('The Stranger', 'Un homme confronté à l''absurdité de l''existence.', '1942-06-15', 'image_2.png'),
-    ('In Search of Lost Time', 'Une exploration de la mémoire et du temps.', '1913-11-14', 'image_2.png'),
+    ('The Stranger', 'Un homme confronté à l''absurdité de l''existence.', '1942-06-15', 'image_3.png'),
+    ('In Search of Lost Time', 'Une exploration de la mémoire et du temps.', '1913-11-14', 'image_1.png'),
     ('Germinal', 'La lutte des mineurs pour de meilleures conditions de vie.', '1885-03-02', 'image_2.png');
 
 -- ========================================
