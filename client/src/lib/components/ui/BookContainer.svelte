@@ -15,69 +15,117 @@ console.log(statutBook)
 
 </script>
 
-<article class="book-container--title">
-    <h2 class="book-container--title-h2"><Icon icon="raphael:book" width="32" height="32" /> {book.title}</h2>
+<article class="book-container">
+    <h2 class="book-container--title"><Icon icon="raphael:book" width="32" height="32" /> {book.title}</h2>
     <div class="book-container--elements">
         <div class="book-container--elements-imgBtn">
             <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt={book.title}>
             <div class="book-container--elements-btn">
-                <StatusButton {book}/>
-                {#if statutBook !== ""}
-                    <DeleteBookButton {book}/>
-                {/if}
-                {#if statutBook === ""}
-                    <AddBookButton {book} />
-                {/if}
+                <div class="StatusButton">
+                    <StatusButton {book}/>
+                </div>
+                <div class="interactButton">
+                    {#if statutBook !== ""}
+                        <DeleteBookButton {book}/>
+                    {/if}
+                    {#if statutBook === ""}
+                        <AddBookButton {book} />
+                    {/if}
+                </div>
             </div>
         </div>
         <div class="book-container--elements-info">
-            <p>Auteur
+            <ul>
+            <li><Icon icon="material-symbols:person" width="16" height="16" /> Auteur
                 {#if book.Authors.length>1}s{/if} :
                 {#each book.Authors as author}
                     {author.forname} {author.name}
                 {/each}
-            </p>
-            <p>Genre
+            </li>
+            <li><Icon icon="streamline-flex:search-category-remix" width="16" height="16" /> Genre
                 {#if book.Categories.length>1}s{/if} :
                 {#each book.Categories as category, i }
                     {category.name}{i < book.Categories.length - 1 ? ', ': ''}
                 {/each}
-            </p>
-            <p>Date de parution :
+            </li>
+            <li><Icon icon="material-symbols:date-range" width="16" height="16" /> Date de parution :
                 {book.date_parution}
-            </p>
-             <p>Résumé :
-                {book.summary}
-             </p>
+            </li>
+            </ul>
+            <article class="summary-container">
+                <strong>Résumé :</strong><br>
+                <p class="summary-container--text"> 
+                    {book.summary}  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Quos, nulla alias ipsum, aperiam id, 
+        quibusdam maxime nihil similique repellat nam nemo sequi eum. 
+        Suscipit molestiae sit blanditiis aliquam ea? Consectetur! 
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, 
+        similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
+                </p>
+             </article>
         </div>
     </div>
 </article>
 
 <style>
-.book-container--title{
-    display: flexbox;
+.book-container{
+    display: flex;
+    flex-direction: column;
     align-items: center;
     margin: auto;
-    border: 1px red solid;
 }
 
-.book-container--title-h2{
+.book-container--title{
     display: flex;
 }
 
 .book-container--elements{
-        border: 1px red solid;
+        /* border: 1px red solid; */
 }
 
 .book-container--elements-imgBtn{
-    border: 1px red solid;
+    margin: auto;
+    margin-top: 10px;
+    background-color: var(--color-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 10px;
 }
 
 .book-container--elements-btn{
-        border: 1px red solid;
+        /* border: 1px red solid; */
+        display: flex;
+        justify-content: space-around;
+}
+
+.StatusButton {
+    margin-top: 10px;
+    width: 80%;
 }
 
 .book-container--elements-info{
-    border: 1px red solid;
+    margin-top: 10px;
+    border-top: 1px var(--color-header-footer) solid;
+    padding-top: 10px;
+}
+
+.interactButton{
+    align-self: flex-end;
+}
+
+img{
+    max-width: 100%;
+    max-height: 70%;
+}
+
+.summary-container {
+    margin-top: 10px;
+    border-top: 1px var(--color-header-footer) solid;
+    padding-top: 10px;
+}
+
+.summary-container--text {
+    margin-top: 10px;
 }
 </style>
