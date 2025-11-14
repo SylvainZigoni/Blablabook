@@ -16,14 +16,19 @@
     footer{
             display: flex;
             justify-content: space-around;
-            border: 1px solid black;
+            /* border: 1px solid black; */
             color: var(--color-text-secondary);
             background-color: var(--color-header-footer);
             padding: 1rem;
-        }
+            font-size: 0.7rem;
+    }
+
     a{
         text-transform: none;
         text-decoration: none;
         color: inherit;
+    }
+    a:hover{
+        text-decoration-line: underline;
     }
 </style>

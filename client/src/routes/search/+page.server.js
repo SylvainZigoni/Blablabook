@@ -4,6 +4,7 @@ import { redirect } from "@sveltejs/kit";
 export async function load({ url, fetch, parent }) {
 	const q = url.searchParams.get("q");
 	const by = url.searchParams.get("by");
+	let byFrench = "";
 
 	const { user_id, token } = await parent();
 
@@ -29,6 +30,13 @@ export async function load({ url, fetch, parent }) {
 
 	// const user_id = cookies.get("user_id");
 	// const token = cookies.get("token");
+	if (by === "author") {
+		byFrench = "Auteur";
+	}
 
-	return { books, query: q, by: by, user_id, token };
+	if (by === "title") {
+		byFrench = "Titre";
+	}
+
+	return { books, query: q, by: byFrench, user_id, token };
 }
