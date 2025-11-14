@@ -143,6 +143,7 @@ img {
     }
 
     .book-container--elements-imgBtn {
+        margin-left: 0;
         width: 45%;
     }
 
@@ -151,6 +152,7 @@ img {
     }
 
     .book-container--elements{
+        margin-left: 0;
         display: flex;
         max-height: 70vh;
         gap : 24px;
