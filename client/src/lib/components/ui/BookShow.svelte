@@ -77,7 +77,7 @@
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
             />
         {/if}
-
+        
         {#if book.userStatus === 'absent'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
