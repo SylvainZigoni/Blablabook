@@ -10,12 +10,14 @@
     
 
     export let onDelete;
+    export let onUpdate;
     export let onAdd;
     // export passés a StatusButton
     export let book;
     export let user_id;
     export let token;
 
+    export let admin = false;
     const dispatch = createEventDispatcher();
 
     let currentPath;
@@ -88,8 +90,9 @@
              <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>
-    
 </article>
+
+
 
 <style>
     article{
