@@ -273,12 +273,12 @@ const adminController = {
         try {
             const books = await Book.findAll({
                 include: [
-                    { model: Author, attributes: ['name', 'forname'] },
-                    { model: Category, attributes: ['name'] }
+                    { model: Author, attributes: ['name', 'forname'],through: { attributes: [] },},
+                    { model: Category, attributes: ['name'],through: { attributes: [] },}
                 ]
             });
-
-            res.status(StatusCodes.OK).json(books);
+            //console.log("api books", books);
+            res.status(StatusCodes.OK).json({books});
         } catch (error) {
             console.error("Erreur lors de la récupérations des livres", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

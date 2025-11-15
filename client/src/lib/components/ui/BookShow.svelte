@@ -8,12 +8,14 @@
     
 
     export let onDelete;
+    export let onUpdate;
     export let onAdd;
     // export passés a StatusButton
     export let book;
     export let user_id;
     export let token;
 
+    export let admin = false;
     const dispatch = createEventDispatcher();
 
     let currentPath;
@@ -21,13 +23,12 @@
     $: currentPath = $page.url.pathname
 
     // AJOUT SYLVAIN
-    console.log(book)
-    console.log(book.userStatus)
+    //console.log(book)
+    //console.log(book.userStatus)
     
-
-
 </script>
 
+{#if admin}
 <article>
     <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
     <div class="book_infos">
@@ -68,7 +69,6 @@
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
             />
         {/if}
-
         {#if book.userStatus === 'absent'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
@@ -79,8 +79,46 @@
              <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>
-    
 </article>
+{:else}
+<article>
+    <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
+    <div class="book_infos">
+        <h3>Titre : {book.title}</h3>
+        {#if book.Authors && book.Authors.length > 0}
+            <p><strong>Auteur{book.Authors.length > 1 ? 's' : ''}</strong>:
+                <!-- {#each tableau as element, index} -->
+                {#each book.Authors as author, i}
+                    {author.forname} {author.name}{i < book.Authors.length - 1 ? ', ' : ''}
+                {/each}
+            </p>
+        {:else}
+            <p><strong>Auteur</strong>: Inconnu</p>
+        {/if}
+        <p class="book_date"><strong>Date de publication </strong>: {book.date_parution}</p> 
+        {#if book.Categories && book.Categories.length > 0}
+            <p class="book_category"><strong>Genres</strong>: 
+                {#each book.Categories as category, i}
+                    {category.name}{i < book.Categories.length - 1 ? ', ' : ''}
+                {/each}
+            </p>
+        {:else}
+            <p class="book_category"><strong>Genres</strong>: Aucun</p>
+        {/if}       
+    </div>
+    <p class="book_summary"><strong>Résumé</strong> : { book.summary} Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Quos, nulla alias ipsum, aperiam id, 
+        quibusdam maxime nihil similique repellat nam nemo sequi eum. 
+        Suscipit molestiae sit blanditiis aliquam ea? Consectetur! 
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, 
+        similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
+    </p>
+    <div class="button_container">
+        <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
+    </div>
+</article>
+{/if}
 
 <style>
     article{
