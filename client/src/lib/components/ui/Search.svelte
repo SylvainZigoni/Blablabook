@@ -97,6 +97,7 @@ input[type="text"] {
 .search_form-button:hover {
     background-color: var(--color-main);
     color : var(--color-text-main);
+    scale: 1.03;
 }
 
 .search_form-radio{

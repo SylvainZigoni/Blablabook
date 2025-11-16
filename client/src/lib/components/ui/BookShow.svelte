@@ -26,18 +26,21 @@
     console.log(book)
 
     function handleClick(event){
-        const target = event?.target;
-        if(target && (target.closest("button"))) {
-            return
+        // On regarde le chemin que va parcourir l'evenement dans le DOM. S'il rencontre un bouton ou un select, alors il "return" sinon il va a la page du livre
+        const path = event.composedPath ? event.composedPath() : (event.path || []);
+        if (path.some(node => node && node.tagName && ['BUTTON','SELECT'].includes(node.tagName))) {
+            return;
         }
-        goto(`/book/${book.id}`)
+        goto(`/book/${book.id}`);
+
+        return;
     }
 
     console.log(book)
 
 </script>
 
-<article on:click={handleClick}>
+<article class="bookshow" on:click={handleClick}>
     <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
     <div class="book_infos">
         <h3>Titre : {book.title}</h3>
@@ -71,7 +74,7 @@
         similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
     </p>
     <div class="button_container">
-        {#if currentPath !== '/'}
+    {#if book.userStatus !== 'absent' && book.userStatus }
             <StatusButton 
                 book ={book} user_id={user_id} token={token}
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
@@ -151,6 +154,12 @@
         display: flex;
         align-self: center;
         gap: 0.5rem;
+    }
+
+    .bookshow:hover{
+        
+        cursor: pointer;
+        box-shadow: var(--shadow-hover);
     }
 
     @media (max-width: 1240px) {

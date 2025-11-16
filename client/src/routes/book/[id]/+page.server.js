@@ -1,5 +1,11 @@
+import { redirect } from "@sveltejs/kit";
+
 export async function load({ params, fetch, parent }) {
 	const { user_id, token } = await parent();
+
+	if (!token) {
+		throw redirect(302, "/");
+	}
 
 	console.log("token avant fetch", token);
 	console.log(

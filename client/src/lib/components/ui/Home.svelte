@@ -4,7 +4,8 @@
 
     // le composant attends qu'on lui passe une variable books depuis l'exterieur
     // sur la page ou il est utilise on a <Home books = {books}/>
-    export let books=[];   
+    export let books=[];
+    export let token;
 </script>
 
 <div class="home_container">
@@ -18,7 +19,7 @@
 
 <section>
     {#each books as book }
-    <BookShow {book}/>
+    <BookShow {book} token={token}/>
     {/each}
 </section>
 

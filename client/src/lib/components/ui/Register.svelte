@@ -29,7 +29,8 @@
             </div>
 
             <div class="form-row">
-                <label class="label" for="password">Mot de passe :</label>
+                <label class="label" for="password">Mot de passe : <br> <em>Au moins 8 caractères dont une majuscule, une minuscule et un chiffre</em> </label>
+                
                 <input class="input-field" type="password" name="password" id="password" placeholder="Votre mot de passe" required>
             </div>
 
@@ -117,6 +118,12 @@ input[type="reset"],
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.button:hover{
+    background-color: var(--color-main);
+    color:var(--color-text-main);
+    scale: 1.03;
 }
 
 .buttons-container{
