@@ -37,7 +37,7 @@
 
 </script>
 
-<article on:click={handleClick}>
+<article class="bookshow" on:click={handleClick}>
     <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
     <div class="book_infos">
         <h3>Titre : {book.title}</h3>
@@ -151,6 +151,12 @@
         display: flex;
         align-self: center;
         gap: 0.5rem;
+    }
+
+    .bookshow:hover{
+        scale: 1.03;
+        cursor: pointer;
+        box-shadow: var(--shadow-hover);
     }
 
     @media (max-width: 1240px) {
