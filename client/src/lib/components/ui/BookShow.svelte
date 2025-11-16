@@ -40,10 +40,10 @@
 
 </script>
 
-<article class="bookshow" on:click={handleClick}>
+<article class="bookshow">
     <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt= {book.title}>
     <div class="book_infos">
-        <h3>Titre : {book.title}</h3>
+        <h3 class="book_title" on:click={handleClick}>Titre : {book.title}</h3>
         {#if book.Authors && book.Authors.length > 0}
             <p><strong>Auteur{book.Authors.length > 1 ? 's' : ''}</strong>:
                 <!-- {#each tableau as element, index} -->
@@ -131,6 +131,11 @@
         text-overflow: ellipsis; /* ajoute "..." si c’est trop long */
     }
 
+.book_title:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
     .book_summary{
         box-sizing: border-box;
         /* max-height: 100%; */
@@ -158,7 +163,6 @@
 
     .bookshow:hover{
         
-        cursor: pointer;
         box-shadow: var(--shadow-hover);
     }
 
