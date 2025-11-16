@@ -74,7 +74,7 @@
         similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
     </p>
     <div class="button_container">
-    {#if book.userStatus !== 'absent' && book.userStatus }
+    {#if book.userStatus !== 'absent' && (book.userStatus || book.Users?.[0]?.Status?.status) }
             <StatusButton 
                 book ={book} user_id={user_id} token={token}
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
