@@ -120,6 +120,12 @@ input[type="reset"],
     justify-content: center;
 }
 
+.button:hover{
+    background-color: var(--color-main);
+    color:var(--color-text-main);
+    scale: 1.03;
+}
+
 .buttons-container{
     margin-top: 2rem;
     display: flex;
