@@ -76,7 +76,7 @@
 
     .header_title:hover{
         cursor:pointer;
-        scale: 1.01;
+        scale: 1.03;
     }
 
     .header_title_user{
@@ -114,6 +114,12 @@
         flex-wrap: wrap;
         justify-content: space-between; */
 
+    }
+
+    button:hover{
+        scale: 1.03;
+        background-color: var(--color-main);
+        color: var(--color-text-main);
     }
 
 

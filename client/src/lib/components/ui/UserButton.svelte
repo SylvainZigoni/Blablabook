@@ -81,6 +81,7 @@
     }
 
     .username{
+        margin-top: 4px;
         font-size: 0.6rem;
         justify-self: center;
     }
@@ -97,6 +98,6 @@
     .user-button:hover{
         background-color: var(--color-main);
         color : var(--color-text-main);
-        transform: scale(1.03);
+        transform: scale(1.1);
     }
 </style>
