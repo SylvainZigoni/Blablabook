@@ -1,4 +1,5 @@
-export async function load({ fetch }) {
+export async function load({ fetch, parent }) {
+	const { user_id, token } = await parent();
 	const response = await fetch(
 		`${import.meta.env.VITE_API_BASE_URL}/books/random`
 	);
@@ -11,5 +12,5 @@ export async function load({ fetch }) {
 		};
 	}
 	const books = await response.json();
-	return { books };
+	return { books, user_id, token };
 }

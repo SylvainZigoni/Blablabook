@@ -74,7 +74,7 @@
         similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
     </p>
     <div class="button_container">
-        {#if book.userStatus !== 'absent'}
+    {#if book.userStatus !== 'absent' && book.userStatus }
             <StatusButton 
                 book ={book} user_id={user_id} token={token}
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
@@ -157,6 +157,7 @@
     }
 
     .bookshow:hover{
+        
         cursor: pointer;
         box-shadow: var(--shadow-hover);
     }

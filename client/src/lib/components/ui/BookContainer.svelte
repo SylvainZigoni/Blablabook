@@ -98,6 +98,7 @@ console.log(statutBook)
 
 .book-container--elements-btn{
         /* border: 1px red solid; */
+        margin-top: 10px;
         display: flex;
         justify-content: space-around;
 }
