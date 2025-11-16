@@ -22,6 +22,7 @@
 
             <div class="form-row">
                 <label class="label" for="password">Mot de passe :</label>
+                
                 <input class="input-field" type="password" name="password" id="password" placeholder="Votre mot de passe" required>
             </div>
 
