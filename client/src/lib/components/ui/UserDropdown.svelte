@@ -1,8 +1,10 @@
 <script>
     import Icon from "@iconify/svelte";
+    import { page } from "$app/stores";
     export let isOpen = false;
     export let onLogout;
     export let isAdmin = false
+
 </script>
 
 
@@ -14,7 +16,7 @@
         {#if isAdmin}
             <a href="/administrator" class="dropdown-item"><Icon icon="dashicons:admin-network" width="16" height="16" /> Admin</a>
         {/if}
-        <a href="/user/1" class="dropdown-item"><Icon icon="ion:library" width="16" height="16" /> Ma bibliothèque</a>
+        <a href={`/user/${$page.data.user_id}`} class="dropdown-item"><Icon icon="ion:library" width="16" height="16" /> Ma bibliothèque</a>
         <button on:click={onLogout} class="dropdown-item" aria-label="Se deconnecter"><Icon icon="fluent:plug-disconnected-16-filled" width="16" height="16" /> Se deconnecter</button>
     </div>
 </div>
