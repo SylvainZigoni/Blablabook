@@ -42,7 +42,7 @@
 
 <div class="status_container">
     <label for="status">Modifier le statut de lecture</label>
-    <select name="status" id="status" on:change={handleChangeStatus} bind:value={ currentStatus } >
+    <select name="status" id="status" on:change={handleChangeStatus} bind:value={ currentStatus } on:click|stopPropagation >
         <option value="en cours">Lecture en cours</option>
         <option value="à lire">Livres à lire</option>
         <option value="lu">Livre lu</option>

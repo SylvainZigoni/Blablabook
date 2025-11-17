@@ -10,12 +10,14 @@
     
 
     export let onDelete;
+    export let onUpdate;
     export let onAdd;
     // export passés a StatusButton
     export let book;
     export let user_id;
     export let token;
 
+    export let admin;
     const dispatch = createEventDispatcher();
 
     let currentPath;
@@ -74,24 +76,23 @@
         similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
     </p>
     <div class="button_container">
-    {#if book.userStatus !== 'absent' && (book.userStatus || book.Users?.[0]?.Status?.status) }
+    {#if book.userStatus !== 'absent' && (book.userStatus || book.Users?.[0]?.Status?.status) && !admin }
             <StatusButton 
                 book ={book} user_id={user_id} token={token}
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
             />
         {/if}
-
+        
         {#if book.userStatus === 'absent'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
-        {#if currentPath.startsWith('/user/') }
+        {#if (currentPath.startsWith('/user/')) || admin }
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
         {#if currentPath.startsWith('/search') && book.userStatus !== 'absent'}
              <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>
-    
 </article>
 
 <style>

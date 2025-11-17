@@ -2,10 +2,12 @@
     import {page} from '$app/stores';
     import { DeleteCategory, getAllCategories } from '$lib/api/categories/categories';
     import { DeleteUser, getAllUsers } from '$lib/api/users/users';
+    import { getAllBooks, DeleteBook } from '$lib/api/books/books';
     import CategoryShow from './CategoryShow.svelte';
     import CategoryForm from './CategoryForm.svelte';
     import UserShow from './UserShow.svelte';
     import UserForm from './UserForm.svelte';
+    import BookShow from './BookShow.svelte';
 
     export let token;
     //console.log('token',token);
@@ -21,6 +23,9 @@
         loadUsers();
     }
 
+    $: if(filter === "books"){
+        loadBooks();
+    }
     
     let showModal = false;
     let modalMode = null    // pour afficher le bon form en fonctoin create ou update
@@ -104,6 +109,29 @@
         console.log('selectedUser', selectedUser);
     }
 // Fin gestion des Users
+    let books = [];
+    let selectedBook = null;
+
+    async function loadBooks() {
+        try {
+            const data = await getAllBooks(token);
+            console.log("Résultat API", data);
+            books = data;
+        } catch (err) {
+            console.error("Erreur fetch :", err);
+            books =[];
+        }
+    }
+
+    async function handleDeleteBook(book_id){
+        try {
+            const result = await DeleteBook(book_id, token);
+            await loadBooks();
+        } catch (error) {
+            console.error("Erreur de delete :", error);
+        }
+    }
+//Début gestoin des livres
 
 </script>
 
@@ -131,7 +159,15 @@
         {/if}
 
         {#if filter === "books"  }
-            <p>Books</p>
+            <button class="admin_button" >Ajouter un livre</button>
+            {#each books as book}
+                <BookShow
+                book = { book}
+                onDelete = {handleDeleteBook}
+                admin = {true}
+                />
+            {/each}
+            
         {/if}
 
         {#if filter === "authors"  }
