@@ -30,12 +30,12 @@
 <form on:submit|preventDefault={submit}>
     <h3>{mode === "create" ? "Ajouter un auteur" : "Modifier l'auteur"}</h3>
     <div class="field">
-        <label for="name">{mode === "create" ? "Nom de l'auteur :" : `Nom actuel : ${author?.name}`}</label>
-        <input id="name" type="text"  placeholder="Entrez un titre" bind:value={name}/>
+        <label for="forname">{mode === "create" ? "Prenom de l'auteur :" : `Prenom actuel : ${author?.name}`}</label>
+        <input id="forname" type="text"  placeholder="Entrez le prenom" bind:value={forname}/>
     </div>
     <div class="field">
-        <label for="forname">{mode === "create" ? "Prenom de l'auteur :" : `Prenom actuel : ${author?.name}`}</label>
-        <input id="forname" type="text"  placeholder="Entrez un titre" bind:value={forname}/>
+        <label for="name">{mode === "create" ? "Nom de l'auteur :" : `Nom actuel : ${author?.name}`}</label>
+        <input id="name" type="text"  placeholder="Entrez le nom" bind:value={name}/>
     </div>
     <div>
         <button type="submit">{mode === "create" ? "Créer" : "Mettre à jour"}</button>
