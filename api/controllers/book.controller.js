@@ -171,31 +171,35 @@ const bookController = {
 		}
 	},
 
-    async updateUserBook (req, res) {
-        try {
-            // Lorsque l'utilisateur va séléctionner le statut d'un livre je veux récupérer l'id du l'utilisateur, l'id du livre et le statut qu'il a choisit
-            const { userId, bookId } = req.params;
-            const { status } = req.body; // Nouveau statut envoyé dans le corps de la requête
+	async updateUserBook(req, res) {
+		try {
+			// Lorsque l'utilisateur va séléctionner le statut d'un livre je veux récupérer l'id du l'utilisateur, l'id du livre et le statut qu'il a choisit
+			const { userId, bookId } = req.params;
+			const { status } = req.body; // Nouveau statut envoyé dans le corps de la requête
 
-            
-            await Status.update(
-                { status: status }, 
-                {
-                    where: {
-                        user_id: userId,
-                        book_id: bookId
-                    }
-                }
-            );
+			await Status.update(
+				{ status: status },
+				{
+					where: {
+						user_id: userId,
+						book_id: bookId,
+					},
+				}
+			);
 
-            res.status(StatusCodes.OK).json({ message: "Statut du livre de l'utilisateur mis à jour." });
-        }
-
-    catch (error) {
-            console.error("Impossible de mettre à jour le statut du livre de l'utilisateur :", error);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur interne du serveur" });
-        }
-    },
+			res.status(StatusCodes.OK).json({
+				message: "Statut du livre de l'utilisateur mis à jour.",
+			});
+		} catch (error) {
+			console.error(
+				"Impossible de mettre à jour le statut du livre de l'utilisateur :",
+				error
+			);
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+				error: "Erreur interne du serveur",
+			});
+		}
+	},
 
 	async getBooksByTitle(req, res) {
 		try {
@@ -205,9 +209,12 @@ const bookController = {
 			// Rechercher les livres avec associations (insensible aux accents grâce à unaccent)
 			const books = await Book.findAll({
 				where: sequelize.where(
-					sequelize.fn('unaccent', sequelize.col('title')),
+					sequelize.fn("unaccent", sequelize.col("title")),
 					{
-						[Op.iLike]: sequelize.fn('unaccent', `%${titleSearched}%`)
+						[Op.iLike]: sequelize.fn(
+							"unaccent",
+							`%${titleSearched}%`
+						),
 					}
 				),
 				include: [
@@ -229,10 +236,13 @@ const bookController = {
 					},
 					{
 						model: User,
+						where: { id: userId },
+						attributes: ["id", "username"],
 						through: {
 							attributes: ["status"],
+							as: "Status",
 						},
-						where: { id: userId },
+
 						required: false, // LEFT JOIN pour avoir tous les livres même sans statut
 						// Vérifie si l'utilisateur connecté (userId) possède ce livre dans sa bibliothèque
 						// Si oui, ramène le statut (lu, à lire, en cours...)
@@ -242,42 +252,54 @@ const bookController = {
 				],
 			});
 
+			if (!books.Users) {
+				books.Users = [];
+				books.Users.push({
+					id: userId,
+					Status: {
+						status: "en cours",
+					},
+				});
+			}
+
 			// AJOUT SYLVAIN
 			console.log("TEST SYLVAIN           ", books);
 
-			// Formatter la réponse
-			const formattedBooks = books.map((book) => {
-				const bookData = book.toJSON();
+			// // Formatter la réponse
+			// const formattedBooks = books.map((book) => {
+			// 	const bookData = book.toJSON();
 
-			// Extraire le statut de l'utilisateur
-			let userStatus = "absent"; // Par défaut = l'utilisateur ne possède pas le livre
-			if (bookData.Users && bookData.Users.length > 0) {
-				// Si Users n'est pas vide = l'utilisateur possède le livre
-				const userBookRelation = bookData.Users[0].Status;
-				if (userBookRelation && userBookRelation.status) {
-					userStatus = userBookRelation.status; // ou le nom du statut si vous le joignez
-				}
-			}				// Restructurer l'objet
-				return {
-					id: bookData.id,
-					title: bookData.title,
-					isbn: bookData.isbn,
-					// AJOUT SYLVAIN
-					image_url: bookData.image_url,
-					summary: bookData.summary,
-					image: bookData.image,
-					// AJOUT SYLVAIN : date_parution
-					date_parution: bookData.date_parution,
-					// AJOUT SYLVAIN : Retrait du "s" a authors
-					Authors: bookData.Authors,
-					Categories: bookData.Categories,
-					userStatus: userStatus, // ← Le statut simplifié !
-					// On ne retourne PAS users
-				};
-			});
+			// 	// Extraire le statut de l'utilisateur
+			// 	let userStatus = "absent"; // Par défaut = l'utilisateur ne possède pas le livre
+			// 	if (bookData.Users && bookData.Users.length > 0) {
+			// 		// Si Users n'est pas vide = l'utilisateur possède le livre
+			// 		const userBookRelation = bookData.Users[0].Status;
+			// 		if (userBookRelation && userBookRelation.status) {
+			// 			userStatus = userBookRelation.status; // ou le nom du statut si vous le joignez
+			// 		}
+			// 	} // Restructurer l'objet
+			// 	return {
+			// 		id: bookData.id,
+			// 		title: bookData.title,
+			// 		isbn: bookData.isbn,
+			// 		// AJOUT SYLVAIN
+			// 		image_url: bookData.image_url,
+			// 		summary: bookData.summary,
+			// 		image: bookData.image,
+			// 		// AJOUT SYLVAIN : date_parution
+			// 		date_parution: bookData.date_parution,
+			// 		// AJOUT SYLVAIN : Retrait du "s" a authors
+			// 		Authors: bookData.Authors,
+			// 		Categories: bookData.Categories,
+			// 		userStatus: userStatus, // ← Le statut simplifié !
+			// 		// On ne retourne PAS users
+
+			// 	};
+			// });
 
 			// Envoyer la réponse
-			res.status(StatusCodes.OK).json(formattedBooks);
+			res.status(StatusCodes.OK).json(books);
+			// res.status(StatusCodes.OK).json(formattedBooks);
 		} catch (error) {
 			console.error("Erreur lors de la recherche de livres :", error);
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -298,15 +320,27 @@ const bookController = {
 						where: {
 							[Op.or]: [
 								sequelize.where(
-									sequelize.fn('unaccent', sequelize.col('name')),
+									sequelize.fn(
+										"unaccent",
+										sequelize.col("name")
+									),
 									{
-										[Op.iLike]: sequelize.fn('unaccent', `%${authorSearched}%`)
+										[Op.iLike]: sequelize.fn(
+											"unaccent",
+											`%${authorSearched}%`
+										),
 									}
 								),
 								sequelize.where(
-									sequelize.fn('unaccent', sequelize.col('forname')),
+									sequelize.fn(
+										"unaccent",
+										sequelize.col("forname")
+									),
 									{
-										[Op.iLike]: sequelize.fn('unaccent', `%${authorSearched}%`)
+										[Op.iLike]: sequelize.fn(
+											"unaccent",
+											`%${authorSearched}%`
+										),
 									}
 								),
 							],
