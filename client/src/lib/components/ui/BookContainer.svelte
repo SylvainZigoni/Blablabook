@@ -5,7 +5,13 @@
     import {page} from "$app/stores"
     export let book;
     import Icon from "@iconify/svelte";
+
+
 console.log("Book depuis la page de livre",book)
+
+
+// TODO: Utiliser user_id pour les routes + delete et modif statut
+
 
 let statutBook= book?.Users?.[0]?.Status?.status ?? "";
 $ : statutBook = book?.Users?.[0]?.Status?.status ?? "";

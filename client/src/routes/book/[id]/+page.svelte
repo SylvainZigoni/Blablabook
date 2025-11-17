@@ -1,12 +1,12 @@
 <script>
 	import BookContainer from "$lib/components/ui/BookContainer.svelte";
     export let data;
-    const {book} = data;
+
 
 </script>
 
 
-<BookContainer {book} />
+<BookContainer book={data.book} user_id={data.user_id} />
 
 
 <style>

@@ -6,6 +6,7 @@
 	import { goto } from "$app/navigation";
 	import { redirect } from "@sveltejs/kit";
 
+
     let isDropdownOpen = false;
     let isAdmin = false;
 

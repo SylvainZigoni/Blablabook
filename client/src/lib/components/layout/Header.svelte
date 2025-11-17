@@ -7,6 +7,7 @@
 	import UserButton from "../ui/UserButton.svelte";
 
 
+
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
