@@ -164,6 +164,7 @@
                 <BookShow
                 book = { book}
                 onDelete = {handleDeleteBook}
+                admin = {true}
                 />
             {/each}
             

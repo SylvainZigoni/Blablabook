@@ -17,7 +17,7 @@
     export let user_id;
     export let token;
 
-    export let admin = false;
+    export let admin;
     const dispatch = createEventDispatcher();
 
     let currentPath;
@@ -73,7 +73,7 @@
         similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
     </p>
     <div class="button_container">
-        {#if currentPath !== '/'}
+        {#if (currentPath !== '/') && !admin}
             <StatusButton 
                 book ={book} user_id={user_id} token={token}
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
@@ -83,7 +83,7 @@
         {#if book.userStatus === 'absent'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
-        {#if currentPath.startsWith('/user/') }
+        {#if (currentPath.startsWith('/user/')) || admin }
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
         {#if currentPath.startsWith('/search') && book.userStatus !== 'absent'}
@@ -91,8 +91,6 @@
         {/if}
     </div>
 </article>
-
-
 
 <style>
     article{
