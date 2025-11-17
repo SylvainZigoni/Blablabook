@@ -6,7 +6,7 @@
 </script>
 
 
-<BookContainer book={data.book} user_id={data.user_id} />
+<BookContainer book={data.book} />
 
 
 <style>
