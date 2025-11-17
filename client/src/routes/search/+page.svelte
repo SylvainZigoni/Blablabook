@@ -25,7 +25,7 @@
         const result = await response.json();
         if (response.ok) {
             // Attention, notre tableau books est dans data, il faut alors faire le map sur data.books et non books
-            data.books = books.map(book => book.id === book_id ? { ...book, userStatus: 'en-cours'} : book);
+            data.books = books.map(book => book.id === book_id ? { ...book, Users: [{ Status: { status: "à lire" } }]} : book);
         }
     }
 

@@ -4,6 +4,9 @@
 	import StatusButton from "$lib/components/ui/StatusButton.svelte";
     import {page} from "$app/stores"
     export let book;
+    export let user_id;
+    export let token;
+
     import Icon from "@iconify/svelte";
 
 
@@ -17,6 +20,47 @@ let statutBook= book?.Users?.[0]?.Status?.status ?? "";
 $ : statutBook = book?.Users?.[0]?.Status?.status ?? "";
 
 console.log(statutBook)
+console.log(book);
+
+
+// pour delete le livre via clique sur le bouton
+    async function deleteBook () {
+        const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book.id}`,
+        {
+            method : 'DELETE',
+            headers :{
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            } 
+        });
+
+        const result = await response.json();
+
+        if(response.ok) {
+            book.Users[0].Status.status = "";
+        }
+    }
+
+
+    async function addBook() {
+        const response = await fetch (`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book.id}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if(response.ok) {
+            book = { ...book, Users: [{ Status: { status: "à lire" } }] };
+        }
+        
+    }
+
 
 
 </script>
@@ -29,15 +73,15 @@ console.log(statutBook)
             <div class="book-container--elements-btn">
                 {#if statutBook !== ""}
                     <div class="StatusButton">
-                        <StatusButton {book}/>
+                        <StatusButton {book} {user_id} {token}/>
                     </div>
                 {/if}
                 <div class="interactButton">
                     {#if statutBook !== ""}
-                        <DeleteBookButton {book}/>
+                        <DeleteBookButton onDelete={deleteBook}/>
                     {/if}
                     {#if statutBook === ""}
-                        <AddBookButton {book} />
+                        <AddBookButton onAdd={addBook} />
                     {/if}
                 </div>
             </div>
@@ -63,7 +107,7 @@ console.log(statutBook)
             </ul>
             <article class="summary-container">
                 <strong>Résumé :</strong><br>
-                <p class="summary-container--text"> 
+                <p class="summary-container--text">
                     {book.summary}  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
         Quos, nulla alias ipsum, aperiam id, 
         quibusdam maxime nihil similique repellat nam nemo sequi eum. 
