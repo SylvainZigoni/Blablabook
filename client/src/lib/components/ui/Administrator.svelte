@@ -1,7 +1,7 @@
 <script>
     import {page} from '$app/stores';
     import { DeleteCategory, getAllCategories } from '$lib/api/categories/categories';
-    import { getAllAuthors } from '$lib/api/authors/authors';
+    import { DeleteAuthor, getAllAuthors } from '$lib/api/authors/authors';
     import { DeleteUser, getAllUsers } from '$lib/api/users/users';
     import { getAllBooks, DeleteBook } from '$lib/api/books/books';
     import CategoryShow from './CategoryShow.svelte';
@@ -132,6 +132,15 @@
             authors =[];
         }
     }
+
+    async function handleDeleteAuthor(author_id){
+        try {
+            const result = await DeleteAuthor(author_id, token);
+            await loadAuthors();
+        } catch (error) {
+            console.error("Erreur de delete :", error);
+        }
+    }
 // Fin de gestion des Authors
 
 // Fin gestion des Users
@@ -221,7 +230,7 @@
             {#each authors as author}
                 <AuthorShow
                 author = { author}
-                onDelete = {handleDeleteBook}
+                onDelete = {handleDeleteAuthor}
                 onUpdate = {handleUpdateBook}
                 admin = {true}
                 />

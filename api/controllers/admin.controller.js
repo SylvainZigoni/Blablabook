@@ -143,7 +143,7 @@ const adminController = {
                 return res.status(StatusCodes.NOT_FOUND).json({ message: 'Auteur non trouvé.' });
             }
 
-            res.status(StatusCodes.NO_CONTENT).send();
+            res.status(StatusCodes.OK).json({ message: "Auteur supprimé avec succès." });;
 
         } catch (error) {
             console.error("Erreur lors de la suppression de l'auteur :", error);
