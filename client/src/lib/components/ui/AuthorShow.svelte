@@ -11,6 +11,7 @@
     <div class="info_container">
         <h3>author</h3>
         <p><strong>id :</strong>{author.id}</p>
+        <p><strong>forname :</strong>{author.forname}</p>
         <p><strong>name :</strong>{author.name}</p>
     </div>
     <div class="button_container">

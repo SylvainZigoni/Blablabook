@@ -33,3 +33,35 @@ export async function DeleteAuthor(authorId, token) {
     }
     return await response.json();
 }
+
+export async function AuthorCreate(payload, token) {
+    const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/admin/authors`,
+        {
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+    if(!response.ok){
+        throw new Error(`Erreur API: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+}
+
+export async function AuthorUpdate(authorId, payload, token) {
+    const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/admin/authors/${authorId}`,
+        {
+            method :"PATCH",
+            headers :{
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+    if(!response.ok){
+        throw new Error(`Erreur API: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+}
