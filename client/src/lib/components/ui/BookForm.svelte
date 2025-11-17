@@ -15,6 +15,7 @@
     let title = book?.title ?? '';
     let summary = book?.summary ?? '';
     let date_parution = book?.date_parution ?? '';
+    
     let category_id = null;
     let author_id = null;
 

@@ -11,6 +11,7 @@
     import BookShow from './BookShow.svelte';
     import BookForm from './BookForm.svelte';
     import AuthorShow from './AuthorShow.svelte';
+    import AuthorForm from './AuthorForm.svelte';
 
     export let token;
     //console.log('token',token);
@@ -120,7 +121,7 @@
 // Début gestion des Authors
 
     let authors = [];
-    let selectedAuthors = null;
+    let selectedAuthor = null;
 
     async function loadAuthors() {
         try {
@@ -140,6 +141,21 @@
         } catch (error) {
             console.error("Erreur de delete :", error);
         }
+    }
+
+    // ouvrir le modal du create
+    async function handleCreateAuthor() {
+        selectedAuthor = null;
+        modalMode = "create";
+        await loadAuthors();
+        showModal = true;
+    }
+
+    function handleUpdateAuthor(author) {
+        selectedAuthor = author;
+        modalMode = "update";
+        showModal = true;
+        console.log('selectedAuthor', selectedAuthor);
     }
 // Fin de gestion des Authors
 
@@ -226,12 +242,12 @@
         {/if}
 
         {#if filter === "authors"  }
-            <button class="admin_button" on:click={handleCreateBook}>Ajouter un Auteur</button>
+            <button class="admin_button" on:click={handleCreateAuthor}>Ajouter un Auteur</button>
             {#each authors as author}
                 <AuthorShow
                 author = { author}
                 onDelete = {handleDeleteAuthor}
-                onUpdate = {handleUpdateBook}
+                onUpdate = {handleUpdateAuthor}
                 admin = {true}
                 />
             {/each}
@@ -287,11 +303,23 @@
                 token={token}
                 onClose={closeModal}
                 onSubmitted={async () => { //callback après PATCH réussi
-                        await loadBooks();
-                        closeModal();
+                    await loadBooks();
+                    closeModal();
                 }}
                 />
-            {/if}            
+            {/if}
+            {#if filter ==="authors"}
+                <AuthorForm
+                author={selectedAuthor}
+                mode={modalMode}
+                token={token}
+                onClose={closeModal}
+                onSubmitted={async () => { //callback après PATCH réussi
+                    await loadAuthors();
+                    closeModal();
+                }}
+                />
+            {/if}       
         </div>
     {/if}
 </div>
