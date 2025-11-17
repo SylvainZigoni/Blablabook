@@ -262,9 +262,6 @@ const bookController = {
 				});
 			}
 
-			// AJOUT SYLVAIN
-			console.log("TEST SYLVAIN           ", books);
-
 			// // Formatter la réponse
 			// const formattedBooks = books.map((book) => {
 			// 	const bookData = book.toJSON();
@@ -282,13 +279,13 @@ const bookController = {
 			// 		id: bookData.id,
 			// 		title: bookData.title,
 			// 		isbn: bookData.isbn,
-			// 		// AJOUT SYLVAIN
+
 			// 		image_url: bookData.image_url,
 			// 		summary: bookData.summary,
 			// 		image: bookData.image,
-			// 		// AJOUT SYLVAIN : date_parution
+
 			// 		date_parution: bookData.date_parution,
-			// 		// AJOUT SYLVAIN : Retrait du "s" a authors
+
 			// 		Authors: bookData.Authors,
 			// 		Categories: bookData.Categories,
 			// 		userStatus: userStatus, // ← Le statut simplifié !
@@ -355,51 +352,63 @@ const bookController = {
 					},
 					{
 						model: User,
+						where: { id: userId },
+						attributes: ["id", "username"],
 						through: {
 							attributes: ["status"],
+							as: "Status",
 						},
-						where: { id: userId },
+
 						required: false,
 					},
 				],
 			});
 
-			const formattedBooks = books.map((book) => {
-				// 1. Convertir le livre Sequelize en objet JavaScript simple
-				const bookData = book.toJSON();
+			if (!books.Users) {
+				books.Users = [];
+				books.Users.push({
+					id: userId,
+					Status: {
+						status: "en cours",
+					},
+				});
+			}
 
-				// 2. Déterminer le statut de l'utilisateur pour ce livre
-				let userStatus = "absent"; // Par défaut, l'utilisateur ne possède pas le livre
+			// const formattedBooks = books.map((book) => {
+			// 	// 1. Convertir le livre Sequelize en objet JavaScript simple
+			// 	const bookData = book.toJSON();
 
-				// Vérifier si l'utilisateur possède ce livre
-				if (bookData.Users && bookData.Users.length > 0) {
-					// L'utilisateur possède le livre, récupérer son statut
-					const userBookRelation = bookData.Users[0].Status;
-					if (userBookRelation && userBookRelation.status) {
-						userStatus = userBookRelation.status;
-					}
-				}
+			// 	// 2. Déterminer le statut de l'utilisateur pour ce livre
+			// 	let userStatus = "absent"; // Par défaut, l'utilisateur ne possède pas le livre
 
-				// 3. Construire l'objet de réponse simplifié
-				return {
-					id: bookData.id,
-					title: bookData.title,
-					isbn: bookData.isbn,
-					// AJOUT SYLVAIN
-					image_url: bookData.image_url,
-					summary: bookData.summary,
-					image: bookData.image,
-					// AJOUT SYLVAIN : date_parution
-					date_parution: bookData.date_parution,
-					// AJOUT SYLVAIN : Retrait du "s" a authors
-					Authors: bookData.Authors,
-					Categories: bookData.Categories,
-					userStatus: userStatus, // ← Le statut simplifié !
-					// On ne retourne PAS users
-				};
-			});
+			// 	// Vérifier si l'utilisateur possède ce livre
+			// 	if (bookData.Users && bookData.Users.length > 0) {
+			// 		// L'utilisateur possède le livre, récupérer son statut
+			// 		const userBookRelation = bookData.Users[0].Status;
+			// 		if (userBookRelation && userBookRelation.status) {
+			// 			userStatus = userBookRelation.status;
+			// 		}
+			// 	}
 
-			res.status(StatusCodes.OK).json(formattedBooks);
+			// 	// 3. Construire l'objet de réponse simplifié
+			// 	return {
+			// 		id: bookData.id,
+			// 		title: bookData.title,
+			// 		isbn: bookData.isbn,
+			// 		image_url: bookData.image_url,
+			// 		summary: bookData.summary,
+			// 		image: bookData.image,
+			// 		date_parution: bookData.date_parution,
+			// 		Authors: bookData.Authors,
+			// 		Categories: bookData.Categories,
+			// 		userStatus: userStatus, // ← Le statut simplifié !
+			// 		// On ne retourne PAS users
+			// 	};
+			// });
+
+			// res.status(StatusCodes.OK).json(formattedBooks);
+
+			res.status(StatusCodes.OK).json(books);
 		} catch (error) {
 			console.error(
 				"Erreur lors de la recherche de livres par auteur :",
