@@ -252,16 +252,6 @@ const bookController = {
 				],
 			});
 
-			if (!books.Users) {
-				books.Users = [];
-				books.Users.push({
-					id: userId,
-					Status: {
-						status: "en cours",
-					},
-				});
-			}
-
 			// // Formatter la réponse
 			// const formattedBooks = books.map((book) => {
 			// 	const bookData = book.toJSON();
@@ -364,15 +354,7 @@ const bookController = {
 				],
 			});
 
-			if (!books.Users) {
-				books.Users = [];
-				books.Users.push({
-					id: userId,
-					Status: {
-						status: "en cours",
-					},
-				});
-			}
+			console.log(books);
 
 			// const formattedBooks = books.map((book) => {
 			// 	// 1. Convertir le livre Sequelize en objet JavaScript simple

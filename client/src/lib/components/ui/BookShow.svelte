@@ -83,13 +83,13 @@
             />
         {/if}
         
-        {#if book.userStatus === 'absent'}
+        {#if book.Users?.[0]?.Status?.status !== 'lu' && book.Users?.[0]?.Status?.status !== 'en cours' && book.Users?.[0]?.Status?.status !== 'à lire' && currentPath !== '/'}
             <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
-        {#if (currentPath.startsWith('/user/')) || admin }
+        {#if (currentPath.startsWith('/user/')) || admin || ['en cours', 'à lire', 'lu'].includes(book.Users?.[0]?.Status?.status)}
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
-        {#if currentPath.startsWith('/search') && book.userStatus !== 'absent'}
+        {#if currentPath.startsWith('/search') && (book.Users?.[0]?.Status?.status === 'en cours' && book.Users?.[0]?.Status?.status === 'à lire' && book.Users?.[0]?.Status?.status !== 'lu') }
              <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>

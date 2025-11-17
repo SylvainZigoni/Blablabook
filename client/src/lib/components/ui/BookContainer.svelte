@@ -6,7 +6,7 @@
     export let book;
     export let user_id;
     export let token;
-    export let onDelete;
+
     import Icon from "@iconify/svelte";
 
 
@@ -24,7 +24,7 @@ console.log(book);
 
 
 // pour delete le livre via clique sur le bouton
-    async function deleteBook (book_id) {
+    async function deleteBook () {
         const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book.id}`,
         {
             method : 'DELETE',
@@ -37,10 +37,29 @@ console.log(book);
         const result = await response.json();
 
         if(response.ok) {
-            book.Users[0].Status.status = "absent"
+            book.Users[0].Status.status = "";
         }
     }
 
+
+    async function addBook() {
+        const response = await fetch (`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book.id}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if(response.ok) {
+            book = { ...book, Users: [{ Status: { status: "à lire" } }] };
+        }
+        
+    }
 
 
 
@@ -52,17 +71,17 @@ console.log(book);
         <div class="book-container--elements-imgBtn">
             <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt={book.title}>
             <div class="book-container--elements-btn">
-                {#if statutBook !== "absent"}
+                {#if statutBook !== ""}
                     <div class="StatusButton">
                         <StatusButton {book} {user_id} {token}/>
                     </div>
                 {/if}
                 <div class="interactButton">
-                    {#if statutBook !== "absent"}
+                    {#if statutBook !== ""}
                         <DeleteBookButton onDelete={deleteBook}/>
                     {/if}
-                    {#if statutBook === "absent"}
-                        <AddBookButton {book} />
+                    {#if statutBook === ""}
+                        <AddBookButton onAdd={addBook} />
                     {/if}
                 </div>
             </div>
@@ -88,7 +107,7 @@ console.log(book);
             </ul>
             <article class="summary-container">
                 <strong>Résumé :</strong><br>
-                <p class="summary-container--text"> 
+                <p class="summary-container--text">
                     {book.summary}  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
         Quos, nulla alias ipsum, aperiam id, 
         quibusdam maxime nihil similique repellat nam nemo sequi eum. 
