@@ -10,6 +10,7 @@
     let username = user?.username ?? '';
     let email = user?.email ?? '';
     let is_admin = user?.is_admin;
+    
     async function submit(){
         try {
             if (mode === "create") {
@@ -38,13 +39,9 @@
     <div class="field">
         <label for="is_admin">
             Administrateur ?
-            <input type="checkbox" bind:checked={is_admin}>
+            <input id="is_admin" type="checkbox" bind:checked={is_admin}>
         </label>
     </div>
-    <!-- <div class="field">
-        <label for="is_admin">{mode === "create" ? "" : `is_admin actuel : ${user?.is_admin}`}</label>
-        <input id="is_admin" type="text"  placeholder="true ou false" bind:value={is_admin}/>
-    </div> -->
     <div>
         <button type="submit">{mode === "create" ? "Créer" : "Mettre à jour"}</button>
         <button type="button" on:click={onClose}>Annuler</button>

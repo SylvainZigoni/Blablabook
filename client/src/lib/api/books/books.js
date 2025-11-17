@@ -34,3 +34,19 @@ export async function DeleteBook(book_id, token) {
     }
     return await response.json();
 }
+
+export async function BookCreate(payload, token) {
+    const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/admin/books`,
+        {
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+    if(!response.ok){
+        throw new Error(`Erreur API: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+}

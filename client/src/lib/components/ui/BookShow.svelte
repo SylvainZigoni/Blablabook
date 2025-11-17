@@ -67,13 +67,7 @@
             <p class="book_category"><strong>Genres</strong>: Aucun</p>
         {/if}       
     </div>
-    <p class="book_summary"><strong>Résumé</strong> : { book.summary} Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Quos, nulla alias ipsum, aperiam id, 
-        quibusdam maxime nihil similique repellat nam nemo sequi eum. 
-        Suscipit molestiae sit blanditiis aliquam ea? Consectetur! 
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Quo natus maxime magni obcaecati alias blanditiis error officiis iure asperiores quod voluptatum autem, 
-        similique impedit eum ipsum dolorem assumenda exercitationem! Assumenda.
+    <p class="book_summary"><strong>Résumé</strong> : { book.summary}
     </p>
     <div class="button_container">
     {#if book.userStatus !== 'absent' && (book.userStatus || book.Users?.[0]?.Status?.status) && !admin }

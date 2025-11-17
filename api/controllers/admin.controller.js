@@ -99,9 +99,9 @@ const adminController = {
     async getAllAuthors(req, res) {
         try {
             const authors = await Author.findAll(
-                { attributes: ['name', 'forname'] }
+                { attributes: ['id','name', 'forname'] }
             );
-            res.status(StatusCodes.OK).json(authors);
+            res.status(StatusCodes.OK).json({authors});
         } catch (error) {
             console.error("Erreur lors de la récupération des auteurs :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -508,7 +508,7 @@ const adminController = {
                 ]
             });
 
-            res.status(StatusCodes.CREATED).json(bookWithAssociations);
+            res.status(StatusCodes.CREATED).json({bookWithAssociations});
 
         } catch (error) {
             console.error("Erreur lors de la création du livre :", error);

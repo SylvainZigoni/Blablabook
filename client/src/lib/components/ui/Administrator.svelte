@@ -1,6 +1,7 @@
 <script>
     import {page} from '$app/stores';
     import { DeleteCategory, getAllCategories } from '$lib/api/categories/categories';
+    import { getAllAuthors } from '$lib/api/authors/authors';
     import { DeleteUser, getAllUsers } from '$lib/api/users/users';
     import { getAllBooks, DeleteBook } from '$lib/api/books/books';
     import CategoryShow from './CategoryShow.svelte';
@@ -8,6 +9,8 @@
     import UserShow from './UserShow.svelte';
     import UserForm from './UserForm.svelte';
     import BookShow from './BookShow.svelte';
+    import BookForm from './BookForm.svelte';
+    import AuthorShow from './AuthorShow.svelte';
 
     export let token;
     //console.log('token',token);
@@ -19,13 +22,18 @@
         loadCategories();
     }
 
+    $: if(filter === "authors"){
+        loadAuthors();
+    }
+
     $: if(filter === "users"){
         loadUsers();
     }
 
     $: if(filter === "books"){
-        loadBooks();
+        loadBooks();   
     }
+    
     
     let showModal = false;
     let modalMode = null    // pour afficher le bon form en fonctoin create ou update
@@ -108,14 +116,34 @@
         showModal = true;
         console.log('selectedUser', selectedUser);
     }
+
+// Début gestion des Authors
+
+    let authors = [];
+    let selectedAuthors = null;
+
+    async function loadAuthors() {
+        try {
+            const data = await getAllAuthors(token);
+            console.log("Résultat API", data);
+            authors = data;
+        } catch (err) {
+            console.error("Erreur fetch :", err);
+            authors =[];
+        }
+    }
+// Fin de gestion des Authors
+
 // Fin gestion des Users
+
+// Début gestion des Books
     let books = [];
     let selectedBook = null;
 
     async function loadBooks() {
         try {
             const data = await getAllBooks(token);
-            console.log("Résultat API", data);
+            //console.log("Résultat API", data);
             books = data;
         } catch (err) {
             console.error("Erreur fetch :", err);
@@ -127,9 +155,26 @@
         try {
             const result = await DeleteBook(book_id, token);
             await loadBooks();
+            await loadAuthors();
         } catch (error) {
             console.error("Erreur de delete :", error);
         }
+    }
+
+    // ouvrir le modal du create
+    async function handleCreateBook() {
+        selectedBook = null;
+        modalMode = "create";
+        await loadAuthors();
+        await loadCategories();
+        showModal = true;
+    }
+
+    function handleUpdateBook(book) {
+        selectedBook = book;
+        modalMode = "update";
+        showModal = true;
+        //console.log('selectedBook', selectedBook);
     }
 //Début gestoin des livres
 
@@ -159,11 +204,12 @@
         {/if}
 
         {#if filter === "books"  }
-            <button class="admin_button" >Ajouter un livre</button>
+            <button class="admin_button" on:click={handleCreateBook}>Ajouter un Livre</button>
             {#each books as book}
                 <BookShow
                 book = { book}
                 onDelete = {handleDeleteBook}
+                onUpdate = {handleUpdateBook}
                 admin = {true}
                 />
             {/each}
@@ -171,7 +217,15 @@
         {/if}
 
         {#if filter === "authors"  }
-            <p>Authors</p>
+            <button class="admin_button" on:click={handleCreateBook}>Ajouter un Auteur</button>
+            {#each authors as author}
+                <AuthorShow
+                author = { author}
+                onDelete = {handleDeleteBook}
+                onUpdate = {handleUpdateBook}
+                admin = {true}
+                />
+            {/each}
         {/if}
         
         {#if filter === "categories"  }
@@ -215,6 +269,20 @@
                 }}
                 />
             {/if}
+            {#if filter ==="books"}
+                <BookForm
+                categories = {categories}
+                authors = {authors}
+                book={selectedBook}
+                mode={modalMode}
+                token={token}
+                onClose={closeModal}
+                onSubmitted={async () => { //callback après PATCH réussi
+                        await loadBooks();
+                        closeModal();
+                }}
+                />
+            {/if}            
         </div>
     {/if}
 </div>
