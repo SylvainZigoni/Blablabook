@@ -21,9 +21,11 @@ console.log(statutBook)
         <div class="book-container--elements-imgBtn">
             <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt={book.title}>
             <div class="book-container--elements-btn">
-                <div class="StatusButton">
-                    <StatusButton {book}/>
-                </div>
+                {#if statutBook !== ""}
+                    <div class="StatusButton">
+                        <StatusButton {book}/>
+                    </div>
+                {/if}
                 <div class="interactButton">
                     {#if statutBook !== ""}
                         <DeleteBookButton {book}/>
@@ -96,6 +98,7 @@ console.log(statutBook)
 
 .book-container--elements-btn{
         /* border: 1px red solid; */
+        margin-top: 10px;
         display: flex;
         justify-content: space-around;
 }

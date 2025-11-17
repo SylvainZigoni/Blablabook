@@ -22,6 +22,7 @@
 
             <div class="form-row">
                 <label class="label" for="password">Mot de passe :</label>
+                
                 <input class="input-field" type="password" name="password" id="password" placeholder="Votre mot de passe" required>
             </div>
 
@@ -114,6 +115,11 @@ button,
     margin-bottom: 0.5rem;
 }
 
+.button:hover{
+    background-color: var(--color-main);
+    color: var(--color-text-main);
+    scale: 1.03;
+}
 .buttons-container{
     margin-top: 2rem;
     display: flex;

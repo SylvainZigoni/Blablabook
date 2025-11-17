@@ -12,6 +12,10 @@
     $: currentPath = $page.url.pathname
 
 
+    function handleClick(){
+        goto('/')
+        return;
+    }
 
 </script>
 
@@ -19,7 +23,7 @@
     <div class="header">
         <div class="header_home">
             <div class="header_title_user">
-                <div  class="header_title">
+                <div  class="header_title" on:click={handleClick}>
                     <h1>BlaBlaBook</h1>
                     <Icon icon="ion:book" height = 50 width= 50 />
                 </div>
@@ -70,6 +74,11 @@
         filter: drop-shadow(1px 1px 2px var(--color-main))
     }
 
+    .header_title:hover{
+        cursor:pointer;
+        scale: 1.03;
+    }
+
     .header_title_user{
         display: flex;
         justify-content: space-between;
@@ -105,6 +114,12 @@
         flex-wrap: wrap;
         justify-content: space-between; */
 
+    }
+
+    button:hover{
+        scale: 1.03;
+        background-color: var(--color-main);
+        color: var(--color-text-main);
     }
 
 
