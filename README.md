@@ -216,18 +216,6 @@ The application uses **Docker Compose** to orchestrate three services:
 
 ## Troubleshooting
 
-### Port Already in Use
-
-If you see port conflict errors:
-- Change ports in `docker-compose.yml`
-- Or stop services using those ports:
-  ```bash
-  # Find process using port 3000
-  lsof -i :3000
-  # Kill it
-  kill -9 <PID>
-  ```
-
 ### Database Connection Issues
 
 - Ensure PostgreSQL container is running: `docker ps`
