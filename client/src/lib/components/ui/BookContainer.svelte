@@ -4,6 +4,8 @@
 	import StatusButton from "$lib/components/ui/StatusButton.svelte";
     import {page} from "$app/stores"
     export let book;
+    export let user_id;
+    export let token;
     import Icon from "@iconify/svelte";
 
 
@@ -29,7 +31,7 @@ console.log(statutBook)
             <div class="book-container--elements-btn">
                 {#if statutBook !== ""}
                     <div class="StatusButton">
-                        <StatusButton {book}/>
+                        <StatusButton {book} {user_id} {token}/>
                     </div>
                 {/if}
                 <div class="interactButton">
