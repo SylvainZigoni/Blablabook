@@ -6,6 +6,7 @@
     export let book;
     export let user_id;
     export let token;
+    export let onDelete;
     import Icon from "@iconify/svelte";
 
 
@@ -19,6 +20,28 @@ let statutBook= book?.Users?.[0]?.Status?.status ?? "";
 $ : statutBook = book?.Users?.[0]?.Status?.status ?? "";
 
 console.log(statutBook)
+console.log(book);
+
+
+// pour delete le livre via clique sur le bouton
+    async function deleteBook (book_id) {
+        const response = await fetch(`${import.meta.env.VITE_API_PUBLIC_URL}/books/${user_id}/${book.id}`,
+        {
+            method : 'DELETE',
+            headers :{
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            } 
+        });
+
+        const result = await response.json();
+
+        if(response.ok) {
+            book.Users[0].Status.status = "absent"
+        }
+    }
+
+
 
 
 </script>
@@ -29,16 +52,16 @@ console.log(statutBook)
         <div class="book-container--elements-imgBtn">
             <img src={`${import.meta.env.VITE_API_PUBLIC_URL}/images/${book.image_url}`} alt={book.title}>
             <div class="book-container--elements-btn">
-                {#if statutBook !== ""}
+                {#if statutBook !== "absent"}
                     <div class="StatusButton">
                         <StatusButton {book} {user_id} {token}/>
                     </div>
                 {/if}
                 <div class="interactButton">
-                    {#if statutBook !== ""}
-                        <DeleteBookButton {book}/>
+                    {#if statutBook !== "absent"}
+                        <DeleteBookButton onDelete={deleteBook}/>
                     {/if}
-                    {#if statutBook === ""}
+                    {#if statutBook === "absent"}
                         <AddBookButton {book} />
                     {/if}
                 </div>
