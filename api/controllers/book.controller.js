@@ -13,7 +13,7 @@ const bookController = {
 					{
 						model: Author,
 						attributes: ["name", "forname"],
-						through: { attributes: [] },
+						through: { attributes: [] }, // On spécifie que l'on veut renvoyer que les attributs définis juste avant
 					},
 					{
 						model: Category,
@@ -59,7 +59,7 @@ const bookController = {
 						attributes: ["id", "username"],
 						through: {
 							attributes: ["status"],
-							as: "Status",
+							as: "Status", // Utilisation d'un alias pour forcer le format de l'objet renvoyé par sequelize, pour faciliter le traitement coté front
 						},
 						required: false, // Pour inclure le livre même si l'utilisateur ne l'a pas
 					},
@@ -174,8 +174,8 @@ const bookController = {
 	async updateUserBook(req, res) {
 		try {
 			// Lorsque l'utilisateur va séléctionner le statut d'un livre je veux récupérer l'id du l'utilisateur, l'id du livre et le statut qu'il a choisit
-			const { userId, bookId } = req.params;
-			const { status } = req.body; // Nouveau statut envoyé dans le corps de la requête
+			const { userId, bookId } = req.params; // userId et bookId sont envoyé via l'url du endpoint
+			const { status } = req.body; // Le statut est recu par le body de la requete
 
 			await Status.update(
 				{ status: status },
@@ -204,13 +204,15 @@ const bookController = {
 	async getBooksByTitle(req, res) {
 		try {
 			const { titleSearched } = req.params;
-			const userId = req.userId; // Récupéré depuis le middleware d'authentification
+			const userId = req.userId; // Récupéré depuis le middleware d'authentification car non envoyé dans le body (un requete GET n'envoie ne peut pas envoyer de données dans le body)
 
 			// Rechercher les livres avec associations (insensible aux accents grâce à unaccent)
 			const books = await Book.findAll({
 				where: sequelize.where(
+					// Création d'une fonction avec sequelize que s'appellera "unaccent" et que s'effectuera sur la colonne titre
 					sequelize.fn("unaccent", sequelize.col("title")),
 					{
+						// Recherche via la fonction de titleSearched
 						[Op.iLike]: sequelize.fn(
 							"unaccent",
 							`%${titleSearched}%`
@@ -218,17 +220,12 @@ const bookController = {
 					}
 				),
 				include: [
-					// Ce que ça fait : Récupère les auteurs de chaque livre via la table de liaison (many-to-many).
-					// Le through: { attributes: [] } signifie "ne ramène pas les colonnes de la table intermédiaire".
-
-					// AJOUT SYLVAIN : "as Authors"
 					{
 						model: Author,
 						attributes: ["name", "forname"],
-						through: { attributes: [], as: "Authors" }, // Ne pas inclure la table de liaison
+						through: { attributes: [], as: "Authors" },
 					},
 
-					// AJOUT SYLVAIN : "as Categories"
 					{
 						model: Category,
 						attributes: ["name"],
@@ -243,50 +240,14 @@ const bookController = {
 							as: "Status",
 						},
 
-						required: false, // LEFT JOIN pour avoir tous les livres même sans statut
-						// Vérifie si l'utilisateur connecté (userId) possède ce livre dans sa bibliothèque
-						// Si oui, ramène le statut (lu, à lire, en cours...)
-						// required: false = même si l'utilisateur ne possède PAS le livre,
-						// on ramène quand même le livre (avec users vide)
+						// required est spécifique a sequelize. Ca correspond ici a un left join, pour s'assurer que l'on inclue les lignes qui n'ont pas de statut
+						required: false,
 					},
 				],
 			});
 
-			// // Formatter la réponse
-			// const formattedBooks = books.map((book) => {
-			// 	const bookData = book.toJSON();
-
-			// 	// Extraire le statut de l'utilisateur
-			// 	let userStatus = "absent"; // Par défaut = l'utilisateur ne possède pas le livre
-			// 	if (bookData.Users && bookData.Users.length > 0) {
-			// 		// Si Users n'est pas vide = l'utilisateur possède le livre
-			// 		const userBookRelation = bookData.Users[0].Status;
-			// 		if (userBookRelation && userBookRelation.status) {
-			// 			userStatus = userBookRelation.status; // ou le nom du statut si vous le joignez
-			// 		}
-			// 	} // Restructurer l'objet
-			// 	return {
-			// 		id: bookData.id,
-			// 		title: bookData.title,
-			// 		isbn: bookData.isbn,
-
-			// 		image_url: bookData.image_url,
-			// 		summary: bookData.summary,
-			// 		image: bookData.image,
-
-			// 		date_parution: bookData.date_parution,
-
-			// 		Authors: bookData.Authors,
-			// 		Categories: bookData.Categories,
-			// 		userStatus: userStatus, // ← Le statut simplifié !
-			// 		// On ne retourne PAS users
-
-			// 	};
-			// });
-
-			// Envoyer la réponse
+			// Envoyer la réponse si ok
 			res.status(StatusCodes.OK).json(books);
-			// res.status(StatusCodes.OK).json(formattedBooks);
 		} catch (error) {
 			console.error("Erreur lors de la recherche de livres :", error);
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -353,42 +314,6 @@ const bookController = {
 					},
 				],
 			});
-
-			console.log(books);
-
-			// const formattedBooks = books.map((book) => {
-			// 	// 1. Convertir le livre Sequelize en objet JavaScript simple
-			// 	const bookData = book.toJSON();
-
-			// 	// 2. Déterminer le statut de l'utilisateur pour ce livre
-			// 	let userStatus = "absent"; // Par défaut, l'utilisateur ne possède pas le livre
-
-			// 	// Vérifier si l'utilisateur possède ce livre
-			// 	if (bookData.Users && bookData.Users.length > 0) {
-			// 		// L'utilisateur possède le livre, récupérer son statut
-			// 		const userBookRelation = bookData.Users[0].Status;
-			// 		if (userBookRelation && userBookRelation.status) {
-			// 			userStatus = userBookRelation.status;
-			// 		}
-			// 	}
-
-			// 	// 3. Construire l'objet de réponse simplifié
-			// 	return {
-			// 		id: bookData.id,
-			// 		title: bookData.title,
-			// 		isbn: bookData.isbn,
-			// 		image_url: bookData.image_url,
-			// 		summary: bookData.summary,
-			// 		image: bookData.image,
-			// 		date_parution: bookData.date_parution,
-			// 		Authors: bookData.Authors,
-			// 		Categories: bookData.Categories,
-			// 		userStatus: userStatus, // ← Le statut simplifié !
-			// 		// On ne retourne PAS users
-			// 	};
-			// });
-
-			// res.status(StatusCodes.OK).json(formattedBooks);
 
 			res.status(StatusCodes.OK).json(books);
 		} catch (error) {
