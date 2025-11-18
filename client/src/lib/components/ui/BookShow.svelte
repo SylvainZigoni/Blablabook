@@ -38,7 +38,8 @@
     let currentPath;
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
-
+    $: userStatus = book.Users?.[0]?.Status?.status
+    $: console.log(userStatus);
 
     function handleClick(event){
 
@@ -91,13 +92,13 @@
             />
         {/if}
         
-        {#if book.Users?.[0]?.Status?.status !== 'lu' && book.Users?.[0]?.Status?.status !== 'en cours' && book.Users?.[0]?.Status?.status !== 'à lire' && currentPath !== '/'}
-            <AddBookButton onAdd={() => {onAdd(book.id);}}/>
+        {#if (book.userStatus === 'absent' || userStatus === 'absent' || (userStatus !== 'lu' && userStatus !== 'en cours' && userStatus !== 'à lire')) && currentPath !== '/'}
+                <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
         {#if (currentPath.startsWith('/user/')) || admin || ['en cours', 'à lire', 'lu'].includes(book.Users?.[0]?.Status?.status)}
             <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
-        {#if currentPath.startsWith('/search') && (book.Users?.[0]?.Status?.status === 'en cours' && book.Users?.[0]?.Status?.status === 'à lire' && book.Users?.[0]?.Status?.status !== 'lu') }
+        {#if currentPath.startsWith('/search') && (userStatus === 'en cours' && userStatus === 'à lire' && userStatus !== 'lu') }
              <DeleteBookButton onDelete={() => {onDelete(book.id);}} />
         {/if}
     </div>
