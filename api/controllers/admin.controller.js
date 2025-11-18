@@ -1,4 +1,4 @@
-import { Book, Author, Category, User, Status } from "../models/index.js";
+import { Book, Author, Category, User } from "../models/index.js";
 import { StatusCodes } from "http-status-codes";
 import { Op } from "sequelize";
 import Joi from "joi";
@@ -88,7 +88,7 @@ const adminController = {
         category.name = newName.trim();
         await category.save();
 
-        res.status(StatusCodes.OK).json({ category });
+        res.status(StatusCodes.OK).json({category});
     } catch (error) {
         console.error("Erreur lors de la mise à jour de la catégorie :", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Erreur serveur" });
@@ -98,9 +98,8 @@ const adminController = {
 // Administration des auteurs
     async getAllAuthors(req, res) {
         try {
-            const authors = await Author.findAll(
-                { attributes: ['id','name', 'forname'] }
-            );
+            const authors = await Author.findAll();
+
             res.status(StatusCodes.OK).json({authors});
         } catch (error) {
             console.error("Erreur lors de la récupération des auteurs :", error);
@@ -250,23 +249,27 @@ const adminController = {
         }
     },
 
-    async getUserById(req, res) {
-        const userId = req.params.id;
-        try {
-            const user =  await User.findByPk(userId, {
-                attributes: ['id', 'username', 'email', 'is_admin']
-            });
-            if (!user) {
-                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
-            }
-            res.status(StatusCodes.OK).json(user);
-        } catch (error) {
-            console.error("Erreur lors de la récupération de l'utilisateur :", error);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                message: "Erreur serveur",
-            });
-        }
-    },
+    //? Permettre à l'utilisateur de récupérer ses infos (Feature à venir)
+    
+
+    // async getUserById(req, res) {
+    //     const userId = req.params.id;
+    //     try {
+    //         const user =  await User.findByPk(userId, {
+    //             attributes: ['id', 'username', 'email', 'is_admin']
+    //         });
+    //         if (!user) {
+    //             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Utilisateur non trouvé.' });
+    //         }
+    //         res.status(StatusCodes.OK).json(user);
+    //     } catch (error) {
+    //         console.error("Erreur lors de la récupération de l'utilisateur :", error);
+    //         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    //             message: "Erreur serveur",
+    //         });
+    //     }
+    // },
+
 
 // Administration des livres
     async getAllBooks(req, res) {
@@ -277,33 +280,10 @@ const adminController = {
                     { model: Category, attributes: ['name'],through: { attributes: [] },}
                 ]
             });
-            //console.log("api books", books);
+            
             res.status(StatusCodes.OK).json({books});
         } catch (error) {
             console.error("Erreur lors de la récupérations des livres", error);
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                error: "Erreur serveur",
-            });
-        }
-    },
-
-    async getBookById(req, res) {
-        try {
-            const bookId = req.params.id;
-            const book = await Book.findByPk(bookId, {
-                include: [
-                    { model: Author, attributes: ['name', 'forname'] },
-                    { model: Category, attributes: ['name'] }
-                ]
-            });
-
-            if (!book) {
-                return res.status(StatusCodes.NOT_FOUND).json({ error: "Livre non trouvé" });
-            }
-
-            res.status(StatusCodes.OK).json(book);
-        } catch (error) {
-            console.error("Erreur lors de la récupération du livre :", error);
             res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                 error: "Erreur serveur",
             });
@@ -329,12 +309,6 @@ const adminController = {
 
     async updateBook(req, res) {
 
-    // L'admin se trouve sur la page de modification d'un livre.
-    // Il peut modifier le titre, le résumé, la date de publication et l'image de couverture
-    // Il ne peut pas modifier les auteurs et les catégories dans un soucis de cohérence. Si besoin, il peut supprimer le livre et le recréer.
-
-    // Schéma de validation Joi
-
         const updateBookSchema = Joi.object({
             title: Joi.string().trim().min(1).max(255)
                 .messages({
@@ -350,19 +324,13 @@ const adminController = {
             image_url: Joi.string().trim().allow('', null)
         });
 
-        // Logique de mise à jour du livre
-
         try {
-            // Récupérer l'ID du livre à partir des paramètres de la requête
             const bookId = req.params.id;
 
-            // Validation des données avec Joi
             const { error, value } = updateBookSchema.validate(req.body, {
                 abortEarly: false,
                 stripUnknown: true
             });
-
-            // Gérer les erreurs de validation - Renvoye un objet propre avec les messages d'erreur
 
             if (error) {
                 return res.status(StatusCodes.BAD_REQUEST).json({
@@ -370,7 +338,6 @@ const adminController = {
                 });
             }
 
-            // Vérifier que le livre existe
             const book = await Book.findByPk(bookId);
             if (!book) {
                 return res.status(StatusCodes.NOT_FOUND).json({ error: 'Livre non trouvé.' });
@@ -390,10 +357,10 @@ const adminController = {
                 book.image_url = value.image_url || null;
             }
 
-            // Sauvegarde des modifications
+            
             await book.save();
 
-            // Retourne le livre modifié
+           
             res.status(StatusCodes.OK).json(book);
 
             // Gestion d'erreurs assez complète pour identifier les potentiels problèmes lors des tests.
@@ -420,11 +387,6 @@ const adminController = {
 
     async createBook(req, res) {
 
-        // L'admin peut créer un nouveau livre en fournissant le titre, le résumé, la date de publication, l'image de couverture, l'auteur et la catégorie.
-        // Un livre doit obligatoirement avoir un titre
-        // Les autres informations peuvent être rajoutées par la suite via la modification du livre.
-
-        // Schéma de validation Joi
         const createBookSchema = Joi.object({
             title: Joi.string().trim().min(1).max(255).required()
                 .messages({
@@ -457,20 +419,19 @@ const adminController = {
         });
 
         try {
-            // Validation des données avec Joi
+
             const { error, value } = createBookSchema.validate(req.body, {
                 abortEarly: false,
                 stripUnknown: true
             });
 
-            // Gérer les erreurs de validation
+
             if (error) {
                 return res.status(StatusCodes.BAD_REQUEST).json({
                     error: error.details.map(detail => detail.message)
                 });
             }
 
-            // Créer le livre avec les champs de base uniquement
             const newBook = await Book.create({
                 title: value.title,
                 summary: value.summary || null,

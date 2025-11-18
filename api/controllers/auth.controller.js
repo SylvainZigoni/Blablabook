@@ -19,16 +19,11 @@ const authController = {
           'string.min': 'Le mot de passe doit contenir au moins 8 caractères',
           'string.pattern.base': 'Le mot de passe doit contenir au moins 1 chiffre, 1 majuscule et 1 minuscule',
         }),
-      confirm: Joi.string().min(8).regex(/[0-9]/).regex(/[a-z]/).regex(/[A-Z]/).required(),
       email: Joi.string().email().required()
     });
 
     try {
-      const { username, password, confirm, email } = Joi.attempt(req.body, registerUserSchema);
-
-      if (password !== confirm) {
-        return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Le mot de passe et la confirmation doivent correspondre.' });
-      }
+      const { username, password, email } = Joi.attempt(req.body, registerUserSchema);
 
       const alreadyExistingUser = await User.findOne({ where: { username } });
       if (alreadyExistingUser) {
@@ -59,15 +54,12 @@ const authController = {
 
   async loginUser(req,res) {
 
-    const loginUserSchema = Joi.object({
-      username: Joi.string().required(),
-      password: Joi.string().required()
-    });
-
     try {
-      const { username, password } = Joi.attempt(req.body, loginUserSchema);
+      
+      const { username, password } = req.body;
 
-      const user = await User.findOne({ where: { username }}); // { id, username, password, created_at, updated_at }
+      const user = await User.findOne({ where: { username }}); 
+      
       if (!user) {
         return res.status(StatusCodes.UNAUTHORIZED).json("Le pseudo et le mot de passe ne correspondent pas");
       }

@@ -4,32 +4,21 @@ import { StatusCodes } from 'http-status-codes';
 export function isAuthed(req, res, next) {
  
   const authorizationHeader = req.headers.authorization;
-  console.log("Authorization Header:", authorizationHeader);  // Debug log
 
     if (!authorizationHeader) {
     return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Vous devez être connecté pour accéder à cette ressource' });
-    }  // version okanban
+    }
 
-    // if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-    // return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Vous devez être connecté pour accéder à cette ressource' });
-    // }   ==> Version suggérée par l'ia qui verifie que le header commence bien par "header"
-
-    const accessToken = authorizationHeader.substring("Bearer ".length);
+  const accessToken = authorizationHeader.substring("Bearer ".length);
     if (!accessToken) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Vous devez être connecté pour accéder à cette ressource' });
     }
 
-//   const secret = process.env.JWT_SECRET;
-//   if (!secret) {
-//     console.error('JWT secret not set');
-//     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Configuration serveur incorrecte' });
-//   }  // Optionnel: gestion du cas où process.env.JWT_SECRET est absent
-
     try {
       const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
      
-      req.userId = decodedToken.userId;  //je ne sais pas si utile
-      req.userRole = decodedToken.isAdmin ? "admin" : "user";  //necessaire pour isAdmin middleware
+      req.userId = decodedToken.userId;  
+      req.userRole = decodedToken.isAdmin ? "admin" : "user";
       
       next();
 

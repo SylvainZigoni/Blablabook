@@ -16,11 +16,7 @@ app.use(cors({
 	allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.use(xss()); // Middleware de sanitization XSS
-
-app.get("/", (req, res) => {
-	res.send("Ca marche encore et toujours ! Incroyable");
-});
+app.use(xss()); // Middleware de sanitization XSS, placé ici pour protéger tous les endpoints.
 
 app.use(apiRouter); 
 
