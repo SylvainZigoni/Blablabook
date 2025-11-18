@@ -1,10 +1,9 @@
 <script>
     import BookShow from "./BookShow.svelte";
 
-
     // le composant attends qu'on lui passe une variable books depuis l'exterieur
     // sur la page ou il est utilise on a <Home books = {books}/>
-    export let books=[];
+    export let books=[]; //Attend ete recoie les données (= de quoi mon fichier a besoin pour fonctionner)
     export let token;
 </script>
 
@@ -19,7 +18,7 @@
 
 <section>
     {#each books as book }
-    <BookShow {book} token={token}/>
+    <BookShow book={book} token={token}/>
     {/each}
 </section>
 

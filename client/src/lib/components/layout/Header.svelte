@@ -90,11 +90,7 @@
         margin-right: 1rem;
         font-size: 3rem;
     }
-    /* button{
-        padding: 0.5rem;
-        background-color: #CAD2C5;
-        color: var(--color-text-main);
-    } */
+
 
     .header{
         display: flex;
@@ -103,19 +99,9 @@
         /* max-width: 300px; */
     }
 
-    .login_register-button {
-        /* display: flex;
-        justify-content: space-between;
-        max-width: 100%; */
 
-    }
 
-    .header_search{
-        /* display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between; */
 
-    }
 
     button:hover{
         scale: 1.03;
@@ -145,10 +131,6 @@
             gap: 1rem; /* Ajoute un espace entre les boutons */
         }
 
-        /* .header_home {
-            display: flex;
-
-        } */
     }
 
 </style>

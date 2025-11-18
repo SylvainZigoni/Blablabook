@@ -35,9 +35,7 @@ h3 {
 	font-size: 1.2rem;
 	color: var(--color-header-footer);
 	font-weight: 500;
-	/* padding-left: 1rem; */
 	margin-bottom: 8px;
-	/* margin-top: 12px; */
 }
 
 strong {

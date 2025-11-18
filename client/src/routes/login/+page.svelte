@@ -15,7 +15,7 @@
 {/if}
 
 {#if form?.error}
-    <p> Rien a afficher</p>
+    <p> Erreur d'authentification</p>
 {/if}
 
 <style>

@@ -80,6 +80,7 @@
 
     <ul class="link_filter">
         <!-- En svelte class:nomDeClasse={condition} -->
+         <!-- Class:active permet de rendre dynamique la class active sur notre href -->
         <li><a href="?status=en%20cours" class:active={status === 'en cours'}> En cours ({enCoursCount})</a></li>
         <li><a href="?status=%C3%A0%20lire" class:active={status === 'à lire'}>A lire ({aLireCount})</a></li>
         <li><a href="?status=lu" class:active={status === 'lu'}>Lus ({luCount})</a></li>

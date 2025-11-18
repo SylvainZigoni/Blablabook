@@ -14,7 +14,7 @@
             by: searchBy
         });
 
-        console.log(params);
+
 
         await goto(`/search?${params.toString()}`)
     }

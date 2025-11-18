@@ -31,13 +31,12 @@ export const actions = {
 				});
 			}
 
-			// modification pour utilise les cookies pour stocker le sinfo et non le localStorage
 			cookies.set("token", data.token, {
 				path: "/",
-				httpOnly: true,
-				sameSite: "lax",
-				secure: true,
-				maxAge: 60 * 60,
+				httpOnly: true, // pour la sécurité
+				sameSite: "lax", // pour la sécurité
+				secure: true, // pour la sécurité
+				maxAge: 60 * 60, // 60 secondes * 60 secondes
 			});
 
 			cookies.set("user_id", String(data.user.id), {

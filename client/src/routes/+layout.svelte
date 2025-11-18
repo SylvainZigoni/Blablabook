@@ -1,9 +1,9 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
-  import Header from '$lib/components/layout/Header.svelte';
+    import Header from '$lib/components/layout/Header.svelte';
 	import '../styles/reset.css';
 	import '../styles/app.css';
-  import Footer from '$lib/components/layout/Footer.svelte';
+    import Footer from '$lib/components/layout/Footer.svelte';
 
 </script>
 
