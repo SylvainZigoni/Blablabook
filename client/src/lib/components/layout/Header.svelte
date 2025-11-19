@@ -3,7 +3,6 @@
     import { page } from "$app/stores";
     import Icon  from '@iconify/svelte';
     import Search from "../ui/Search.svelte";
-	// import { onDestroy, onMount } from "svelte";
 	import UserButton from "../ui/UserButton.svelte";
 
 
@@ -52,12 +51,9 @@
 
 <style>
     header{
-        /* border: 1px solid black; */
         color: #fff;
         background-color: var(--color-header-footer);
         padding: 1rem;
-        /* border-bottom-left-radius: var(--border-radius);
-        border-bottom-right-radius: var(--border-radius); */
         box-shadow: var(--shadow);
     }
 
@@ -90,32 +86,17 @@
         margin-right: 1rem;
         font-size: 3rem;
     }
-    /* button{
-        padding: 0.5rem;
-        background-color: #CAD2C5;
-        color: var(--color-text-main);
-    } */
+
 
     .header{
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* max-width: 300px; */
     }
 
-    .login_register-button {
-        /* display: flex;
-        justify-content: space-between;
-        max-width: 100%; */
 
-    }
 
-    .header_search{
-        /* display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between; */
 
-    }
 
     button:hover{
         scale: 1.03;
@@ -137,18 +118,14 @@
         }
 
         .header_title {
-            justify-content: center; /* Centre les éléments */
+            justify-content: center;
         }
 
         .login_register-button {
             justify-content: center;
-            gap: 1rem; /* Ajoute un espace entre les boutons */
+            gap: 1rem;
         }
 
-        /* .header_home {
-            display: flex;
-
-        } */
     }
 
 </style>

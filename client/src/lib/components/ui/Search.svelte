@@ -4,8 +4,6 @@
 
     let query = '';
     let searchBy = 'title';
-    let results = [];
-    let error = '';
 
     async function handleSearch() {
 
@@ -14,7 +12,7 @@
             by: searchBy
         });
 
-        console.log(params);
+
 
         await goto(`/search?${params.toString()}`)
     }

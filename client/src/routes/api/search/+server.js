@@ -1,4 +1,7 @@
 // Import de l'utilitaire json pour ne pas avoir a renvoyer une reponse http, mais seulement un objet
+// La fonction search etant liée au header et non a une page, elle a été déclarée ici pour etre partagée entre les pages.
+// Elle est appellé via un 1er fetch du front (qui arrive ici) et un nouveau fetch est effectué ici vers l'api
+
 import { json } from "@sveltejs/kit";
 
 export async function GET({ url, fetch, cookies }) {
@@ -9,27 +12,13 @@ export async function GET({ url, fetch, cookies }) {
 	const token = cookies.get("token");
 
 	if (!token) {
-		return json({ results: [], error: "Utilisateur non A" });
+		return json({ results: [], error: "Utilisateur non Authorisé" });
 	}
-
-	console.log(q, by);
-
-	// TODO : Récupérer les cookies pour envoyer le token
-	console.log(cookies.get("user_name"));
-
-	// TODO : Mise en place du try catch
 
 	try {
 		const params = new URLSearchParams({ q, by });
-		console.log(params);
 
 		// On réalise notre fetch
-
-		console.log(
-			"Route de fetch back : ",
-			`${import.meta.env.VITE_API_BASE_URL}/books/${by}/${q}`
-		);
-		// TODO : Ajouter le bearer + token avec la route définie coté back
 		const response = await fetch(
 			`${import.meta.env.VITE_API_BASE_URL}/books/${by}/${q}`,
 			{
@@ -40,8 +29,6 @@ export async function GET({ url, fetch, cookies }) {
 		);
 
 		const data = await response.json();
-		console.log(data);
-		console.log(JSON.stringify(data));
 
 		return json(data, { status: response.status });
 	} catch (error) {

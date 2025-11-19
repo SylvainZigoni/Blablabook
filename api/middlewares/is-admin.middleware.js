@@ -18,6 +18,7 @@ export async function isAdmin(req, res, next) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: "Utilisateur non trouvé" });
     }
 
+    // Vérification du statut de l'user a partir de la BDD et non des cookies qu'envoie le front
     if (user.is_admin === true) {
       next();
     } else {

@@ -24,8 +24,9 @@
 
         const result = await response.json();
         if (response.ok) {
-            // Attention, notre tableau books est dans data, il faut alors faire le map sur data.books et non books
-            data.books = books.map(book => book.id === book_id ? { ...book, Users: [{ Status: { status: "à lire" } }]} : book);
+            // Attention, notre tableau books est dans data, il faut alors faire le map sur data.books et non books.
+            // Etant donné les conditions actuelles pour afficher les bouton dans BookShow, on fait un spread de l'objet en forcant le book.userStatus à '' pour pas rentrer en conflit avec les autres conditions
+            data.books = books.map(book => book.id === book_id ? { ...book, userStatus:'', Users: [{ Status: { status: "à lire" } }]} : book);
         }
     }
 
@@ -44,7 +45,22 @@
 
         const result = await response.json();
         if (response.ok) {
-            data.books = books.map(book => book.id === book_id ? { ...book, userStatus: 'absent'} : book);
+
+            // Comme pour la fonction addBook, on vient fait une copie de notre objet book apres avoir réalisé un map.
+            // Dans la copie de book, on ajoute userStatus à "absent" et on force book.Users.Status.status à "" pour gérer les conflits de if de bookShow
+            data.books = books.map(book => book.id === book_id
+                ? {
+                    ...book,
+                    userStatus: 'absent',
+                    Users: Array.isArray(book.Users)
+                        ? book.Users.map(u => ({ 
+                            ...u, 
+                            Status: { ...(u.Status || {}), status: "" } 
+                          }))
+                        : book.Users
+                }
+                : book
+            );
         }
     }
 

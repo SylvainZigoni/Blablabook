@@ -13,7 +13,7 @@ const bookController = {
 					{
 						model: Author,
 						attributes: ["name", "forname"],
-						through: { attributes: [] },
+						through: { attributes: [] }, // On spécifie que l'on veut renvoyer que les attributs définis juste avant
 					},
 					{
 						model: Category,
@@ -57,8 +57,10 @@ const bookController = {
 						// Je veux renvoyer uniquement le statut du livre pour cet utilisateur
 						where: { id: userId },
 						attributes: ["id", "username"],
-						through: { attributes: ["status"],as: "Status"},
-
+						through: {
+							attributes: ["status"],
+							as: "Status", // Utilisation d'un alias pour forcer le format de l'objet renvoyé par sequelize, pour faciliter le traitement coté front
+						},
 						required: false, // Pour inclure le livre même si l'utilisateur ne l'a pas
 					},
 				],
@@ -204,8 +206,10 @@ const bookController = {
 			// Rechercher les livres avec associations (insensible aux accents grâce à unaccent)
 			const books = await Book.findAll({
 				where: sequelize.where(
+					// Création d'une fonction avec sequelize que s'appellera "unaccent" et que s'effectuera sur la colonne titre
 					sequelize.fn("unaccent", sequelize.col("title")),
 					{
+						// Recherche via la fonction de titleSearched
 						[Op.iLike]: sequelize.fn(
 							"unaccent",
 							`%${titleSearched}%`
@@ -217,7 +221,7 @@ const bookController = {
 					{
 						model: Author,
 						attributes: ["name", "forname"],
-						through: { attributes: [], as: "Authors" }, // Ne pas inclure la table de liaison
+						through: { attributes: [], as: "Authors" },
 					},
 					{
 						model: Category,

@@ -1,9 +1,8 @@
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import argon2 from "argon2";
-import { StatusCodes } from 'http-status-codes';
+import { StatusCodes } from "http-status-codes";
 import { User } from "../models/index.js";
-
 
 const authController = {
 

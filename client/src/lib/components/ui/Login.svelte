@@ -11,7 +11,7 @@
     <!-- A la place d'un "on:submit ={fonction}" on utilise action="?/login"-->
     <!-- Ca nous renvoie vers la page.server.js du dossier qui appelle le composant -->
     <!-- Dedans on y trouve la variable action avec la method login -->
-
+    <!-- On utilise use:enhance pour transformer le submit du form en fetch (voir fichier serveur de la page login) -->
     <form method="POST" action="?/login" use:enhance>
         <fieldset class= "login-container--fieldset">
             <div class="form-row">
