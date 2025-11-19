@@ -31,7 +31,6 @@ export const actions = {
 						username,
 						email,
 						password,
-						confirm,
 					}),
 				}
 			);
