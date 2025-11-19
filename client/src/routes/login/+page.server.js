@@ -1,3 +1,5 @@
+// Import de fail pour le retourner en cas d'erreur via le try
+
 import { fail } from "@sveltejs/kit";
 
 export const actions = {
@@ -23,7 +25,6 @@ export const actions = {
 			);
 
 			const data = await response.json();
-			console.log(data);
 
 			if (!response.ok) {
 				return fail(response.status, {

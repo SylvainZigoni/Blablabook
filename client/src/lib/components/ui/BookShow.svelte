@@ -39,15 +39,9 @@
     // Réactivité automatique avec $:
     $: currentPath = $page.url.pathname
     $: userStatus = book.Users?.[0]?.Status?.status
-    $: console.log(userStatus);
 
-    function handleClick(event){
 
-        // const path = event.composedPath ? event.composedPath() : (event.path || []);
-        // On regarde le chemin que va parcourir l'evenement dans le DOM. S'il rencontre un bouton ou un select, alors il "return" sinon il va a la page du livre
-        // if (path.some(node => node && node.tagName && ['BUTTON','SELECT'].includes(node.tagName))) {
-        //     return;
-        // }
+    function handleClick(){
         goto(`/book/${book.id}`);
 
         return;
@@ -85,14 +79,15 @@
     <div class="button_container">
 
     <!-- les ? permettent de ne pas bloquer si la variable n'existe pas, sinon le site planterait -->
-    {#if book.userStatus !== 'absent' && (book.userStatus || book.Users?.[0]?.Status?.status) && !admin }
+        {#if book.userStatus !== 'absent' && (book.userStatus || book.Users?.[0]?.Status?.status) && !admin }
             <StatusButton 
                 book ={book} user_id={user_id} token={token}
                 on:statusChange={(event)=> dispatch("statusChange", event.detail)}
             />
         {/if}
         
-        {#if (book.userStatus === 'absent' || userStatus === 'absent' || (userStatus !== 'lu' && userStatus !== 'en cours' && userStatus !== 'à lire')) && currentPath !== '/'}
+
+        {#if (book.userStatus === 'absent' || userStatus === '' || (userStatus !== 'lu' && userStatus !== 'en cours' && userStatus !== 'à lire')) && currentPath !== '/' && !admin}
                 <AddBookButton onAdd={() => {onAdd(book.id);}}/>
         {/if}
         {#if (currentPath.startsWith('/user/')) || admin || ['en cours', 'à lire', 'lu'].includes(book.Users?.[0]?.Status?.status)}

@@ -353,7 +353,6 @@ const adminController = {
 					},
 				],
 			});
-			//console.log("api books", books);
 			res.status(StatusCodes.OK).json({ books });
 		} catch (error) {
 			console.error("Erreur lors de la récupérations des livres", error);

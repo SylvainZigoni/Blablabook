@@ -10,7 +10,7 @@
     $: ({ user_id, token } = data);
 
     // Exemple de ligne de code réactive qui s'active au changement de la variable token
-    $: (console.log("mon token", token))
+    $: (console.log("Exemple réactivité des donnéess avec usere_id :", user_id))
 
 </script>
 

@@ -12,8 +12,6 @@ export async function load({ url, fetch, parent }) {
 		throw redirect(302, "/");
 	}
 
-	console.log("Console.log fichier +page.server", q, by);
-
 	if (!q) {
 		return { results: [], query: q, by };
 	}
@@ -28,8 +26,6 @@ export async function load({ url, fetch, parent }) {
 
 	const books = await response.json();
 
-	// const user_id = cookies.get("user_id");
-	// const token = cookies.get("token");
 	if (by === "author") {
 		byFrench = "Auteur";
 	}

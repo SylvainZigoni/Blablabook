@@ -23,12 +23,8 @@
         try {
             if (mode === "create") {
                 
-                //console.log("title:", title, typeof title);
-                //console.log("date_parution:", date_parution, typeof date_parution);
-                //console.log("categoryId:", category_id, typeof category_id);
-                //console.log("authorId:", author_id, typeof author_id);
 
-                console.log(`titre ${title}, date ${date_parution}, category id ${category_id}, author id ${author_id}`)
+
                 await BookCreate({ title,summary, date_parution, categoryId:category_id, authorId:author_id}, token);
             } else if (mode === "update") {
                 await UserUpdate(user.id, { title, date_parution}, token);

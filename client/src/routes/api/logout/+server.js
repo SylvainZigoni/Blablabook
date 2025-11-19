@@ -1,4 +1,4 @@
-// Fonction pour supprimer les cookies. A faire coté back car cookies inacessibles en front
+// Fonction pour supprimer les cookies. A faire coté back car cookies inacessibles en front.
 export async function POST({ cookies }) {
 	cookies.delete("token", { path: "/" });
 	cookies.delete("user_id", { path: "/" });

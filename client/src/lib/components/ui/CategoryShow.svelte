@@ -16,7 +16,7 @@
     <div class="button_container">
         <DeleteBookButton onDelete={() => {onDelete(category.id);}}/>
         <UpdateButton
-            category = { category};
+            category = { category} ;
             onClick ={()=> onUpdate(category)}/>
     </div>
 </article>
@@ -41,7 +41,4 @@ article{
         gap: 1rem;
     }
 
-    .button_container{
-
-    }
 </style>

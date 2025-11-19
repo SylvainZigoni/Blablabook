@@ -9,10 +9,10 @@
 
     <!-- execute l'action register du fichier +page.Server.js 
     via export const actions = {les méthodes}; -->
+    <!-- On utilise use:enhance pour transformer le submit du formulaire en requete fetch (voir page server de register)-->
     <form method="POST" action="?/register" use:enhance>
         <!-- le ? si form existe, lis form.error, sinon renvoie undefined”
-            form est definis a la validation 
-        -->
+            form est definis a la validation -->
         {#if form?.error}
             <p class ="error">{form.error}</p>
         {/if}

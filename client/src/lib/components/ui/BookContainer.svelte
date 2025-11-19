@@ -10,17 +10,10 @@
     import Icon from "@iconify/svelte";
 
 
-console.log("Book depuis la page de livre",book)
-
-
-// TODO: Utiliser user_id pour les routes + delete et modif statut
 
 
 let statutBook= book?.Users?.[0]?.Status?.status ?? "";
 $ : statutBook = book?.Users?.[0]?.Status?.status ?? "";
-
-console.log(statutBook)
-console.log(book);
 
 
 // pour delete le livre via clique sur le bouton
@@ -133,9 +126,7 @@ console.log(book);
     display: flex;
 }
 
-.book-container--elements{
-        /* border: 1px red solid; */
-}
+
 
 .book-container--elements-imgBtn{
     margin: auto;
@@ -147,10 +138,10 @@ console.log(book);
 }
 
 .book-container--elements-btn{
-        /* border: 1px red solid; */
-        margin-top: 10px;
-        display: flex;
-        justify-content: space-around;
+
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .StatusButton {

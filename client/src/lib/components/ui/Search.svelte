@@ -4,8 +4,6 @@
 
     let query = '';
     let searchBy = 'title';
-    let results = [];
-    let error = '';
 
     async function handleSearch() {
 

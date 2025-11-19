@@ -14,8 +14,7 @@
     import AuthorForm from './AuthorForm.svelte';
 
     export let token;
-    //console.log('token',token);
-    // $: console.log("categories dans composant", categories);
+
 
     $: filter = $page.url.searchParams.get("filter");
     
@@ -54,7 +53,6 @@
     async function loadCategories() {
         try {
             const data = await getAllCategories(token);
-            // console.log("Résultat API", data);
             categories = data;
         } catch (err) {
             console.error("Erreur fetch :", err);
@@ -76,7 +74,6 @@
         selectedCategory = category;
         modalMode = "update";
         showModal = true;
-        // console.log('selectedCategory', selectedCategory);
     }
 
     // ouvrir le modal du create
@@ -94,7 +91,6 @@
     async function loadUsers() {
         try {
             const data = await getAllUsers(token);
-            // console.log("Résultat API", data);
             users = data;
         } catch (err) {
             console.error("Erreur fetch :", err);
@@ -115,7 +111,6 @@
         selectedUser = user;
         modalMode = "update";
         showModal = true;
-        console.log('selectedUser', selectedUser);
     }
 
 // Début gestion des Authors
@@ -126,7 +121,6 @@
     async function loadAuthors() {
         try {
             const data = await getAllAuthors(token);
-            console.log("Résultat API", data);
             authors = data;
         } catch (err) {
             console.error("Erreur fetch :", err);
@@ -155,7 +149,6 @@
         selectedAuthor = author;
         modalMode = "update";
         showModal = true;
-        console.log('selectedAuthor', selectedAuthor);
     }
 // Fin de gestion des Authors
 
@@ -168,7 +161,6 @@
     async function loadBooks() {
         try {
             const data = await getAllBooks(token);
-            //console.log("Résultat API", data);
             books = data;
         } catch (err) {
             console.error("Erreur fetch :", err);
@@ -199,7 +191,6 @@
         selectedBook = book;
         modalMode = "update";
         showModal = true;
-        //console.log('selectedBook', selectedBook);
     }
 //Début gestoin des livres
 

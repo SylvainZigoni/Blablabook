@@ -3,8 +3,7 @@
     import { onMount } from "svelte";
     import Icon from "@iconify/svelte";
     import { page } from "$app/stores";
-	import { goto } from "$app/navigation";
-	import { redirect } from "@sveltejs/kit";
+
 
 
     let isDropdownOpen = false;
@@ -41,7 +40,6 @@
                 const res = await fetch('/api/getCookies');
                 if (res.ok) {
                     const data = await res.json();
-                    console.log(data)
                     isAdmin = data.is_admin === true || data.is_admin === 'true';
                 } else {
                     isAdmin = false

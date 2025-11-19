@@ -1,3 +1,6 @@
+<!-- Ici on récupère les données depuis form et non data (on a pas utiliser une fonction load, mais une variable actions(avec des methodes dedans) qui est liée a form) -->
+
+
 <script>
     import Login from "$lib/components/ui/Login.svelte";
     import { goto } from "$app/navigation";

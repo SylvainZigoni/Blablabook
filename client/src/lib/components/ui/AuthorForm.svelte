@@ -10,8 +10,6 @@
     let name = author?.name ?? '';
     let forname = author?.forname ?? '';
 
-    console.log('name', name);
-    console.log('forname', forname);
     
     async function submit(){
         try {
