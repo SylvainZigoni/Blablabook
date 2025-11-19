@@ -1,0 +1,140 @@
+:root {
+	--color-header-footer: #52796f;
+	--color-main: #eaede8;
+	--color-secondary: #cad2c5;
+	--color-text-main: #2f3e46;
+	--color-text-secondary: #fff;
+	--color-error: #eed2d7;
+	--color-delete: rgb(179, 113, 113);
+	--color-delete-hover: rgb(128, 45, 45);
+	--border-radius: 10px;
+	--border-color: #84a98c;
+	--shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.2);
+	--shadow-hover: 0px 0px 10px 5px rgba(3, 72, 37, 0.278);
+	font-family: "Roboto", sans-serif;
+	font-optical-sizing: auto;
+	font-style: normal;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+h2 {
+	font-size: 2rem;
+	color: var(--color-main);
+	font-weight: 400;
+	background-color: #354f52;
+	padding: 0.8rem;
+	width: 100%;
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow);
+}
+
+h3 {
+	font-size: 1.2rem;
+	color: var(--color-header-footer);
+	font-weight: 500;
+	margin-bottom: 8px;
+}
+
+strong {
+	font-weight: 600;
+}
+
+/* RESET DU FORMAT DES BOUTON */
+button {
+	border: none;
+	background: none;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+/* RESET DES INPUTS DE TYPE RESET */
+input[type="reset"] {
+	border: none;
+	background: none;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	color: inherit;
+	text-align: inherit;
+}
+
+/* RESET DE TOUS LES INPUT */
+input {
+	/* Reset des styles par défaut */
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	background: none;
+	font: inherit;
+	color: inherit;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+button,
+.button {
+	background-color: var(--color-text-main);
+	padding: 0.5rem;
+	color: var(--color-main);
+	border-radius: var(--border-radius);
+	padding-left: 2rem;
+	padding-right: 2rem;
+	box-shadow: var(--shadow);
+	font-size: 1rem;
+	line-height: 1;
+}
+
+.error {
+	background-color: var(--color-error);
+	padding: 1rem 0.5rem;
+	border-radius: var(--border-radius);
+	margin: 0.5rem 0;
+}
+
+.confirmation-message {
+	background-color: var(--color-header-footer);
+	padding: 0.5rem;
+	color: var(--color-main);
+	margin: 0 1rem 0 1rem;
+	border-radius: var(--border-radius);
+}
+
+em {
+	font-style: italic;
+	font-size: 0.7rem;
+	font-weight: 300;
+}
+
+a {
+	text-decoration: none;
+	text-transform: none;
+	color: var(--color-text-main);
+}
+
+.link_filter {
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	padding: 1rem;
+}
+
+.active {
+	text-decoration: underline;
+	font-size: large;
+}

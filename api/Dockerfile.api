@@ -1,0 +1,27 @@
+# Image que l'on récupère de Node depuis le dockerhub
+FROM node:lts
+
+# Adresse du repertoire de travail dans le conteneur
+WORKDIR /usr/src/app
+
+# Quels sont les fichiers que l'on va copier
+# Ou va t on copier les fichiers
+COPY ./package*.json ./
+
+
+# Installation des dépendances
+RUN npm install
+
+# Copie le reste du code dans le conteneur.
+# Séparer la copie du package.json et package-lock.json permet de ne pas relancer l'installation
+# des dépendances à chaque modification du code grace au système de cache (mémoire) de Docker.
+# Donc dans de vrais projets, il est recommandé de copier d'abord les fichiers de dépendances puis le reste du code séparément.
+COPY . .
+
+
+# Choix du port a exposer
+EXPOSE 3000
+
+
+# Demarrage de l'application
+CMD ["npm", "run", "dev"]

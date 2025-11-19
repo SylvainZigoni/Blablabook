@@ -1,0 +1,132 @@
+<script>
+    import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
+    import Icon  from '@iconify/svelte';
+    import Search from "../ui/Search.svelte";
+	import UserButton from "../ui/UserButton.svelte";
+
+
+
+    let currentPath;
+    // Réactivité automatique avec $:
+    $: currentPath = $page.url.pathname
+
+
+    function handleClick(){
+        goto('/')
+        return;
+    }
+
+</script>
+
+<header>
+    <div class="header">
+        <div class="header_home">
+            <div class="header_title_user">
+                <div  class="header_title" on:click={handleClick}>
+                    <h1>BlaBlaBook</h1>
+                    <Icon icon="ion:book" height = 50 width= 50 />
+                </div>
+                {#if $page.data.token}
+                    <UserButton />
+                {/if}
+            </div>
+
+
+            {#if !$page.data.token}
+                <div class="login_register-button">
+                    <button on:click={()=> goto('register')}>S'inscrire</button>
+                    <button on:click={()=> goto('login')}>Se connecter</button>
+                </div>
+            {/if}
+        </div>
+        {#if $page.data.token}
+            <div class="header_search">
+                <Search/>
+            </div>
+        {/if}
+    </div>
+
+</header>
+
+<style>
+    header{
+        color: #fff;
+        background-color: var(--color-header-footer);
+        padding: 1rem;
+        box-shadow: var(--shadow);
+    }
+
+    .header_home{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap : 10px
+
+    }
+    .header_title{
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        filter: drop-shadow(1px 1px 2px var(--color-main))
+    }
+
+    .header_title:hover{
+        cursor:pointer;
+        scale: 1.03;
+    }
+
+    .header_title_user{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    h1{
+        
+        margin-right: 1rem;
+        font-size: 3rem;
+    }
+
+
+    .header{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+
+
+
+
+    button:hover{
+        scale: 1.03;
+        background-color: var(--color-main);
+        color: var(--color-text-main);
+    }
+
+
+
+    /* Media query pour les écrans < 400px */
+    @media (max-width: 400px) {
+
+        .header{
+            margin: 0 auto;
+        }
+
+        h1{
+            font-size: 2.5rem;
+        }
+
+        .header_title {
+            justify-content: center;
+        }
+
+        .login_register-button {
+            justify-content: center;
+            gap: 1rem;
+        }
+
+    }
+
+</style>
+

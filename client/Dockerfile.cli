@@ -1,0 +1,24 @@
+# On part de notre image de Node
+FROM node:lts-alpine
+
+# Répertoire dans le conteneur
+WORKDIR /usr/src/app
+
+# Copie de package*.json
+COPY ./package*.json ./
+
+# On lance l'installation
+RUN npm i
+
+# On copie dans le conteneur le reste
+COPY . .
+
+# On lance la construction de l'application Svelte
+RUN npm run build
+
+# On expose le port
+EXPOSE 5173
+
+
+# On lance l'application en dev
+CMD ["npm", "run", "dev","--", "--host", "0.0.0.0"]

@@ -1,0 +1,30 @@
+{
+	"name": "blablabook",
+	"version": "1.0.0",
+	"description": "Application to share your reads",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"install": "npm install --prefix api",
+		"start": "npm run start --prefix api",
+		"dev": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
+		"dev:back": "npm run dev --prefix api",
+		"dev:front": "npm run dev --prefix client",
+		"db:create": "npm run db:create --prefix api",
+		"db:seed": "npm run db:seed --prefix api",
+		"db:reset": "npm run db:create && npm run db:seed",
+		"postinstall": "npm install --prefix client --include=dev",
+		"build": "npm run build --prefix client"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/O-clock-Dundee/dwwm-blablabook.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/O-clock-Dundee/dwwm-blablabook/issues"
+	},
+	"homepage": "https://github.com/O-clock-Dundee/dwwm-blablabook#readme"
+}
