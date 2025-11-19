@@ -74,6 +74,7 @@ CREATE TABLE book_author (
     book_id INT NOT NULL,
     author_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (book_id, author_id),
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
     FOREIGN KEY (author_id) REFERENCES author(id) ON DELETE CASCADE
@@ -86,6 +87,7 @@ CREATE TABLE book_category (
     book_id INT NOT NULL,
     category_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (book_id, category_id),
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE

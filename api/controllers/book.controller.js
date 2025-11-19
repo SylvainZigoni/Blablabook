@@ -24,10 +24,10 @@ const bookController = {
 			});
 
 			res.status(StatusCodes.OK).json(books);
+
 		} catch (error) {
 			console.error(
-				"Impossible de récupérer les livres aléatoires :",
-				error
+				"Impossible de récupérer les livres aléatoires :", error
 			);
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 				error: "Erreur interne du serveur",
@@ -84,8 +84,7 @@ const bookController = {
 	async getAllUserBooks(req, res) {
 		try {
 			const userId = req.params.userId;
-			// récupérer tous les livres de l'utilisateurs qui a un id qui correspond à userId
-			// inclure les auteurs, catégories et le statut de chaque livre( via book_user)
+			
 			const userBooks = await Book.findAll({
 				include: [
 					{
@@ -102,10 +101,8 @@ const bookController = {
 						model: User,
 						where: { id: userId },
 						attributes: ["id", "username"],
-						through: {
-							attributes: ["status"],
-							as: "Status",
-						},
+						through: {attributes: ["status"],as: "Status"}
+						
 					},
 				],
 			});
@@ -173,9 +170,9 @@ const bookController = {
 
 	async updateUserBook(req, res) {
 		try {
-			// Lorsque l'utilisateur va séléctionner le statut d'un livre je veux récupérer l'id du l'utilisateur, l'id du livre et le statut qu'il a choisit
-			const { userId, bookId } = req.params; // userId et bookId sont envoyé via l'url du endpoint
-			const { status } = req.body; // Le statut est recu par le body de la requete
+			
+			const { userId, bookId } = req.params;
+			const { status } = req.body; // Nouveau statut envoyé dans le corps de la requête
 
 			await Status.update(
 				{ status: status },
@@ -204,7 +201,7 @@ const bookController = {
 	async getBooksByTitle(req, res) {
 		try {
 			const { titleSearched } = req.params;
-			const userId = req.userId; // Récupéré depuis le middleware d'authentification car non envoyé dans le body (un requete GET n'envoie ne peut pas envoyer de données dans le body)
+			const userId = req.userId; // Récupéré depuis le middleware d'authentification car non envoyé dans le body (GET request).
 
 			// Rechercher les livres avec associations (insensible aux accents grâce à unaccent)
 			const books = await Book.findAll({
@@ -220,12 +217,12 @@ const bookController = {
 					}
 				),
 				include: [
+
 					{
 						model: Author,
 						attributes: ["name", "forname"],
 						through: { attributes: [], as: "Authors" },
 					},
-
 					{
 						model: Category,
 						attributes: ["name"],
@@ -240,14 +237,15 @@ const bookController = {
 							as: "Status",
 						},
 
-						// required est spécifique a sequelize. Ca correspond ici a un left join, pour s'assurer que l'on inclue les lignes qui n'ont pas de statut
-						required: false,
+						required: false, 
+						// required : false = (JOIN en SQL) même si l'utilisateur ne possède pas le livre
+						// on ramène quand même le livre (avec users vide)
 					},
 				],
 			});
 
-			// Envoyer la réponse si ok
 			res.status(StatusCodes.OK).json(books);
+
 		} catch (error) {
 			console.error("Erreur lors de la recherche de livres :", error);
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -262,16 +260,12 @@ const bookController = {
 			const userId = req.userId;
 
 			const books = await Book.findAll({
+			
 				include: [
 					{
 						model: Author,
 						where: {
-							[Op.or]: [
-								sequelize.where(
-									sequelize.fn(
-										"unaccent",
-										sequelize.col("name")
-									),
+							[Op.or]: [ sequelize.where (sequelize.fn("unaccent", sequelize.col("name")),
 									{
 										[Op.iLike]: sequelize.fn(
 											"unaccent",
@@ -314,6 +308,7 @@ const bookController = {
 					},
 				],
 			});
+
 
 			res.status(StatusCodes.OK).json(books);
 		} catch (error) {

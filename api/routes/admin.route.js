@@ -16,7 +16,6 @@ adminRouter.delete("/authors/:id", isAuthed, isAdmin, adminController.deleteAuth
 adminRouter.patch("/authors/:id", isAuthed, isAdmin, adminController.updateAuthor);
 
 adminRouter.get("/users", isAuthed, isAdmin, adminController.getAllUsers);
-adminRouter.get("/users/:id", isAuthed, isAdmin, adminController.getUserById); 
 adminRouter.delete("/users/:id", isAuthed, isAdmin, adminController.deleteUser);
 adminRouter.patch("/users/:id", isAuthed, isAdmin, adminController.updateUser);
 
