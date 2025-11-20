@@ -15,6 +15,7 @@ app.use(
 			"http://localhost:5173",
 			"http://127.0.0.1:5173",
 			"http://api:3000",
+			"https://blablabook-cli.onrender.com",
 		],
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -23,6 +24,10 @@ app.use(
 );
 
 app.use(xss()); // Middleware de sanitization XSS, placé ici pour protéger tous les endpoints.
+
+app.get("/", (req, res) => {
+	res.send("Ca marche encore et toujours ! Incroyable");
+});
 
 app.use(apiRouter);
 
