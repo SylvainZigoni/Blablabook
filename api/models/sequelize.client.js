@@ -6,6 +6,9 @@ export const sequelize = new Sequelize(process.env.DB_URL, {
 		freezeTableName: true,
 		underscored: true,
 	},
+	dialectOptions: {
+		charset: 'utf8',
+	},
 });
 
 try {

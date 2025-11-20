@@ -5,5 +5,5 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		allowedHosts: ['blablabook-cli.onrender.com']
-	}
+	},
 });
